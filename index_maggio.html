@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maggio.xyz</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#ffffff;
+      --bg1:#1f1f1f;
+      --bg2:#0e2342;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background-color:#0e2342;  
+      color:var(--ink);
+      overflow:hidden;
+    }
+    .stage{
+      position:relative;
+      width:min(1200px, 94vw);
+      height:min(820px, 90vh);
+      margin:auto;
+      top:50%;
+      transform:translateY(-50%);
+    }
+    .center-wrap{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      text-align:center;
+      filter: drop-shadow(6px 6px 0 var(--bg1));
+    }
+    .center-wrap img{
+      width:min(640px, 72vw);
+      height:auto;
+      display:block;
+    }
+.node{
+  position:absolute;
+  text-decoration:none;
+  color:var(--ink);
+  --tx: 0%;
+  --rot: 0deg;
+  transition: transform .15s ease;
+  transform: translateX(var(--tx)) rotate(var(--rot));
+      filter: drop-shadow(6px 6px 0 var(--bg1));
+}
+
+.n1{ left:50%; top:6%;     --tx:-50%; --rot:-3deg; }
+.n2{ right:4%; top:20%;    --rot: 2deg; }
+.n3{ right:5%; bottom:16%; --rot:-5deg; }
+.n4{ left:50%; bottom:4%;  --tx:-50%; --rot: 1.5deg; }
+.n5{ left:4%; bottom:16%;  --rot: 3deg; }
+.n6{ left:5%; top:20%;     --rot:-4deg; }
+
+.node figure{
+  margin:0;
+  background:#fff;
+  border:8px solid var(--ink);
+  width:210px;
+  padding: 0;     
+  border-radius: 15px;
+  overflow: hidden;   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease;
+    }
+.node img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit: cover;
+  border: none;
+  border-radius:0; /* keeps outer rounding clean */
+}
+    .node figcaption{ 
+      display:none;
+      margin-top:10px;
+      text-align:center;
+      font-weight:400;
+      font-size:20px;
+      letter-spacing:.3px;
+    }
+.node:hover{
+  transform: translateX(var(--tx)) translateY(-4px) rotate(var(--rot)) scale(1.03);
+  z-index:2;
+}
+ 
+@media (max-width: 860px){
+  body{ overflow:auto }
+
+  .stage{
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+  .center-wrap{
+    position:relative;
+    left:auto; top:auto;
+    transform:none;
+    margin: 0 auto 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .center-wrap img {
+    max-width: 90vw;           /* scale down for smaller screens */
+    height: auto;
+  }
+  .node{
+    position:relative;
+    left:auto!important; right:auto!important; top:auto!important; bottom:auto!important;
+    /* neutralize placement vars for stacked layout */
+    --tx: 0%;
+    --rot: 0deg;
+    transform:none;
+    display:block;
+    margin:12px auto;
+    transform:none;
+  }
+
+  /* mobile hover: vertical lift only, no horizontal translate */
+  .node:hover{
+    transform: translateY(-4px) scale(1.03);
+  }
+
+  .node figure{ width:min(380px, 90vw);
+    margin: 0 auto;
+  }
+}
+  </style>
+</head>
+<body>
+  <main class="stage" role="main" aria-label="Maggio family link hub">
+    <div class="center-wrap">
+      <img src="maggio.xyz logo.png" alt="Maggio.xyz Logo" />
+    </div>
+    <a class="node n1" href="https://genemaggio.notion.site/experiments" aria-label="Contact" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="experiments.png" alt="Experiments" />
+        <figcaption>Experiments</figcaption>
+      </figure>
+    </a>
+    <a class="node n2" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
+        <figcaption>Maggio Consulting</figcaption>
+      </figure>
+    </a>
+    <a class="node n3" href="https://ninjagotemple.com" aria-label="Luca Projects" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="ninjagotemple.png" alt="Luca’s Projects" />
+        <figcaption>Ninjago Temple</figcaption>
+      </figure>
+    </a>
+    <a class="node n4" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="familyadventures.png" alt="Family Adventures" />
+        <figcaption>Family Adventures</figcaption>
+      </figure>
+    </a>
+    <a class="node n5" href="https://genemaggio.notion.site/Soccer-4f29b677af91456fa95b8640ba6d8ab2" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="soccercoaching.png" alt="Soccer Coaching" />
+        <figcaption>Soccer Coaching</figcaption>
+      </figure>
+    </a>
+    <a class="node n6" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
+      <figure>
+        <img src="glms-logo.png" alt="Growing Light Montessori School" />
+        <figcaption>Growing Light Montessori</figcaption>
+      </figure>
+    </a>
+  </main>
+</body>
+</html>
