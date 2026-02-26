@@ -15,75 +15,87 @@
       --bg2:#0e2342;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
       font-family:'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background-color:#0e2342;  
+      background-color:#0e2342;
       color:var(--ink);
-      overflow:hidden;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
+
+    /* ── stage: simple centred column ── */
     .stage{
-      position:relative;
-      width:min(1200px, 94vw);
-      height:min(820px, 90vh);
-      margin:auto;
-      top:50%;
-      transform:translateY(-50%);
-    }
-    .center-wrap{
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
+      max-width:1100px;
+      width:100%;
+      padding:30px 20px;
       text-align:center;
+    }
+
+    /* ── logo ── */
+    .center-wrap{
+      display:inline-block;
       filter: drop-shadow(6px 6px 0 var(--bg1));
+      margin-bottom:24px;
     }
     .center-wrap img{
       width:min(640px, 72vw);
       height:auto;
       display:block;
     }
-.node{
-  position:absolute;
-  text-decoration:none;
-  color:var(--ink);
-  --tx: 0%;
-  --rot: 0deg;
-  transition: transform .15s ease;
-  transform: translateX(var(--tx)) rotate(var(--rot));
-      filter: drop-shadow(6px 6px 0 var(--bg1));
-}
 
-.n1{ left:50%; top:6%;     --tx:-50%; --rot:-3deg; }
-.n2{ right:4%; top:20%;    --rot: 2deg; }
-.n3{ right:5%; bottom:16%; --rot:-5deg; }
-.n4{ left:50%; bottom:4%;  --tx:-50%; --rot: 1.5deg; }
-.n5{ left:4%; bottom:16%;  --rot: 3deg; }
-.n6{ left:5%; top:20%;     --rot:-4deg; }
-
-.node figure{
-  margin:0;
-  background:#fff;
-  border:8px solid var(--ink);
-  width:210px;
-  padding: 0;     
-  border-radius: 15px;
-  overflow: hidden;   
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .15s ease;
+    /*
+     * ── destinations: flex-wrap grid ──
+     * To add a page, just drop another <a class="node"> in here.
+     * No extra CSS needed — nth-child handles the rotation.
+     */
+    .destinations{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:28px 20px;
     }
-.node img{
-  display:block;
-  width:100%;
-  height:auto;
-  object-fit: cover;
-  border: none;
-  border-radius:0; /* keeps outer rounding clean */
-}
-    .node figcaption{ 
+
+    /* ── node cards ── */
+    .node{
+      text-decoration:none;
+      color:var(--ink);
+      transform: rotate(var(--rot, 0deg));
+      transition: transform .15s ease;
+      filter: drop-shadow(6px 6px 0 var(--bg1));
+    }
+    /* scattered-photo rotations (cycle every 7) */
+    .node:nth-child(7n+1){ --rot:-3deg }
+    .node:nth-child(7n+2){ --rot: 2deg }
+    .node:nth-child(7n+3){ --rot:-1.5deg }
+    .node:nth-child(7n+4){ --rot: 3deg }
+    .node:nth-child(7n+5){ --rot:-2deg }
+    .node:nth-child(7n+6){ --rot: 1deg }
+    .node:nth-child(7n+7){ --rot:-4deg }
+
+    .node figure{
+      margin:0;
+      background:#fff;
+      border:8px solid var(--ink);
+      width:210px;
+      padding: 0;
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .node img{
+      display:block;
+      width:100%;
+      height:auto;
+      object-fit: cover;
+      border: none;
+      border-radius:0;
+    }
+    .node figcaption{
       display:none;
       margin-top:10px;
       text-align:center;
@@ -91,52 +103,20 @@
       font-size:20px;
       letter-spacing:.3px;
     }
-.node:hover{
-  transform: translateX(var(--tx)) translateY(-4px) rotate(var(--rot)) scale(1.03);
-  z-index:2;
-}
- 
-@media (max-width: 860px){
-  body{ overflow:auto }
+    .node:hover{
+      transform: translateY(-4px) rotate(var(--rot, 0deg)) scale(1.03);
+      z-index:2;
+    }
 
-  .stage{
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-  }
-  .center-wrap{
-    position:relative;
-    left:auto; top:auto;
-    transform:none;
-    margin: 0 auto 24px;
-    display: flex;
-    justify-content: center;
-  }
-  .center-wrap img {
-    max-width: 90vw;           /* scale down for smaller screens */
-    height: auto;
-  }
-  .node{
-    position:relative;
-    left:auto!important; right:auto!important; top:auto!important; bottom:auto!important;
-    /* neutralize placement vars for stacked layout */
-    --tx: 0%;
-    --rot: 0deg;
-    transform:none;
-    display:block;
-    margin:12px auto;
-    transform:none;
-  }
-
-  /* mobile hover: vertical lift only, no horizontal translate */
-  .node:hover{
-    transform: translateY(-4px) scale(1.03);
-  }
-
-  .node figure{ width:min(380px, 90vw);
-    margin: 0 auto;
-  }
-}
+    /* ── mobile ── */
+    @media (max-width: 860px){
+      .center-wrap img {
+        max-width: 90vw;
+      }
+      .node figure{
+        width:min(380px, 90vw);
+      }
+    }
   </style>
 </head>
 <body>
@@ -144,42 +124,53 @@
     <div class="center-wrap">
       <img src="maggio.xyz logo.png" alt="Maggio.xyz Logo" />
     </div>
-    <a class="node n1" href="https://genemaggio.notion.site/experiments" aria-label="Contact" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="experiments.png" alt="Experiments" />
-        <figcaption>Experiments</figcaption>
-      </figure>
-    </a>
-    <a class="node n2" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
-        <figcaption>Maggio Consulting</figcaption>
-      </figure>
-    </a>
-    <a class="node n3" href="https://ninjagotemple.com" aria-label="Luca Projects" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="ninjagotemple.png" alt="Luca’s Projects" />
-        <figcaption>Ninjago Temple</figcaption>
-      </figure>
-    </a>
-    <a class="node n4" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="familyadventures.png" alt="Family Adventures" />
-        <figcaption>Family Adventures</figcaption>
-      </figure>
-    </a>
-    <a class="node n5" href="https://genemaggio.notion.site/Soccer-4f29b677af91456fa95b8640ba6d8ab2" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="soccercoaching.png" alt="Soccer Coaching" />
-        <figcaption>Soccer Coaching</figcaption>
-      </figure>
-    </a>
-    <a class="node n6" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
-      <figure>
-        <img src="glms-logo.png" alt="Growing Light Montessori School" />
-        <figcaption>Growing Light Montessori</figcaption>
-      </figure>
-    </a>
+
+    <!-- To add a new destination, copy any <a class="node"> block below.
+         No CSS changes needed — rotations and layout are automatic. -->
+    <div class="destinations">
+      <a class="node" href="https://genemaggio.notion.site/experiments" aria-label="Experiments" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="experiments.png" alt="Experiments" />
+          <figcaption>Experiments</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
+          <figcaption>Maggio Consulting</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://ninjagotemple.com" aria-label="Ninjago Temple" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="ninjagotemple.png" alt="Ninjago Temple" />
+          <figcaption>Ninjago Temple</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="familyadventures.png" alt="Family Adventures" />
+          <figcaption>Family Adventures</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://genemaggio.notion.site/Soccer-4f29b677af91456fa95b8640ba6d8ab2" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="soccercoaching.png" alt="Soccer Coaching" />
+          <figcaption>Soccer Coaching</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="glms-logo.png" alt="Growing Light Montessori School" />
+          <figcaption>Growing Light Montessori</figcaption>
+        </figure>
+      </a>
+      <a class="node" href="https://genemagg10.github.io/arcade" aria-label="Arcade" target="_blank" rel="noopener noreferrer">
+        <figure>
+          <img src="arcade.svg" alt="Maggio Arcade" />
+          <figcaption>Arcade</figcaption>
+        </figure>
+      </a>
+    </div>
   </main>
 </body>
 </html>
