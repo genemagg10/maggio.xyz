@@ -13,60 +13,88 @@
       --ink:#ffffff;
       --bg1:#1f1f1f;
       --bg2:#0e2342;
+      --accent:#ffd166;
+      --accent2:#ef476f;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background-color:#0e2342;
+      background-color:var(--bg2);
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(255,209,102,.08) 0, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(239,71,111,.08) 0, transparent 45%);
       color:var(--ink);
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     }
 
-    /* ── stage: simple centred column ── */
+    /* ── stage: full-width grid ── */
     .stage{
-      max-width:1100px;
-      width:100%;
-      padding:30px 20px;
-      text-align:center;
+      max-width:1280px;
+      margin:0 auto;
+      padding:32px 28px 60px;
     }
 
-    /* ── logo ── */
-    .center-wrap{
+    /* ── header row: logo upper-left ── */
+    .header{
+      margin-bottom:36px;
+    }
+    .logo-wrap{
       display:inline-block;
       filter: drop-shadow(6px 6px 0 var(--bg1));
-      margin-bottom:24px;
+      transform: rotate(-2deg);
     }
-    .center-wrap img{
-      width:min(640px, 72vw);
+    .logo-wrap img{
+      width:min(420px, 60vw);
       height:auto;
       display:block;
     }
 
-    /*
-     * ── destinations: flex-wrap grid ──
-     * To add a page, just drop another <a class="node"> in here.
-     * No extra CSS needed — nth-child handles the rotation.
-     */
-    .destinations{
+    /* ── section headings (handwritten) ── */
+    .section-title{
+      font-family:'Caveat Brush', cursive;
+      font-size:30px;
+      letter-spacing:.5px;
+      color:var(--accent);
+      margin:0 0 18px 4px;
+      text-shadow: 3px 3px 0 var(--bg1);
+      transform: rotate(-1deg);
+      display:inline-block;
+    }
+    .section-title.pink{ color:var(--accent2) }
+    .section-title.white{ color:var(--ink) }
+
+    /* ── key projects row ── */
+    .projects-row{
       display:flex;
       flex-wrap:wrap;
-      justify-content:center;
-      gap:28px 20px;
+      gap:22px;
+      margin-bottom:48px;
     }
 
-    /* ── node cards ── */
+    /* ── two-column lower section ── */
+    .lower{
+      display:grid;
+      grid-template-columns: minmax(260px, 1fr) 2fr;
+      gap:42px;
+      align-items:start;
+    }
+
+    .businesses{
+      display:flex;
+      flex-direction:column;
+      gap:26px;
+    }
+
+    /* ── node cards (polaroid look) ── */
     .node{
       text-decoration:none;
       color:var(--ink);
       transform: rotate(var(--rot, 0deg));
       transition: transform .15s ease;
       filter: drop-shadow(6px 6px 0 var(--bg1));
+      display:inline-block;
     }
-    /* scattered-photo rotations (cycle every 7) */
     .node:nth-child(7n+1){ --rot:-3deg }
     .node:nth-child(7n+2){ --rot: 2deg }
     .node:nth-child(7n+3){ --rot:-1.5deg }
@@ -79,11 +107,12 @@
       margin:0;
       background:#fff;
       border:8px solid var(--ink);
-      width:210px;
-      padding: 0;
+      width:180px;
+      padding: 0 0 8px;
       border-radius: 15px;
       overflow: hidden;
       display: flex;
+      flex-direction:column;
       align-items: center;
       justify-content: center;
     }
@@ -96,81 +125,267 @@
       border-radius:0;
     }
     .node figcaption{
-      display:none;
-      margin-top:10px;
+      margin-top:6px;
       text-align:center;
-      font-weight:400;
+      font-family:'Caveat Brush', cursive;
       font-size:20px;
       letter-spacing:.3px;
+      color:#1f1f1f;
     }
     .node:hover{
       transform: translateY(-4px) rotate(var(--rot, 0deg)) scale(1.03);
       z-index:2;
     }
 
+    /* business cards a touch larger for stacked column */
+    .businesses .node figure{ width:240px; }
+
+    /* ── github panel ── */
+    .gh-panel{
+      background: #fff;
+      color:#1f1f1f;
+      border:8px solid var(--ink);
+      border-radius:18px;
+      padding:18px 22px 22px;
+      filter: drop-shadow(6px 6px 0 var(--bg1));
+      transform: rotate(.5deg);
+    }
+    .gh-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      padding-bottom:10px;
+      border-bottom:2px dashed #1f1f1f33;
+    }
+    .gh-header h2{
+      margin:0;
+      font-family:'Caveat Brush', cursive;
+      font-size:28px;
+      color:#0e2342;
+    }
+    .gh-header a{
+      margin-left:auto;
+      font-size:13px;
+      color:#0e2342;
+      text-decoration:none;
+      border:2px solid #0e2342;
+      padding:4px 10px;
+      border-radius:999px;
+      font-weight:700;
+    }
+    .gh-header a:hover{ background:#0e2342; color:#fff; }
+
+    .repo-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:520px;
+      overflow-y:auto;
+    }
+    .repo{
+      border:2px solid #0e234222;
+      border-radius:12px;
+      padding:10px 12px;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .repo:hover{
+      transform: translateX(2px);
+      border-color:var(--accent2);
+    }
+    .repo a{
+      color:#0e2342;
+      text-decoration:none;
+      font-weight:700;
+      font-size:16px;
+    }
+    .repo .meta{
+      font-size:12px;
+      color:#1f1f1f99;
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .repo .desc{
+      font-size:13px;
+      margin-top:4px;
+      color:#1f1f1fcc;
+    }
+    .lang-dot{
+      display:inline-block;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#888;
+      margin-right:4px;
+      vertical-align:middle;
+    }
+    .gh-status{
+      font-size:14px;
+      color:#1f1f1f99;
+      padding:8px 0;
+    }
+
     /* ── mobile ── */
     @media (max-width: 860px){
-      .center-wrap img {
-        max-width: 90vw;
+      .stage{ padding:20px 16px 40px; }
+      .logo-wrap img{ width:min(320px, 80vw); }
+      .lower{
+        grid-template-columns: 1fr;
+        gap:34px;
       }
-      .node figure{
-        width:min(380px, 90vw);
-      }
+      .businesses{ flex-direction:row; flex-wrap:wrap; justify-content:center; }
+      .businesses .node figure{ width:min(220px, 45vw); }
+      .node figure{ width:min(160px, 42vw); }
+      .projects-row{ justify-content:center; }
     }
   </style>
 </head>
 <body>
   <main class="stage" role="main" aria-label="Maggio family link hub">
-    <div class="center-wrap">
-      <img src="maggio.xyz logo.png" alt="Maggio.xyz Logo" />
-    </div>
 
-    <!-- To add a new destination, copy any <a class="node"> block below.
-         No CSS changes needed — rotations and layout are automatic. -->
-    <div class="destinations">
-      <a class="node" href="https://github.com/genemagg10" aria-label="Experiments" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="experiments.png" alt="Experiments" />
-          <figcaption>Experiments</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
-          <figcaption>Maggio Consulting</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://ninjagotemple.com" aria-label="Ninjago Temple" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="ninjagotemple.png" alt="Ninjago Temple" />
-          <figcaption>Ninjago Temple</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="familyadventures.png" alt="Family Adventures" />
-          <figcaption>Family Adventures</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://genemagg10.github.io/football-trainer" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="soccercoaching.png" alt="Soccer Coaching" />
-          <figcaption>Soccer Coaching</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="glms-logo.png" alt="Growing Light Montessori School" />
-          <figcaption>Growing Light Montessori</figcaption>
-        </figure>
-      </a>
-      <a class="node" href="https://genemagg10.github.io/arcade" aria-label="Arcade" target="_blank" rel="noopener noreferrer">
-        <figure>
-          <img src="arcade.svg" alt="Maggio Arcade" />
-          <figcaption>Arcade</figcaption>
-        </figure>
-      </a>
-    </div>
+    <header class="header">
+      <div class="logo-wrap">
+        <img src="maggio.xyz logo.png" alt="Maggio.xyz Logo" />
+      </div>
+    </header>
+
+    <section aria-labelledby="projects-heading">
+      <h2 id="projects-heading" class="section-title">Projects &amp; Playgrounds</h2>
+      <div class="projects-row">
+        <a class="node" href="https://genemagg10.github.io/arcade" aria-label="Maggio Arcade" target="_blank" rel="noopener noreferrer">
+          <figure>
+            <img src="arcade.svg" alt="Maggio Arcade" />
+            <figcaption>Maggio Arcade</figcaption>
+          </figure>
+        </a>
+        <a class="node" href="https://genemagg10.github.io/football-trainer" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
+          <figure>
+            <img src="soccercoaching.png" alt="Soccer Coaching" />
+            <figcaption>Soccer Coaching</figcaption>
+          </figure>
+        </a>
+        <a class="node" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
+          <figure>
+            <img src="familyadventures.png" alt="Family Adventures" />
+            <figcaption>Family Adventures</figcaption>
+          </figure>
+        </a>
+        <a class="node" href="https://ninjagotemple.com" aria-label="Ninjago Temple" target="_blank" rel="noopener noreferrer">
+          <figure>
+            <img src="ninjagotemple.png" alt="Ninjago Temple" />
+            <figcaption>Ninjago Temple</figcaption>
+          </figure>
+        </a>
+        <a class="node" href="https://github.com/genemagg10" aria-label="Experiments" target="_blank" rel="noopener noreferrer">
+          <figure>
+            <img src="Experiments.png" alt="Experiments" />
+            <figcaption>Experiments</figcaption>
+          </figure>
+        </a>
+      </div>
+    </section>
+
+    <section class="lower">
+      <div aria-labelledby="biz-heading">
+        <h2 id="biz-heading" class="section-title pink">Businesses</h2>
+        <div class="businesses">
+          <a class="node" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
+            <figure>
+              <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
+              <figcaption>Maggio Consulting</figcaption>
+            </figure>
+          </a>
+          <a class="node" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
+            <figure>
+              <img src="glms-logo.png" alt="Growing Light Montessori School" />
+              <figcaption>Growing Light Montessori</figcaption>
+            </figure>
+          </a>
+        </div>
+      </div>
+
+      <div aria-labelledby="gh-heading">
+        <h2 id="gh-heading" class="section-title white">Lab Notebook</h2>
+        <div class="gh-panel">
+          <div class="gh-header">
+            <h2>Recent repos</h2>
+            <a href="https://github.com/genemagg10" target="_blank" rel="noopener noreferrer">@genemagg10 →</a>
+          </div>
+          <div id="repo-status" class="gh-status">Fetching repos…</div>
+          <ul id="repo-list" class="repo-list" hidden></ul>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <script>
+    (function () {
+      var listEl = document.getElementById('repo-list');
+      var statusEl = document.getElementById('repo-status');
+
+      var langColors = {
+        JavaScript:'#f1e05a', TypeScript:'#3178c6', HTML:'#e34c26', CSS:'#563d7c',
+        Python:'#3572A5', Go:'#00ADD8', Ruby:'#701516', Java:'#b07219',
+        Shell:'#89e051', 'C++':'#f34b7d', C:'#555555', Rust:'#dea584',
+        Swift:'#F05138', Kotlin:'#A97BFF', PHP:'#4F5D95', Vue:'#41b883',
+        Svelte:'#ff3e00', Dart:'#00B4AB'
+      };
+
+      function fmtDate(iso){
+        var d = new Date(iso);
+        var now = new Date();
+        var diffDays = Math.floor((now - d) / 86400000);
+        if (diffDays === 0) return 'today';
+        if (diffDays === 1) return 'yesterday';
+        if (diffDays < 30) return diffDays + ' days ago';
+        if (diffDays < 365) return Math.floor(diffDays/30) + ' mo ago';
+        return Math.floor(diffDays/365) + ' yr ago';
+      }
+
+      function escapeHTML(s){
+        return String(s == null ? '' : s)
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      }
+
+      fetch('https://api.github.com/users/genemagg10/repos?sort=updated&direction=desc&per_page=20', {
+        headers: { 'Accept': 'application/vnd.github+json' }
+      })
+        .then(function(r){
+          if(!r.ok) throw new Error('GitHub API ' + r.status);
+          return r.json();
+        })
+        .then(function(repos){
+          if(!Array.isArray(repos) || repos.length === 0){
+            statusEl.textContent = 'No public repos found.';
+            return;
+          }
+          var html = repos.map(function(repo){
+            var color = langColors[repo.language] || '#888';
+            return '<li class="repo">' +
+              '<a href="' + escapeHTML(repo.html_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(repo.name) + '</a>' +
+              (repo.description ? '<div class="desc">' + escapeHTML(repo.description) + '</div>' : '') +
+              '<div class="meta">' +
+                (repo.language ? '<span><span class="lang-dot" style="background:' + color + '"></span>' + escapeHTML(repo.language) + '</span>' : '') +
+                '<span>★ ' + (repo.stargazers_count || 0) + '</span>' +
+                '<span>updated ' + fmtDate(repo.pushed_at || repo.updated_at) + '</span>' +
+              '</div>' +
+            '</li>';
+          }).join('');
+          listEl.innerHTML = html;
+          listEl.hidden = false;
+          statusEl.hidden = true;
+        })
+        .catch(function(err){
+          statusEl.innerHTML = 'Couldn\'t load repos right now. <a href="https://github.com/genemagg10" target="_blank" rel="noopener noreferrer" style="color:#0e2342;font-weight:700;">Visit GitHub →</a>';
+        });
+    })();
+  </script>
 </body>
 </html>
