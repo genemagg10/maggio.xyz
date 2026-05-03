@@ -50,20 +50,6 @@
       display:block;
     }
 
-    /* ── section headings (handwritten) ── */
-    .section-title{
-      font-family:'Caveat Brush', cursive;
-      font-size:30px;
-      letter-spacing:.5px;
-      color:var(--accent);
-      margin:0 0 18px 4px;
-      text-shadow: 3px 3px 0 var(--bg1);
-      transform: rotate(-1deg);
-      display:inline-block;
-    }
-    .section-title.pink{ color:var(--accent2) }
-    .section-title.white{ color:var(--ink) }
-
     /* ── key projects row ── */
     .projects-row{
       display:flex;
@@ -108,11 +94,10 @@
       background:#fff;
       border:8px solid var(--ink);
       width:180px;
-      padding: 0 0 8px;
+      padding: 0;
       border-radius: 15px;
       overflow: hidden;
       display: flex;
-      flex-direction:column;
       align-items: center;
       justify-content: center;
     }
@@ -124,14 +109,7 @@
       border: none;
       border-radius:0;
     }
-    .node figcaption{
-      margin-top:6px;
-      text-align:center;
-      font-family:'Caveat Brush', cursive;
-      font-size:20px;
-      letter-spacing:.3px;
-      color:#1f1f1f;
-    }
+    .node figcaption{ display:none; }
     .node:hover{
       transform: translateY(-4px) rotate(var(--rot, 0deg)) scale(1.03);
       z-index:2;
@@ -255,8 +233,7 @@
       </div>
     </header>
 
-    <section aria-labelledby="projects-heading">
-      <h2 id="projects-heading" class="section-title">Projects &amp; Playgrounds</h2>
+    <section aria-label="Projects and playgrounds">
       <div class="projects-row">
         <a class="node" href="https://genemagg10.github.io/arcade" aria-label="Maggio Arcade" target="_blank" rel="noopener noreferrer">
           <figure>
@@ -292,8 +269,7 @@
     </section>
 
     <section class="lower">
-      <div aria-labelledby="biz-heading">
-        <h2 id="biz-heading" class="section-title pink">Businesses</h2>
+      <div aria-label="Businesses">
         <div class="businesses">
           <a class="node" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
             <figure>
@@ -310,8 +286,7 @@
         </div>
       </div>
 
-      <div aria-labelledby="gh-heading">
-        <h2 id="gh-heading" class="section-title white">Lab Notebook</h2>
+      <div aria-label="Recent GitHub repos">
         <div class="gh-panel">
           <div class="gh-header">
             <h2>Recent repos</h2>
