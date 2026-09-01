@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bakery Map · Wildflour</title>
+<meta name="description" content="The Wildflour bakery map — a running list of gluten-free bakeries worth the detour, pinned everywhere Michelle has tasted them." />
+<meta property="og:title" content="Bakery Map · Wildflour" />
+<meta property="og:description" content="Gluten-free bakeries worth the detour, pinned everywhere we've tasted them." />
+<meta name="theme-color" content="#FBF6EC" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#FBF6EC; --paper:#FFFDF9; --panel:#FFFFFF;
+  --ink:#33291F; --ink-soft:#5A4C3C; --muted:#8A7B67; --line:#EAE0CE; --line-soft:#F1E9DA;
+  --bronze:#B0703A; --bronze-deep:#8C5326; --sage:#7F9A6B; --sage-deep:#5E7A4C;
+  --poppy:#E0713C; --blue:#6C8CC7; --gold:#E6B24C; --plum:#9C6E8E;
+  --shadow:0 1px 2px rgba(51,41,31,.05), 0 14px 34px rgba(51,41,31,.08);
+  --shadow-lg:0 30px 70px rgba(51,41,31,.16);
+}
+:root:not([data-theme="light"]){
+  @media (prefers-color-scheme: dark){
+    --ground:#171310; --paper:#1F1A15; --panel:#241E18;
+    --ink:#F3EBDD; --ink-soft:#D2C6B4; --muted:#9A8B76; --line:#352C22; --line-soft:#2A2219;
+    --bronze:#D89A5E; --bronze-deep:#C1803F; --sage:#9CB585; --sage-deep:#86A46D;
+    --poppy:#EE9564; --blue:#8FA9DA; --gold:#EEC375; --plum:#C193B2;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.5);
+    --shadow-lg:0 34px 78px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#171310; --paper:#1F1A15; --panel:#241E18;
+  --ink:#F3EBDD; --ink-soft:#D2C6B4; --muted:#9A8B76; --line:#352C22; --line-soft:#2A2219;
+  --bronze:#D89A5E; --bronze-deep:#C1803F; --sage:#9CB585; --sage-deep:#86A46D;
+  --poppy:#EE9564; --blue:#8FA9DA; --gold:#EEC375; --plum:#C193B2;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 16px 40px rgba(0,0,0,.5);
+  --shadow-lg:0 34px 78px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Archivo",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;line-height:1.08;text-wrap:balance;margin:0}
+a{color:inherit;text-decoration:none}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--bronze-deep);font-weight:600}
+.tiles{background-color:var(--panel);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='64'><g fill='none' stroke='%23000' stroke-opacity='0.05' stroke-width='2'><path d='M0 1H128M0 33H128'/><path d='M0 1V33M64 1V33M128 1V33'/><path d='M32 33V65M96 33V65M0 65H128'/></g></svg>");
+  background-size:96px 48px}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+.topbar .row{display:flex;align-items:center;gap:16px;height:62px}
+.brand{display:inline-flex;align-items:baseline;gap:8px}
+.brand .w{font-family:"Parisienne",cursive;font-size:32px;color:var(--ink);line-height:1;transform:translateY(2px)}
+.brand .sub{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tlinks{margin-left:auto;display:flex;align-items:center;gap:2px}
+.tlinks a{font-size:13.5px;font-weight:500;color:var(--ink-soft);padding:8px 12px;border-radius:9px;transition:background .14s,color .14s}
+.tlinks a:hover{background:var(--paper);color:var(--bronze-deep)}
+.themebtn{cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:10px;width:38px;height:34px;display:grid;place-items:center;font-size:14px;color:var(--ink);margin-left:6px}
+
+/* header */
+.head{position:relative;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+.head .inner{position:relative;z-index:2;text-align:center;padding:52px 0 42px}
+.head .kicker{font-family:"Parisienne",cursive;font-size:clamp(34px,6vw,54px);color:var(--sage-deep);line-height:1;margin-top:6px}
+.head h1{font-size:clamp(36px,7vw,68px);font-weight:600;letter-spacing:-.02em;margin-top:2px}
+.head p.lead{font-size:clamp(15px,2vw,18px);color:var(--ink-soft);max-width:54ch;margin:16px auto 0}
+
+/* map */
+section.block{padding:44px 0}
+.mappanel{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:16px;position:relative}
+.maptools{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.maptools button{font-size:12.5px;font-weight:500;padding:7px 15px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink-soft);cursor:pointer;transition:all .14s}
+.maptools button:hover{border-color:var(--bronze)}
+.maptools button[aria-pressed="true"]{background:var(--bronze);color:#fff;border-color:var(--bronze-deep)}
+.mapwrap{position:relative;width:100%;aspect-ratio:2/1;border-radius:14px;overflow:hidden;
+  background:color-mix(in srgb,var(--blue) 12%,var(--paper));border:1px solid var(--line)}
+.world{position:absolute;inset:0;width:100%;height:100%;display:block}
+.world .land{fill:color-mix(in srgb,var(--sage) 32%,var(--paper));stroke:color-mix(in srgb,var(--sage) 46%,var(--line));stroke-width:.5;stroke-linejoin:round}
+.world .grat{stroke:color-mix(in srgb,var(--ink) 8%,transparent);stroke-width:.3;fill:none}
+.pins{position:absolute;inset:0}
+.pin{position:absolute;transform:translate(-50%,-100%);cursor:pointer;background:none;border:0;padding:0;line-height:0;
+  filter:drop-shadow(0 3px 4px rgba(51,41,31,.28));transition:transform .16s ease}
+.pin .mk{width:26px;height:34px;display:block}
+.pin .num{position:absolute;top:5px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:#fff;line-height:16px}
+.pin:hover,.pin.active{transform:translate(-50%,-100%) scale(1.22)}
+.pin.active{z-index:5}
+.pin .tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);white-space:nowrap;
+  background:var(--ink);color:var(--paper);font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:7px;
+  opacity:0;pointer-events:none;transition:opacity .14s;line-height:1.3}
+.pin:hover .tip,.pin.active .tip{opacity:1}
+.mapnote{text-align:center;font-size:12px;color:var(--muted);margin-top:12px;font-style:italic}
+
+/* stats */
+.stats{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.stat{text-align:center}
+.stat b{font-family:"Fraunces",serif;font-size:26px;font-weight:600;color:var(--bronze-deep);display:block;line-height:1}
+.stat span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* list */
+.sec-head{text-align:center;margin:0 auto 6px}
+.sec-head .kicker{font-family:"Parisienne",cursive;font-size:clamp(28px,4.5vw,42px);color:var(--sage-deep);line-height:1}
+.sec-head h2{font-size:clamp(24px,3.6vw,36px);font-weight:600;letter-spacing:-.01em;margin-top:2px}
+.finds{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px}
+@media(max-width:720px){.finds{grid-template-columns:1fr}}
+.find{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+  padding:20px 22px;display:flex;gap:16px;scroll-margin-top:80px;transition:transform .16s,box-shadow .16s,border-color .16s}
+.find:hover,.find.active{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.find.active{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.find .no{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;
+  font-size:14px;background:var(--accent);box-shadow:inset 0 -3px 6px rgba(0,0,0,.14)}
+.find .body{min-width:0;flex:1}
+.find .rowtop{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.find h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.find .place{font-size:12.5px;color:var(--muted);font-weight:500}
+.find .rating{display:flex;gap:3px;margin:8px 0 0}
+.find .rating i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.find .rating i.on{background:var(--gold)}
+.find .bake{margin:10px 0 0;font-size:13.5px}
+.find .bake b{color:var(--ink)}
+.find .note{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.find .flag{margin-top:10px;display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  color:var(--sage-deep);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+
+/* footer */
+footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px}
+.foot{display:flex;flex-wrap:wrap;gap:14px;align-items:center;color:var(--muted);font-size:13.5px}
+.foot .fw{font-family:"Parisienne",cursive;font-size:26px;color:var(--ink);line-height:1}
+.foot a{color:var(--ink-soft);border-bottom:1px solid var(--line)}
+.foot a:hover{color:var(--bronze-deep)}
+.foot .crumbs{display:flex;gap:10px;margin-left:auto;flex-wrap:wrap}
+.foot .crumbs a{border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:500}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap row">
+    <a class="brand" href="../" aria-label="Wildflour Bake Shop">
+      <span class="w">wildflour</span><span class="sub">bake&nbsp;shop</span>
+    </a>
+    <nav class="tlinks">
+      <a href="../">← Bake shop</a>
+      <a href="../../">Family hub</a>
+      <button class="themebtn" id="themebtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="head tiles">
+    <div class="wrap inner">
+      <span class="eyebrow">Gluten-free finds, mapped</span>
+      <div class="kicker">the running</div>
+      <h1>Bakery Map</h1>
+      <p class="lead">A living list of the gluten-free bakeries we've actually tasted — the ones worth a detour, a train ride, or a whole trip. Tap a pin to jump to the note.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="mappanel">
+        <div class="maptools" id="maptools">
+          <button aria-pressed="true" data-r="all">Everywhere</button>
+          <button aria-pressed="false" data-r="usa">United States</button>
+          <button aria-pressed="false" data-r="americas">The Americas</button>
+          <button aria-pressed="false" data-r="europe">Europe</button>
+          <button aria-pressed="false" data-r="asiapac">Asia · Pacific</button>
+        </div>
+        <div class="mapwrap">
+          <svg class="world" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g class="grat">
+              <path d="M0,30 H360 M0,60 H360 M0,90 H360 M0,120 H360 M0,150 H360"/>
+              <path d="M60,0 V180 M120,0 V180 M180,0 V180 M240,0 V180 M300,0 V180"/>
+            </g>
+            <g class="land">
+              <!-- North America -->
+              <path d="M18,30 L34,21 L62,19 L92,25 L112,32 L126,41 L121,52 L107,54 L116,61 L110,71 L95,73 L87,61 L77,63 L69,55 L53,55 L39,49 L27,43 L19,36 Z"/>
+              <!-- Central America -->
+              <path d="M95,73 L104,72 L112,80 L108,88 L100,84 L96,78 Z"/>
+              <!-- Greenland -->
+              <path d="M128,19 L143,15 L152,22 L147,33 L134,35 L127,28 Z"/>
+              <!-- South America -->
+              <path d="M105,84 L121,80 L136,84 L147,95 L143,107 L133,119 L125,135 L117,143 L111,135 L113,117 L107,105 L101,94 Z"/>
+              <!-- British Isles -->
+              <path d="M170,36 L176,33 L179,39 L175,44 L170,42 Z"/>
+              <!-- Europe -->
+              <path d="M180,38 L192,32 L208,31 L216,37 L213,46 L201,50 L207,55 L194,57 L185,52 L181,45 Z"/>
+              <!-- Africa -->
+              <path d="M181,57 L200,53 L217,54 L231,59 L233,73 L226,88 L221,104 L211,119 L203,125 L197,114 L194,98 L186,82 L181,69 Z"/>
+              <!-- Asia -->
+              <path d="M216,33 L240,24 L266,20 L296,22 L320,29 L332,38 L327,49 L312,53 L323,61 L307,64 L299,58 L286,61 L279,68 L264,66 L262,80 L253,73 L248,59 L236,55 L224,50 L217,42 Z"/>
+              <!-- India tail -->
+              <path d="M255,66 L266,66 L268,78 L261,86 L256,78 Z"/>
+              <!-- Japan -->
+              <path d="M318,50 L323,52 L322,60 L316,58 Z"/>
+              <!-- SE Asia / Indonesia -->
+              <path d="M296,86 L312,84 L320,90 L310,95 L298,93 Z"/>
+              <!-- Australia -->
+              <path d="M294,105 L314,101 L333,107 L335,119 L327,129 L309,131 L297,123 L291,113 Z"/>
+              <!-- New Zealand -->
+              <path d="M340,128 L345,131 L343,138 L338,135 Z"/>
+            </g>
+          </svg>
+          <div class="pins" id="pins"></div>
+        </div>
+        <p class="mapnote">An illustrated map — pins are placed by real coordinates, the coastlines are drawn by hand.</p>
+      </div>
+
+      <div class="stats" id="stats" style="margin-top:22px"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:8px">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">every one</div>
+        <h2>The Notes</h2>
+      </div>
+      <div class="finds" id="finds"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="fw">wildflour</span>
+    <span>·</span>
+    <span>Baked with <span style="color:var(--poppy)">&#9829;</span> by Michelle.</span>
+    <span class="crumbs"><a href="../">← Bake shop</a><a href="../../">Family hub</a></span>
+  </div>
+</footer>
+
+<script>
+/* theme */
+document.getElementById('themebtn').addEventListener('click',function(){
+  var r=document.documentElement,cur=r.getAttribute('data-theme');
+  if(!cur)cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  var n=cur==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('wildflour:theme',n);}catch(e){}
+});
+try{var st=localStorage.getItem('wildflour:theme');if(st)document.documentElement.setAttribute('data-theme',st);}catch(e){}
+
+/* bakeries tried — real cities, honest personal notes */
+var B=[
+  {name:"Rye & Rise",city:"Portland, OR",country:"USA",region:["usa","americas"],lat:45.52,lon:-122.68,accent:"#E0713C",rating:5,
+   bake:"Almond croissant",note:"A dedicated GF laminating kitchen. First croissant in years that actually shattered down my shirt.",gf:"100% GF kitchen"},
+  {name:"Marigold Crumb",city:"San Francisco, CA",country:"USA",region:["usa","americas"],lat:37.77,lon:-122.42,accent:"#E6B24C",rating:5,
+   bake:"Sourdough boule",note:"Two-day levain, blistered crust, open crumb. I buy two and freeze one so I always have toast.",gf:"100% GF kitchen"},
+  {name:"Bluebonnet Baking Co.",city:"Austin, TX",country:"USA",region:["usa","americas"],lat:30.27,lon:-97.74,accent:"#9C6E8E",rating:4,
+   bake:"Kolaches",note:"Shared oven but scrupulous about it. The sausage-and-jalapeño kolache is worth planning a morning around.",gf:"GF menu · ask"},
+  {name:"Poppyseed & Co.",city:"New York, NY",country:"USA",region:["usa","americas"],lat:40.71,lon:-74.00,accent:"#6C8CC7",rating:4,
+   bake:"Black-and-white cookie",note:"A proper NY black-and-white, cakey and huge, that no one at the table believed was gluten-free.",gf:"100% GF kitchen"},
+  {name:"Cardamom House",city:"Vancouver, BC",country:"Canada",region:["americas"],lat:49.28,lon:-123.12,accent:"#7F9A6B",rating:5,
+   bake:"Cardamom bun",note:"Knotted, glossy, heavy with cardamom sugar. We drove back the next morning for more before the ferry.",gf:"100% GF kitchen"},
+  {name:"Maíz Dulce",city:"Oaxaca",country:"Mexico",region:["americas"],lat:17.07,lon:-96.72,accent:"#B0703A",rating:5,
+   bake:"Corn-masa concha",note:"Naturally GF by tradition, not by substitution. The masa conchas taste like they were always meant to be this way.",gf:"Naturally GF"},
+  {name:"Senza",city:"Rome",country:"Italy",region:["europe"],lat:41.90,lon:12.50,accent:"#E0713C",rating:5,
+   bake:"Pistachio cornetto",note:"Italy screens for celiac, so 'senza glutine' is everywhere — but this cornetto, filled with Bronte pistachio, is the one I still dream about.",gf:"Certified AIC"},
+  {name:"Le Bluet",city:"Paris",country:"France",region:["europe"],lat:48.86,lon:2.35,accent:"#6C8CC7",rating:4,
+   bake:"Financier",note:"A tiny sans-gluten patisserie near the canal. Brown-butter financiers, still warm, in a paper twist. Very hard to stop at one.",gf:"100% GF kitchen"},
+  {name:"Komeko",city:"Kyoto",country:"Japan",region:["asiapac"],lat:35.01,lon:135.77,accent:"#9C6E8E",rating:5,
+   bake:"Rice-flour milk bread",note:"Rice-flour shokupan so soft and springy it pulls apart in clouds. Pack tamari for the rest of the trip and you're set.",gf:"Rice-flour · GF"},
+  {name:"Wattle & Whisk",city:"Sydney",country:"Australia",region:["asiapac"],lat:-33.87,lon:151.21,accent:"#7F9A6B",rating:4,
+   bake:"Lamington",note:"Sponge dipped in chocolate and rolled in coconut — the platonic GF lamington. Best eaten on the ferry with a flat white.",gf:"100% GF kitchen"}
+];
+
+/* teardrop pin marker */
+function marker(accent){
+  return '<svg class="mk" viewBox="0 0 26 34" aria-hidden="true">'
+    +'<path d="M13 1C6.4 1 1 6.2 1 12.6 1 21 13 33 13 33s12-12 12-20.4C25 6.2 19.6 1 13 1z" fill="'+accent+'" stroke="rgba(255,255,255,.85)" stroke-width="1.5"/></svg>';
+}
+function proj(lat,lon){ return { x:(lon+180)/360*100, y:(90-lat)/180*100 }; }
+
+var pinsHost=document.getElementById('pins');
+var findsHost=document.getElementById('finds');
+
+B.forEach(function(b,i){
+  var p=proj(b.lat,b.lon);
+  var btn=document.createElement('button');
+  btn.className='pin';btn.dataset.i=i;
+  btn.style.left=p.x+'%';btn.style.top=p.y+'%';
+  btn.setAttribute('aria-label',b.name+' — '+b.city);
+  btn.innerHTML=marker(b.accent)+'<span class="num">'+(i+1)+'</span><span class="tip">'+b.name+' · '+b.city+'</span>';
+  pinsHost.appendChild(btn);
+
+  var card=document.createElement('article');
+  card.className='find';card.id='find-'+i;card.style.setProperty('--accent',b.accent);
+  card.dataset.i=i;
+  var dots='';for(var k=0;k<5;k++){dots+='<i class="'+(k<b.rating?'on':'')+'"></i>';}
+  card.innerHTML='<div class="no">'+(i+1)+'</div>'
+    +'<div class="body">'
+    +'<div class="rowtop"><h3>'+b.name+'</h3><span class="place">'+b.city+' · '+b.country+'</span></div>'
+    +'<div class="rating" title="'+b.rating+' out of 5">'+dots+'</div>'
+    +'<p class="bake"><b>Order:</b> '+b.bake+'</p>'
+    +'<p class="note">'+b.note+'</p>'
+    +'<span class="flag">'+b.gf+'</span>'
+    +'</div>';
+  findsHost.appendChild(card);
+});
+
+/* sync hover/click between pins and cards */
+var pinEls=[].slice.call(document.querySelectorAll('.pin'));
+var cardEls=[].slice.call(document.querySelectorAll('.find'));
+function setActive(i,on){
+  if(pinEls[i])pinEls[i].classList.toggle('active',on);
+  if(cardEls[i])cardEls[i].classList.toggle('active',on);
+}
+pinEls.forEach(function(el){
+  var i=+el.dataset.i;
+  el.addEventListener('mouseenter',function(){setActive(i,true);});
+  el.addEventListener('mouseleave',function(){setActive(i,false);});
+  el.addEventListener('click',function(){cardEls[i].scrollIntoView({behavior:'smooth',block:'center'});
+    cardEls[i].classList.add('active');setTimeout(function(){cardEls[i].classList.remove('active');},1400);});
+});
+cardEls.forEach(function(el){
+  var i=+el.dataset.i;
+  el.addEventListener('mouseenter',function(){if(pinEls[i])pinEls[i].classList.add('active');});
+  el.addEventListener('mouseleave',function(){if(pinEls[i])pinEls[i].classList.remove('active');});
+});
+
+/* region filter */
+function applyFilter(r){
+  B.forEach(function(b,i){
+    var show=(r==='all')||b.region.indexOf(r)>=0;
+    if(pinEls[i])pinEls[i].style.display=show?'':'none';
+    if(cardEls[i])cardEls[i].style.display=show?'':'none';
+  });
+}
+document.getElementById('maptools').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});
+  b.setAttribute('aria-pressed','true');applyFilter(b.getAttribute('data-r'));
+});
+
+/* stats */
+(function(){
+  var countries={};B.forEach(function(b){countries[b.country]=1;});
+  var avg=(B.reduce(function(a,b){return a+b.rating;},0)/B.length).toFixed(1);
+  document.getElementById('stats').innerHTML=
+    '<div class="stat"><b>'+B.length+'</b><span>bakeries</span></div>'
+   +'<div class="stat"><b>'+Object.keys(countries).length+'</b><span>countries</span></div>'
+   +'<div class="stat"><b>'+avg+'</b><span>avg · out of 5</span></div>';
+})();
+</script>
+</body>
+</html>
