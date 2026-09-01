@@ -85,15 +85,16 @@
       display:grid;place-items:center;font-size:14px;color:var(--ink)}
 
     /* ---- hero / constellation ---- */
-    .hero{position:relative;padding:64px 0 34px;overflow:hidden}
+    .hero{position:relative;overflow:hidden;min-height:clamp(560px,82vh,800px);
+      display:flex;align-items:center;justify-content:center;padding:52px 0}
     .hero-head{position:relative;z-index:3;text-align:center;pointer-events:none}
     .hero-head .eyebrow{margin-bottom:18px;display:inline-block}
-    .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(64px,16vw,168px);letter-spacing:-.04em;line-height:.9}
+    .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(56px,12.5vw,134px);letter-spacing:-.04em;line-height:.9}
     .wordmark .fam{display:block;font-weight:500;font-style:italic;font-size:clamp(15px,2.4vw,20px);letter-spacing:.02em;
       color:var(--ink-soft);margin-top:14px;font-variation-settings:"opsz" 20}
     .hero-sub{max-width:56ch;margin:20px auto 0;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
-    #constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.72}
-    .scroll-cue{position:relative;z-index:3;text-align:center;margin-top:30px;font-family:"JetBrains Mono",monospace;
+    #constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.92}
+    .scroll-cue{position:absolute;left:0;right:0;bottom:20px;z-index:3;text-align:center;font-family:"JetBrains Mono",monospace;
       font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
     .scroll-cue span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
     @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
@@ -270,60 +271,69 @@
   });
   try{var st=localStorage.getItem('maggio:theme');if(st)document.documentElement.setAttribute('data-theme',st);}catch(e){}
 
-  /* ============ constellation (Direction C) ============ */
+  /* ============ orbit map (family sites circling the wordmark) ============ */
   (function(){
     var cv=document.getElementById('constellation');
     var ctx=cv.getContext('2d');
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     var nodes=SITES.filter(function(s){return s.star;});
-    var pts=[],W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2),t=0,hover=-1,mx=-999,my=-999;
+    var pts=[],W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2),t=0,hover=-1,mx=-9999,my=-9999;
+    var rot=0,cx=0,cy=0,rx=0,ry=0;
 
     function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
     function layout(){
       var r=cv.getBoundingClientRect();W=r.width;H=r.height;
       cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+      cx=W/2; cy=H*0.5;
+      // wide ellipse that clears the centered wordmark on every side
+      var marginX=Math.max(44,W*0.045), marginY=48;
+      rx=Math.min(W/2-marginX, W*0.46);
+      ry=Math.min(H/2-marginY, Math.max(H*0.38,168));
       pts=nodes.map(function(n,i){
-        var ang=(i/nodes.length)*Math.PI*2 - Math.PI/2;
-        var rad=Math.min(W,H)*0.40 * (0.72+0.28*((i%3)/2));
-        return {x:W/2+Math.cos(ang)*rad, y:H*0.52+Math.sin(ang)*rad*0.72,
-                bx:W/2+Math.cos(ang)*rad, by:H*0.52+Math.sin(ang)*rad*0.72,
-                ph:i*1.3, n:n};
+        var a0=(i/nodes.length)*Math.PI*2 - Math.PI/2;
+        var f=0.84+0.16*((i%3)/2);        // gentle depth variation, never inside the text
+        return {a0:a0, f:f, ph:i*1.3, n:n, x:cx, y:cy};
       });
     }
-    function draw(force){
-      var star=css('--star'),line=css('--line'),muted=css('--muted');
+    function place(p){
+      var breath=reduce?1:(1+Math.sin(t/80+p.ph)*0.025);
+      var ang=p.a0+rot;
+      p.x=cx+Math.cos(ang)*rx*p.f*breath;
+      p.y=cy+Math.sin(ang)*ry*p.f*breath;
+    }
+    function draw(){
+      var star=css('--star'),line=css('--line');
       ctx.clearRect(0,0,W,H);
-      // faint web between neighbors + to center
-      var cx=W/2, cy=H*0.52;
-      ctx.lineWidth=1;
-      pts.forEach(function(p,i){
-        var dx=p.bx-cx+(reduce?0:Math.sin(t/60+p.ph)*8);
-        var dy=p.by-cy+(reduce?0:Math.cos(t/70+p.ph)*8);
-        p.x=cx+dx;p.y=cy+dy;
+      pts.forEach(place);
+      // faint orbit rings
+      ctx.strokeStyle=line;ctx.lineWidth=1;
+      [0.84,1.0].forEach(function(k){
+        ctx.globalAlpha=.30;ctx.beginPath();ctx.ellipse(cx,cy,rx*k,ry*k,0,0,Math.PI*2);ctx.stroke();
       });
-      ctx.strokeStyle=line;ctx.globalAlpha=.55;
+      // spokes to the hub + a light ring between neighbours
       pts.forEach(function(p,i){
+        ctx.strokeStyle=line;ctx.globalAlpha=.5;
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.stroke();
         var q=pts[(i+1)%pts.length];
-        ctx.globalAlpha=.28;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.globalAlpha=.55;
+        ctx.globalAlpha=.26;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
       });
       ctx.globalAlpha=1;
+      // hub
+      ctx.beginPath();ctx.arc(cx,cy,3.5,0,7);ctx.fillStyle=star;ctx.globalAlpha=.45;ctx.fill();ctx.globalAlpha=1;
       // nodes
       pts.forEach(function(p,i){
         var isH=(i===hover);
         var rr=isH?9:6;
-        ctx.beginPath();ctx.arc(p.x,p.y,rr+ (isH?7:0),0,7);
-        ctx.fillStyle=p.n.accent;ctx.globalAlpha=isH?.20:0;ctx.fill();ctx.globalAlpha=1;
+        if(isH){ctx.beginPath();ctx.arc(p.x,p.y,rr+7,0,7);ctx.fillStyle=p.n.accent;ctx.globalAlpha=.18;ctx.fill();ctx.globalAlpha=1;}
         ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.fillStyle=p.n.accent;ctx.fill();
         ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.strokeStyle=star;ctx.globalAlpha=.25;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
-        // label — only on hover, so the constellation stays a quiet backdrop
+        // label — only on hover, so the orbit stays a quiet backdrop
         if(isH){
           ctx.font='500 13px "JetBrains Mono", monospace';
           ctx.textAlign=p.x<cx?'right':'left';
           var lx=p.x<cx?p.x-14:p.x+14;
-          // legibility chip behind the label
           var tw=ctx.measureText(p.n.short).width;
-          ctx.fillStyle=css('--panel');ctx.globalAlpha=.9;
+          ctx.fillStyle=css('--panel');ctx.globalAlpha=.92;
           ctx.fillRect(p.x<cx?lx-tw-8:lx-4, p.y-13, tw+12, 20);ctx.globalAlpha=1;
           ctx.fillStyle=p.n.accent;
           ctx.fillText(p.n.short,lx,p.y+3);
@@ -331,17 +341,23 @@
       });
     }
     window.__constDraw=draw;
-    function loop(){t++;draw();if(!reduce)requestAnimationFrame(loop);}
+    function loop(){
+      t++;
+      rot += (hover>=0?0.0002:0.0016);   // slow orbital drift, nearly pausing under the cursor
+      draw();
+      requestAnimationFrame(loop);
+    }
     function hit(){
-      hover=-1;var best=22;
+      hover=-1;var best=24;
       pts.forEach(function(p,i){var d=Math.hypot(p.x-mx,p.y-my);if(d<best){best=d;hover=i;}});
       cv.style.cursor=hover>=0?'pointer':'default';
     }
     cv.addEventListener('mousemove',function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hit();if(reduce)draw();});
-    cv.addEventListener('mouseleave',function(){mx=my=-999;hover=-1;if(reduce)draw();});
+    cv.addEventListener('mouseleave',function(){mx=my=-9999;hover=-1;if(reduce)draw();});
     cv.addEventListener('click',function(){if(hover>=0)window.open(pts[hover].n.url,'_blank','noopener');});
     window.addEventListener('resize',function(){layout();draw();});
-    layout();loop();if(reduce)draw();
+    layout();
+    if(reduce){pts.forEach(place);draw();}else loop();
   })();
   </script>
 </body>
