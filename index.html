@@ -3,370 +3,338 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maggio.xyz</title>
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-
+  <title>The Maggio Family</title>
+  <meta name="description" content="The Maggio family hub — a front door to Ctrl+Click, Alberto's music, the kids' projects, the businesses, and everything else we make." />
+  <meta property="og:title" content="The Maggio Family" />
+  <meta property="og:description" content="One family, many orbits. A calm directory to everything the Maggios make." />
+  <meta property="og:image" content="maggio.xyz%20logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --ink:#ffffff;
-      --bg1:#1f1f1f;
-      --bg2:#0e2342;
-      --accent:#ffd166;
-      --accent2:#ef476f;
+      --ground:#ECEEE9;
+      --paper:#F7F8F5;
+      --panel:#FFFFFF;
+      --ink:#131A24;
+      --ink-soft:#38434F;
+      --muted:#6A7580;
+      --line:#D8DCD4;
+      --line-soft:#E5E8E1;
+      --navy:#0E1626;
+      --teal:#146E63;
+      --teal-bright:#1E9C8C;
+      --coral:#E8674C;
+      --coral-deep:#C7492F;
+      --gold:#C98A1E;
+      --star:#0E1626;
+      --shadow:0 1px 2px rgba(19,26,36,.05),0 10px 34px rgba(19,26,36,.09);
+      --shadow-lg:0 30px 70px rgba(19,26,36,.16);
+    }
+    :root:not([data-theme="light"]){
+      @media (prefers-color-scheme: dark){
+        --ground:#0A111E;
+        --paper:#0E1626;
+        --panel:#141F31;
+        --ink:#E9EEF3;
+        --ink-soft:#BAC7D3;
+        --muted:#82909E;
+        --line:#233348;
+        --line-soft:#1A2740;
+        --navy:#060B14;
+        --teal:#4FC7B6;
+        --teal-bright:#3FB9A7;
+        --coral:#F0846C;
+        --coral-deep:#E8674C;
+        --gold:#E8BC5E;
+        --star:#CFE0F2;
+        --shadow:0 1px 2px rgba(0,0,0,.34),0 12px 36px rgba(0,0,0,.4);
+        --shadow-lg:0 34px 80px rgba(0,0,0,.55);
+      }
+    }
+    :root[data-theme="dark"]{
+      --ground:#0A111E;--paper:#0E1626;--panel:#141F31;--ink:#E9EEF3;--ink-soft:#BAC7D3;
+      --muted:#82909E;--line:#233348;--line-soft:#1A2740;--navy:#060B14;--teal:#4FC7B6;
+      --teal-bright:#3FB9A7;--coral:#F0846C;--coral-deep:#E8674C;--gold:#E8BC5E;--star:#CFE0F2;
+      --shadow:0 1px 2px rgba(0,0,0,.34),0 12px 36px rgba(0,0,0,.4);--shadow-lg:0 34px 80px rgba(0,0,0,.55);
     }
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family:'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background-color:var(--bg2);
-      background-image:
-        radial-gradient(circle at 12% 18%, rgba(255,209,102,.08) 0, transparent 40%),
-        radial-gradient(circle at 85% 70%, rgba(239,71,111,.08) 0, transparent 45%);
-      color:var(--ink);
-      min-height:100vh;
+      margin:0;background:var(--ground);color:var(--ink);
+      font-family:"Archivo",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;
     }
+    @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+    .wrap{max-width:1080px;margin:0 auto;padding:0 26px}
+    h1,h2,h3{font-family:"Fraunces",Georgia,serif;line-height:1.03;text-wrap:balance;margin:0}
+    .mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+    .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:500}
+    a{color:inherit;text-decoration:none}
 
-    /* ── stage: full-width grid ── */
-    .stage{
-      max-width:1280px;
-      margin:0 auto;
-      padding:32px 28px 60px;
-    }
+    /* ---- masthead ---- */
+    .masthead{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--ground) 90%,transparent);
+      backdrop-filter:blur(10px);position:sticky;top:0;z-index:40}
+    .masthead .row{display:flex;align-items:center;gap:16px;height:58px}
+    .brandmark{font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.02em}
+    .brandmark .dot{color:var(--coral)}
+    .mh-links{margin-left:auto;display:flex;align-items:center;gap:4px}
+    .mh-links a{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);padding:7px 10px;border-radius:8px}
+    .mh-links a:hover{background:var(--panel)}
+    .themebtn{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:9px;width:38px;height:33px;
+      display:grid;place-items:center;font-size:14px;color:var(--ink)}
 
-    /* ── header row: logo upper-left ── */
-    .header{
-      margin-bottom:36px;
-    }
-    .logo-wrap{
-      display:inline-block;
-      filter: drop-shadow(6px 6px 0 var(--bg1));
-      transform: rotate(-2deg);
-    }
-    .logo-wrap img{
-      width:min(420px, 60vw);
-      height:auto;
-      display:block;
-    }
+    /* ---- hero / constellation ---- */
+    .hero{position:relative;padding:64px 0 34px;overflow:hidden}
+    .hero-head{position:relative;z-index:3;text-align:center;pointer-events:none}
+    .hero-head .eyebrow{margin-bottom:18px;display:inline-block}
+    .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(64px,16vw,168px);letter-spacing:-.04em;line-height:.9}
+    .wordmark .fam{display:block;font-weight:500;font-style:italic;font-size:clamp(15px,2.4vw,20px);letter-spacing:.02em;
+      color:var(--ink-soft);margin-top:14px;font-variation-settings:"opsz" 20}
+    .hero-sub{max-width:56ch;margin:20px auto 0;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
+    #constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+    .scroll-cue{position:relative;z-index:3;text-align:center;margin-top:30px;font-family:"JetBrains Mono",monospace;
+      font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .scroll-cue span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 
-    /* ── key projects row ── */
-    .projects-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:22px;
-      margin-bottom:48px;
-    }
+    /* ---- featured ---- */
+    section.dir{padding:26px 0 60px}
+    .sec-label{display:flex;align-items:center;gap:14px;margin:44px 0 20px}
+    .sec-label h2{font-size:22px;font-weight:900;letter-spacing:-.01em;white-space:nowrap}
+    .sec-label .ln{height:1px;background:var(--line);flex:1}
+    .sec-label .ct{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted)}
 
-    /* ── two-column lower section ── */
-    .lower{
-      display:grid;
-      grid-template-columns: minmax(260px, 1fr) 2fr;
-      gap:42px;
-      align-items:start;
-    }
+    .featured{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;
+      background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px 28px;box-shadow:var(--shadow);
+      position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}
+    .featured:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+    .featured::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 140% at 100% 0,color-mix(in srgb,var(--teal-bright) 12%,transparent),transparent 55%);pointer-events:none}
+    .featured .thumb{width:76px;height:76px;border-radius:16px;display:grid;place-items:center;flex:none;
+      background:color-mix(in srgb,var(--teal-bright) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--teal-bright) 30%,var(--line))}
+    .featured .thumb svg{width:42px;height:42px;color:var(--teal)}
+    .featured .ft-copy .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+    .featured .ft-copy h3{font-size:27px;font-weight:900;margin:3px 0 4px;letter-spacing:-.01em}
+    .featured .ft-copy p{margin:0;color:var(--ink-soft);font-size:14.5px;max-width:52ch}
+    .featured .go{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--teal);border:1px solid var(--line);
+      border-radius:999px;padding:8px 14px;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+    .featured:hover .go{background:var(--teal);color:#fff;border-color:var(--teal)}
+    :root[data-theme="dark"] .featured:hover .go,:root:not([data-theme="light"]) .featured:hover .go{color:#08131a}
 
-    .businesses{
-      display:flex;
-      flex-direction:column;
-      gap:26px;
-    }
+    /* ---- directory grid ---- */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}.featured{grid-template-columns:auto 1fr;gap:18px}.featured .go{display:none}}
+    .card{display:flex;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;
+      padding:18px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+      transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease}
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+    .card .thumb{width:58px;height:58px;border-radius:13px;display:grid;place-items:center;flex:none;
+      background:color-mix(in srgb,var(--accent) 13%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 26%,var(--line));
+      transition:transform .2s ease}
+    .card:hover .thumb{transform:rotate(-4deg) scale(1.05)}
+    .card .thumb svg{width:32px;height:32px;color:var(--accent)}
+    .card .c-copy{min-width:0}
+    .card .c-copy h3{font-family:"Fraunces",serif;font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 2px}
+    .card .c-copy .role{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500}
+    .card .c-copy p{margin:5px 0 0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis}
+    .card .arrow{margin-left:auto;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:15px;transition:transform .16s ease,color .16s ease;flex:none}
+    .card:hover .arrow{transform:translateX(3px);color:var(--accent)}
 
-    /* ── node cards (polaroid look) ── */
-    .node{
-      text-decoration:none;
-      color:var(--ink);
-      transform: rotate(var(--rot, 0deg));
-      transition: transform .15s ease;
-      filter: drop-shadow(6px 6px 0 var(--bg1));
-      display:inline-block;
-    }
-    .node:nth-child(7n+1){ --rot:-3deg }
-    .node:nth-child(7n+2){ --rot: 2deg }
-    .node:nth-child(7n+3){ --rot:-1.5deg }
-    .node:nth-child(7n+4){ --rot: 3deg }
-    .node:nth-child(7n+5){ --rot:-2deg }
-    .node:nth-child(7n+6){ --rot: 1deg }
-    .node:nth-child(7n+7){ --rot:-4deg }
-
-    .node figure{
-      margin:0;
-      background:#fff;
-      border:8px solid var(--ink);
-      width:180px;
-      padding: 0;
-      border-radius: 15px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .node img{
-      display:block;
-      width:100%;
-      height:auto;
-      object-fit: cover;
-      border: none;
-      border-radius:0;
-    }
-    .node figcaption{ display:none; }
-    .node:hover{
-      transform: translateY(-4px) rotate(var(--rot, 0deg)) scale(1.03);
-      z-index:2;
-    }
-
-    /* business cards a touch larger for stacked column */
-    .businesses .node figure{ width:240px; }
-
-    /* ── github panel ── */
-    .gh-panel{
-      background: #fff;
-      color:#1f1f1f;
-      border:8px solid var(--ink);
-      border-radius:18px;
-      padding:18px 22px 22px;
-      filter: drop-shadow(6px 6px 0 var(--bg1));
-      transform: rotate(.5deg);
-    }
-    .gh-header{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:14px;
-      padding-bottom:10px;
-      border-bottom:2px dashed #1f1f1f33;
-    }
-    .gh-header h2{
-      margin:0;
-      font-family:'Caveat Brush', cursive;
-      font-size:28px;
-      color:#0e2342;
-    }
-    .gh-header a{
-      margin-left:auto;
-      font-size:13px;
-      color:#0e2342;
-      text-decoration:none;
-      border:2px solid #0e2342;
-      padding:4px 10px;
-      border-radius:999px;
-      font-weight:700;
-    }
-    .gh-header a:hover{ background:#0e2342; color:#fff; }
-
-    .repo-list{
-      list-style:none;
-      margin:0;
-      padding:0;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      max-height:520px;
-      overflow-y:auto;
-    }
-    .repo{
-      border:2px solid #0e234222;
-      border-radius:12px;
-      padding:10px 12px;
-      transition: transform .12s ease, border-color .12s ease;
-    }
-    .repo:hover{
-      transform: translateX(2px);
-      border-color:var(--accent2);
-    }
-    .repo a{
-      color:#0e2342;
-      text-decoration:none;
-      font-weight:700;
-      font-size:16px;
-    }
-    .repo .meta{
-      font-size:12px;
-      color:#1f1f1f99;
-      margin-top:4px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-    .repo .desc{
-      font-size:13px;
-      margin-top:4px;
-      color:#1f1f1fcc;
-    }
-    .lang-dot{
-      display:inline-block;
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:#888;
-      margin-right:4px;
-      vertical-align:middle;
-    }
-    .gh-status{
-      font-size:14px;
-      color:#1f1f1f99;
-      padding:8px 0;
-    }
-
-    /* ── mobile ── */
-    @media (max-width: 860px){
-      .stage{ padding:20px 16px 40px; }
-      .logo-wrap img{ width:min(320px, 80vw); }
-      .lower{
-        grid-template-columns: 1fr;
-        gap:34px;
-      }
-      .businesses{ flex-direction:row; flex-wrap:wrap; justify-content:center; }
-      .businesses .node figure{ width:min(220px, 45vw); }
-      .node figure{ width:min(160px, 42vw); }
-      .projects-row{ justify-content:center; }
-    }
+    footer{border-top:1px solid var(--line);padding:34px 0 54px;margin-top:20px}
+    footer .fr{display:flex;flex-wrap:wrap;gap:14px;align-items:center;color:var(--muted);font-size:13px}
+    footer .fr .mono{font-size:12px}
+    footer a{color:var(--ink-soft);border-bottom:1px solid var(--line)}
+    footer a:hover{color:var(--teal)}
+    .heart{color:var(--coral)}
   </style>
 </head>
 <body>
-  <main class="stage" role="main" aria-label="Maggio family link hub">
+  <header class="masthead">
+    <div class="wrap row">
+      <a class="brandmark" href="#top">Maggio<span class="dot">.</span></a>
+      <nav class="mh-links">
+        <a href="#personal">Family</a>
+        <a href="#projects">Projects</a>
+        <a href="#business">Business</a>
+        <button class="themebtn" id="themebtn" title="Toggle light / dark" aria-label="Toggle theme">◐</button>
+      </nav>
+    </div>
+  </header>
 
-    <header class="header">
-      <div class="logo-wrap">
-        <img src="maggio.xyz logo.png" alt="Maggio.xyz Logo" />
+  <main id="top">
+    <section class="hero">
+      <canvas id="constellation" aria-hidden="true"></canvas>
+      <div class="wrap hero-head">
+        <span class="eyebrow">One family · many orbits</span>
+        <h1 class="wordmark">Maggio<span class="fam">Makers · coaches · musicians · tinkerers · adventurers</span></h1>
+        <p class="hero-sub">A calm front door to everything we make. Pick an orbit — the whole family's work is one click away.</p>
       </div>
-    </header>
-
-    <section aria-label="Projects and playgrounds">
-      <div class="projects-row">
-        <a class="node" href="https://genemagg10.github.io/arcade" aria-label="Maggio Arcade" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="arcade.svg" alt="Maggio Arcade" />
-            <figcaption>Maggio Arcade</figcaption>
-          </figure>
-        </a>
-        <a class="node" href="https://genemagg10.github.io/football-trainer" aria-label="Soccer Coaching" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="soccercoaching.png" alt="Soccer Coaching" />
-            <figcaption>Soccer Coaching</figcaption>
-          </figure>
-        </a>
-        <a class="node" href="https://lafayette-pulse.vercel.app" aria-label="Lafayette Pulse" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="lafayettepulse.svg" alt="Lafayette Pulse" />
-            <figcaption>Lafayette Pulse</figcaption>
-          </figure>
-        </a>
-        <a class="node" href="https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing" aria-label="Family Adventures" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="familyadventures.png" alt="Family Adventures" />
-            <figcaption>Family Adventures</figcaption>
-          </figure>
-        </a>
-        <a class="node" href="https://ninjagotemple.com" aria-label="Ninjago Temple" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="ninjagotemple.png" alt="Ninjago Temple" />
-            <figcaption>Ninjago Temple</figcaption>
-          </figure>
-        </a>
-        <a class="node" href="https://github.com/genemagg10" aria-label="Experiments" target="_blank" rel="noopener noreferrer">
-          <figure>
-            <img src="Experiments.png" alt="Experiments" />
-            <figcaption>Experiments</figcaption>
-          </figure>
-        </a>
-      </div>
+      <div class="scroll-cue"><span>↓ &nbsp; the directory</span></div>
     </section>
 
-    <section class="lower">
-      <div aria-label="Businesses">
-        <div class="businesses">
-          <a class="node" href="https://it.maggio.xyz" aria-label="Maggio Consulting" target="_blank" rel="noopener noreferrer">
-            <figure>
-              <img src="maggioconsulting-logo.png" alt="Maggio Consulting" />
-              <figcaption>Maggio Consulting</figcaption>
-            </figure>
-          </a>
-          <a class="node" href="https://growinglight.net" aria-label="Growing Light Montessori" target="_blank" rel="noopener noreferrer">
-            <figure>
-              <img src="glms-logo.png" alt="Growing Light Montessori School" />
-              <figcaption>Growing Light Montessori</figcaption>
-            </figure>
-          </a>
+    <section class="dir wrap">
+      <!-- featured: Ctrl+Click -->
+      <div class="sec-label"><h2>Featured</h2><span class="ln"></span><span class="ct">the business, reborn</span></div>
+      <a class="featured" href="https://it.maggio.xyz" target="_blank" rel="noopener" aria-label="Ctrl+Click — IT & AI">
+        <div class="thumb" data-icon="ctrlclick"></div>
+        <div class="ft-copy">
+          <div class="k">Ctrl+Click · formerly Maggio Consulting</div>
+          <h3>AI &amp; IT, in plain English.</h3>
+          <p>Bay Area IT and AI help for businesses and families — set up right, taught so you own it, no mystery boxes.</p>
         </div>
-      </div>
+        <span class="go">Visit it.maggio.xyz →</span>
+      </a>
 
-      <div aria-label="Recent GitHub repos">
-        <div class="gh-panel">
-          <div class="gh-header">
-            <h2>Recent repos</h2>
-            <a href="https://github.com/genemagg10" target="_blank" rel="noopener noreferrer">@genemagg10 →</a>
-          </div>
-          <div id="repo-status" class="gh-status">Fetching repos…</div>
-          <ul id="repo-list" class="repo-list" hidden></ul>
-        </div>
-      </div>
+      <!-- family & personal -->
+      <div class="sec-label" id="personal"><h2>Family &amp; Personal</h2><span class="ln"></span><span class="ct">the people</span></div>
+      <div class="grid" data-group="personal"></div>
+
+      <!-- projects -->
+      <div class="sec-label" id="projects"><h2>Projects &amp; Playgrounds</h2><span class="ln"></span><span class="ct">things we tinker on</span></div>
+      <div class="grid" data-group="projects"></div>
+
+      <!-- business -->
+      <div class="sec-label" id="business"><h2>Businesses &amp; Schools</h2><span class="ln"></span><span class="ct">the work</span></div>
+      <div class="grid" data-group="business"></div>
     </section>
   </main>
 
+  <footer>
+    <div class="wrap fr">
+      <span class="mono">maggio.xyz</span>
+      <span>·</span>
+      <span>Made with a little <span class="heart">♥</span> in Lafayette, CA</span>
+      <span style="margin-left:auto" class="mono">© <span id="yr"></span> The Maggio Family</span>
+    </div>
+  </footer>
+
   <script>
-    (function () {
-      var listEl = document.getElementById('repo-list');
-      var statusEl = document.getElementById('repo-status');
+  /* ============ shared data: drives constellation + directory ============ */
+  var SITES=[
+    // group, name, role, blurb, url, accent, icon, star? (in constellation)
+    {g:"featured",name:"Ctrl+Click",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",star:true,short:"Ctrl+Click"},
+    {g:"personal",name:"Alberto — Music",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
+    {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"https://genemagg10.github.io/gene",accent:"#37b06a",icon:"gnome",star:true,short:"Gene"},
+    {g:"personal",name:"Family Adventures",role:"Trails · Maps",blurb:"Where we've hiked, camped, and wandered together.",url:"https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing",accent:"#3f6fd6",icon:"trail",star:true,short:"Adventures"},
+    {g:"projects",name:"Maggio Arcade",role:"Play",blurb:"A little arcade of homemade browser games.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
+    {g:"projects",name:"Soccer Coaching",role:"Football training",blurb:"Sessions, stages, and a coaching philosophy.",url:"https://genemagg10.github.io/football-trainer",accent:"#3f8a5c",icon:"soccer",star:true,short:"Soccer"},
+    {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",star:true,short:"Pulse"},
+    {g:"projects",name:"Ninjago Temple",role:"Fan build",blurb:"A temple for the Ninjago faithful.",url:"https://ninjagotemple.com",accent:"#E0A93B",icon:"ninja",star:true,short:"Ninjago"},
+    {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",star:false,short:"Experiments"},
+    {g:"business",name:"Growing Light Montessori",role:"School",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",star:true,short:"Growing Light"}
+  ];
 
-      var langColors = {
-        JavaScript:'#f1e05a', TypeScript:'#3178c6', HTML:'#e34c26', CSS:'#563d7c',
-        Python:'#3572A5', Go:'#00ADD8', Ruby:'#701516', Java:'#b07219',
-        Shell:'#89e051', 'C++':'#f34b7d', C:'#555555', Rust:'#dea584',
-        Swift:'#F05138', Kotlin:'#A97BFF', PHP:'#4F5D95', Vue:'#41b883',
-        Svelte:'#ff3e00', Dart:'#00B4AB'
-      };
+  /* ============ personality icons (inline SVG) ============ */
+  var ICONS={
+    ctrlclick:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="38" height="30" rx="5"/><path d="M13 20l6 5-6 5"/><path d="M25 30h9"/></svg>',
+    music:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="34" r="6"/><circle cx="36" cy="30" r="6"/><path d="M22 34V12l20-4v22"/></svg>',
+    gnome:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26L24 8l14 18z"/><path d="M14 26c0 8 4 14 10 14s10-6 10-14"/><path d="M18 40h12"/><circle cx="20" cy="29" r="1.4" fill="currentColor" stroke="none"/><circle cx="28" cy="29" r="1.4" fill="currentColor" stroke="none"/></svg>',
+    trail:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40l12-22 8 12 6-10 14 20z"/><path d="M18 40c2-6-2-10 4-16" stroke-dasharray="2 4"/><circle cx="33" cy="12" r="3"/></svg>',
+    arcade:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="18" width="32" height="20" rx="4"/><path d="M16 27h6M19 24v6"/><circle cx="31" cy="25" r="1.6" fill="currentColor" stroke="none"/><circle cx="35" cy="30" r="1.6" fill="currentColor" stroke="none"/><path d="M18 18l3-8h6l3 8"/></svg>',
+    soccer:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="17"/><path d="M24 14l8 6-3 10h-10l-3-10z"/><path d="M24 7v7M9 20l8 6M39 20l-8 6M15 41l4-11M33 41l-4-11"/></svg>',
+    pulse:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24h9l4-11 7 22 4-13 3 5h10"/></svg>',
+    ninja:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22c6-5 30-5 36 0-3 5-9 8-18 8S9 27 6 22z"/><path d="M18 23h5M25 23h6"/><path d="M40 20l4-3M8 20l-4-3"/></svg>',
+    flask:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 6v13L8 37a4 4 0 003 6h26a4 4 0 003-6L29 19V6"/><path d="M16 6h16"/><path d="M14 30h20"/></svg>',
+    sprout:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V22"/><path d="M24 26c-2-8-8-10-16-9 0 8 6 12 16 11z"/><path d="M24 22c1-7 6-9 14-8 0 7-5 10-14 10z"/></svg>'
+  };
+  function setIcon(el,name){el.innerHTML=ICONS[name]||'';}
 
-      function fmtDate(iso){
-        var d = new Date(iso);
-        var now = new Date();
-        var diffDays = Math.floor((now - d) / 86400000);
-        if (diffDays === 0) return 'today';
-        if (diffDays === 1) return 'yesterday';
-        if (diffDays < 30) return diffDays + ' days ago';
-        if (diffDays < 365) return Math.floor(diffDays/30) + ' mo ago';
-        return Math.floor(diffDays/365) + ' yr ago';
-      }
+  /* ============ build directory ============ */
+  document.querySelectorAll('[data-icon]').forEach(function(t){setIcon(t,t.getAttribute('data-icon'));});
+  ['personal','projects','business'].forEach(function(group){
+    var host=document.querySelector('.grid[data-group="'+group+'"]');
+    SITES.filter(function(s){return s.g===group;}).forEach(function(s){
+      var a=document.createElement('a');
+      a.className='card';a.href=s.url;a.target='_blank';a.rel='noopener';
+      a.style.setProperty('--accent',s.accent);
+      a.setAttribute('aria-label',s.name);
+      var thumb=document.createElement('div');thumb.className='thumb';setIcon(thumb,s.icon);
+      var copy=document.createElement('div');copy.className='c-copy';
+      copy.innerHTML='<div class="role">'+s.role+'</div><h3>'+s.name+'</h3><p>'+s.blurb+'</p>';
+      var arr=document.createElement('span');arr.className='arrow';arr.textContent='→';
+      a.appendChild(thumb);a.appendChild(copy);a.appendChild(arr);
+      host.appendChild(a);
+    });
+  });
+  document.getElementById('yr').textContent=new Date().getFullYear();
 
-      function escapeHTML(s){
-        return String(s == null ? '' : s)
-          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-          .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-      }
+  /* ============ theme toggle ============ */
+  document.getElementById('themebtn').addEventListener('click',function(){
+    var r=document.documentElement,cur=r.getAttribute('data-theme');
+    if(!cur)cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var next=cur==='dark'?'light':'dark';r.setAttribute('data-theme',next);
+    try{localStorage.setItem('maggio:theme',next);}catch(e){}
+    if(window.__constDraw)window.__constDraw(true);
+  });
+  try{var st=localStorage.getItem('maggio:theme');if(st)document.documentElement.setAttribute('data-theme',st);}catch(e){}
 
-      fetch('https://api.github.com/users/genemagg10/repos?sort=updated&direction=desc&per_page=20', {
-        headers: { 'Accept': 'application/vnd.github+json' }
-      })
-        .then(function(r){
-          if(!r.ok) throw new Error('GitHub API ' + r.status);
-          return r.json();
-        })
-        .then(function(repos){
-          if(!Array.isArray(repos) || repos.length === 0){
-            statusEl.textContent = 'No public repos found.';
-            return;
-          }
-          var html = repos.map(function(repo){
-            var color = langColors[repo.language] || '#888';
-            return '<li class="repo">' +
-              '<a href="' + escapeHTML(repo.html_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHTML(repo.name) + '</a>' +
-              (repo.description ? '<div class="desc">' + escapeHTML(repo.description) + '</div>' : '') +
-              '<div class="meta">' +
-                (repo.language ? '<span><span class="lang-dot" style="background:' + color + '"></span>' + escapeHTML(repo.language) + '</span>' : '') +
-                '<span>★ ' + (repo.stargazers_count || 0) + '</span>' +
-                '<span>updated ' + fmtDate(repo.pushed_at || repo.updated_at) + '</span>' +
-              '</div>' +
-            '</li>';
-          }).join('');
-          listEl.innerHTML = html;
-          listEl.hidden = false;
-          statusEl.hidden = true;
-        })
-        .catch(function(err){
-          statusEl.innerHTML = 'Couldn\'t load repos right now. <a href="https://github.com/genemagg10" target="_blank" rel="noopener noreferrer" style="color:#0e2342;font-weight:700;">Visit GitHub →</a>';
-        });
-    })();
+  /* ============ constellation (Direction C) ============ */
+  (function(){
+    var cv=document.getElementById('constellation');
+    var ctx=cv.getContext('2d');
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes=SITES.filter(function(s){return s.star;});
+    var pts=[],W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2),t=0,hover=-1,mx=-999,my=-999;
+
+    function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+    function layout(){
+      var r=cv.getBoundingClientRect();W=r.width;H=r.height;
+      cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+      pts=nodes.map(function(n,i){
+        var ang=(i/nodes.length)*Math.PI*2 - Math.PI/2;
+        var rad=Math.min(W,H)*0.40 * (0.72+0.28*((i%3)/2));
+        return {x:W/2+Math.cos(ang)*rad, y:H*0.52+Math.sin(ang)*rad*0.72,
+                bx:W/2+Math.cos(ang)*rad, by:H*0.52+Math.sin(ang)*rad*0.72,
+                ph:i*1.3, n:n};
+      });
+    }
+    function draw(force){
+      var star=css('--star'),line=css('--line'),muted=css('--muted');
+      ctx.clearRect(0,0,W,H);
+      // faint web between neighbors + to center
+      var cx=W/2, cy=H*0.52;
+      ctx.lineWidth=1;
+      pts.forEach(function(p,i){
+        var dx=p.bx-cx+(reduce?0:Math.sin(t/60+p.ph)*8);
+        var dy=p.by-cy+(reduce?0:Math.cos(t/70+p.ph)*8);
+        p.x=cx+dx;p.y=cy+dy;
+      });
+      ctx.strokeStyle=line;ctx.globalAlpha=.55;
+      pts.forEach(function(p,i){
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.stroke();
+        var q=pts[(i+1)%pts.length];
+        ctx.globalAlpha=.28;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.globalAlpha=.55;
+      });
+      ctx.globalAlpha=1;
+      // nodes
+      pts.forEach(function(p,i){
+        var isH=(i===hover);
+        var rr=isH?9:6;
+        ctx.beginPath();ctx.arc(p.x,p.y,rr+ (isH?7:0),0,7);
+        ctx.fillStyle=p.n.accent;ctx.globalAlpha=isH?.20:0;ctx.fill();ctx.globalAlpha=1;
+        ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.fillStyle=p.n.accent;ctx.fill();
+        ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.strokeStyle=star;ctx.globalAlpha=.25;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
+        // label
+        ctx.font='500 12px "JetBrains Mono", monospace';
+        ctx.fillStyle=isH?p.n.accent:muted;
+        ctx.textAlign=p.x<cx?'right':'left';
+        var lx=p.x<cx?p.x-14:p.x+14;
+        ctx.fillText(p.n.short,lx,p.y+4);
+      });
+    }
+    window.__constDraw=draw;
+    function loop(){t++;draw();if(!reduce)requestAnimationFrame(loop);}
+    function hit(){
+      hover=-1;var best=22;
+      pts.forEach(function(p,i){var d=Math.hypot(p.x-mx,p.y-my);if(d<best){best=d;hover=i;}});
+      cv.style.cursor=hover>=0?'pointer':'default';
+    }
+    cv.addEventListener('mousemove',function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hit();if(reduce)draw();});
+    cv.addEventListener('mouseleave',function(){mx=my=-999;hover=-1;if(reduce)draw();});
+    cv.addEventListener('click',function(){if(hover>=0)window.open(pts[hover].n.url,'_blank','noopener');});
+    window.addEventListener('resize',function(){layout();draw();});
+    layout();loop();if(reduce)draw();
+  })();
   </script>
 </body>
 </html>
