@@ -114,6 +114,9 @@
     .featured .thumb{width:76px;height:76px;border-radius:16px;display:grid;place-items:center;flex:none;
       background:color-mix(in srgb,var(--teal-bright) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--teal-bright) 30%,var(--line))}
     .featured .thumb svg{width:42px;height:42px;color:var(--teal)}
+    /* logo chips: real brand logos sit on a clean light plate in both themes */
+    .thumb.thumb--logo{background:#fff;border-color:var(--line);padding:9px}
+    .thumb.thumb--logo img{width:100%;height:100%;object-fit:contain;display:block}
     .featured .ft-copy .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
     .featured .ft-copy h3{font-size:27px;font-weight:900;margin:3px 0 4px;letter-spacing:-.01em}
     .featured .ft-copy p{margin:0;color:var(--ink-soft);font-size:14.5px;max-width:52ch}
@@ -134,6 +137,8 @@
       transition:transform .2s ease}
     .card:hover .thumb{transform:rotate(-4deg) scale(1.05)}
     .card .thumb svg{width:32px;height:32px;color:var(--accent)}
+    .card .thumb.thumb--logo{background:#fff;border-color:var(--line);padding:8px}
+    .card .thumb.thumb--logo img{width:100%;height:100%;object-fit:contain;display:block}
     .card .c-copy{min-width:0}
     .card .c-copy h3{font-family:"Fraunces",serif;font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 2px}
     .card .c-copy .role{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500}
@@ -179,7 +184,7 @@
         <div class="ft-copy">
           <div class="k">Maggio Arcade · homemade browser games</div>
           <h3>Press start.</h3>
-          <p>A little arcade of games we built ourselves — pick up a controller and play.</p>
+          <p>A little arcade of games we built ourselves — free to play, no refunds.</p>
         </div>
         <span class="go">Visit arcade.maggio.xyz →</span>
       </a>
@@ -212,17 +217,17 @@
   var SITES=[
     // group, name, role, blurb, url, accent, icon, star? (in constellation)
     {g:"featured",name:"Maggio Arcade",role:"Play",blurb:"A little arcade of homemade browser games.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
-    {g:"personal",name:"Alberto — Music",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
+    {g:"personal",name:"Alberto",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
     {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"gene/",accent:"#37b06a",icon:"gnome",star:true,short:"Gene"},
     {g:"personal",name:"Wildflour Bake Shop",role:"Gluten-free recipes",blurb:"Delicious recipes that just happen to be gluten-free — plus tips for eating well on the road.",url:"wildflour/",accent:"#4E8144",icon:"sprig",star:true,short:"Wildflour"},
     {g:"personal",name:"Luca",role:"Personal site",blurb:"Luca's corner of the web.",url:"https://genemagg10.github.io/luca-website",accent:"#EE7A3C",icon:"rocket",star:true,short:"Luca"},
     {g:"personal",name:"Family Adventures",role:"Trails · Maps",blurb:"Where we've hiked, camped, and wandered together.",url:"https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing",accent:"#3f6fd6",icon:"trail",star:true,short:"Adventures"},
     {g:"projects",name:"Soccer Coaching",role:"Football training",blurb:"Sessions, stages, and a coaching philosophy.",url:"https://genemagg10.github.io/football-trainer",accent:"#3f8a5c",icon:"soccer",star:true,short:"Soccer"},
-    {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",star:true,short:"Pulse"},
+    {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",img:"https://www.lovelafayette.org/home/showpublishedimage/5001/636640669087800000",star:true,short:"Pulse"},
     {g:"projects",name:"Ninjago Temple",role:"Fan build",blurb:"A temple for the Ninjago faithful.",url:"https://ninjagotemple.com",accent:"#E0A93B",icon:"ninja",star:true,short:"Ninjago"},
-    {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",star:false,short:"Experiments"},
-    {g:"business",name:"Ctrl+Click",role:"IT · AI",blurb:"Bay Area IT and AI help for businesses and families — formerly Maggio Consulting.",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",star:true,short:"Ctrl+Click"},
-    {g:"business",name:"Growing Light Montessori",role:"School",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",star:true,short:"Growing Light"}
+    {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",img:"logos/github-mark.svg",star:false,short:"Experiments"},
+    {g:"business",name:"Ctrl+Click",role:"AI+IT Solutions",blurb:"Bay Area IT and AI help for businesses and families — formerly Maggio Consulting.",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",img:"logos/controlclick-mark.svg",star:true,short:"Ctrl+Click"},
+    {g:"business",name:"Growing Light Montessori",role:"Montessori Preschool",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",img:"logos/growing-light.svg",star:true,short:"Growing Light"}
   ];
 
   /* ============ personality icons (inline SVG) ============ */
@@ -232,7 +237,7 @@
     gnome:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26L24 8l14 18z"/><path d="M14 26c0 8 4 14 10 14s10-6 10-14"/><path d="M18 40h12"/><circle cx="20" cy="29" r="1.4" fill="currentColor" stroke="none"/><circle cx="28" cy="29" r="1.4" fill="currentColor" stroke="none"/></svg>',
     trail:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40l12-22 8 12 6-10 14 20z"/><path d="M18 40c2-6-2-10 4-16" stroke-dasharray="2 4"/><circle cx="33" cy="12" r="3"/></svg>',
     arcade:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="18" width="32" height="20" rx="4"/><path d="M16 27h6M19 24v6"/><circle cx="31" cy="25" r="1.6" fill="currentColor" stroke="none"/><circle cx="35" cy="30" r="1.6" fill="currentColor" stroke="none"/><path d="M18 18l3-8h6l3 8"/></svg>',
-    soccer:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="17"/><path d="M24 14l8 6-3 10h-10l-3-10z"/><path d="M24 7v7M9 20l8 6M39 20l-8 6M15 41l4-11M33 41l-4-11"/></svg>',
+    soccer:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M24 17 L30.7 21.8 L28.1 29.7 L19.9 29.7 L17.3 21.8 Z"/><path d="M24 17V6"/><path d="M30.7 21.8 L41.1 18.4"/><path d="M28.1 29.7 L34.6 38.6"/><path d="M19.9 29.7 L13.4 38.6"/><path d="M17.3 21.8 L6.9 18.4"/></svg>',
     pulse:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24h9l4-11 7 22 4-13 3 5h10"/></svg>',
     ninja:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22c6-5 30-5 36 0-3 5-9 8-18 8S9 27 6 22z"/><path d="M18 23h5M25 23h6"/><path d="M40 20l4-3M8 20l-4-3"/></svg>',
     flask:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 6v13L8 37a4 4 0 003 6h26a4 4 0 003-6L29 19V6"/><path d="M16 6h16"/><path d="M14 30h20"/></svg>',
@@ -251,7 +256,9 @@
       a.className='card';a.href=s.url;a.target='_blank';a.rel='noopener';
       a.style.setProperty('--accent',s.accent);
       a.setAttribute('aria-label',s.name);
-      var thumb=document.createElement('div');thumb.className='thumb';setIcon(thumb,s.icon);
+      var thumb=document.createElement('div');thumb.className='thumb';
+      if(s.img){thumb.classList.add('thumb--logo');thumb.innerHTML='<img src="'+s.img+'" alt="'+s.name+' logo" loading="lazy" decoding="async">';}
+      else{setIcon(thumb,s.icon);}
       var copy=document.createElement('div');copy.className='c-copy';
       copy.innerHTML='<div class="role">'+s.role+'</div><h3>'+s.name+'</h3><p>'+s.blurb+'</p>';
       var arr=document.createElement('span');arr.className='arrow';arr.textContent='→';
