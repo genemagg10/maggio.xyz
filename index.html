@@ -90,6 +90,9 @@
     .hero-head{position:relative;z-index:3;text-align:center;pointer-events:none}
     .hero-head .eyebrow{margin-bottom:18px;display:inline-block}
     .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(56px,12.5vw,134px);letter-spacing:-.04em;line-height:.9}
+    .wordmark .tld{font-size:.46em;letter-spacing:-.02em;vertical-align:.16em}
+    .wordmark .heart{color:var(--coral);font-family:"Archivo",sans-serif;font-weight:700;margin:0 .015em;
+      font-size:.82em;line-height:1;display:inline-block;transform:translateY(.03em)}
     .wordmark .fam{display:block;font-weight:500;font-style:italic;font-size:clamp(15px,2.4vw,20px);letter-spacing:.02em;
       color:var(--ink-soft);margin-top:14px;font-variation-settings:"opsz" 20}
     .hero-sub{max-width:56ch;margin:20px auto 0;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
@@ -171,7 +174,7 @@
     <section class="hero">
       <canvas id="constellation" aria-hidden="true"></canvas>
       <div class="wrap hero-head">
-        <h1 class="wordmark">Maggio</h1>
+        <h1 class="wordmark" aria-label="Maggio.xyz">Maggio<span class="tld"><span class="heart" aria-hidden="true">&#9829;</span>xyz</span></h1>
       </div>
       <div class="scroll-cue"><span>↓ &nbsp; the directory</span></div>
     </section>
@@ -227,7 +230,7 @@
     {g:"projects",name:"Ninjago Temple",role:"Fan build",blurb:"A temple for the Ninjago faithful.",url:"https://ninjagotemple.com",accent:"#E0A93B",icon:"ninja",star:true,short:"Ninjago"},
     {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",img:"logos/github-mark.svg",star:false,short:"Experiments"},
     {g:"business",name:"Ctrl+Click",role:"AI+IT Solutions",blurb:"Bay Area IT and AI help for businesses and families — formerly Maggio Consulting.",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",img:"logos/controlclick-mark.svg",star:true,short:"Ctrl+Click"},
-    {g:"business",name:"Growing Light Montessori",role:"Montessori Preschool",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",img:"logos/growing-light.svg",star:true,short:"Growing Light"}
+    {g:"business",name:"Growing Light Montessori",role:"Montessori Preschool",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",img:"logos/growing-light.png",star:true,short:"Growing Light"}
   ];
 
   /* ============ personality icons (inline SVG) ============ */
@@ -308,9 +311,40 @@
       p.x=cx+Math.cos(ang)*rx*p.f*breath;
       p.y=cy+Math.sin(ang)*ry*p.f*breath;
     }
+    // orbital marker shape per group: family=circle, projects=square, business=triangle, featured=star
+    function kindFor(n){
+      if(n.g==='featured')return 'star';
+      if(n.g==='projects')return 'square';
+      if(n.g==='business')return 'triangle';
+      return 'circle';
+    }
+    function shapePath(x,y,r,kind){
+      ctx.beginPath();
+      if(kind==='square'){
+        var s=r*0.9;ctx.rect(x-s,y-s,s*2,s*2);
+      }else if(kind==='triangle'){
+        var t=r*1.22;
+        ctx.moveTo(x,y-t);
+        ctx.lineTo(x+t*0.866,y+t*0.5);
+        ctx.lineTo(x-t*0.866,y+t*0.5);
+        ctx.closePath();
+      }else if(kind==='star'){
+        var outer=r*1.4,inner=outer*0.44;
+        for(var k=0;k<10;k++){
+          var rad=(k%2===0)?outer:inner;
+          var ang=(Math.PI/5)*k-Math.PI/2;
+          var sx=x+Math.cos(ang)*rad,sy=y+Math.sin(ang)*rad;
+          if(k===0)ctx.moveTo(sx,sy);else ctx.lineTo(sx,sy);
+        }
+        ctx.closePath();
+      }else{
+        ctx.arc(x,y,r,0,7);
+      }
+    }
     function draw(){
       var star=css('--star'),line=css('--line');
       ctx.clearRect(0,0,W,H);
+      ctx.lineJoin='round';
       pts.forEach(place);
       // faint orbit rings
       ctx.strokeStyle=line;ctx.lineWidth=1;
@@ -330,10 +364,11 @@
       // nodes
       pts.forEach(function(p,i){
         var isH=(i===hover);
+        var kind=kindFor(p.n);
         var rr=isH?9:6;
-        if(isH){ctx.beginPath();ctx.arc(p.x,p.y,rr+7,0,7);ctx.fillStyle=p.n.accent;ctx.globalAlpha=.18;ctx.fill();ctx.globalAlpha=1;}
-        ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.fillStyle=p.n.accent;ctx.fill();
-        ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.strokeStyle=star;ctx.globalAlpha=.25;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
+        if(isH){shapePath(p.x,p.y,rr+7,kind);ctx.fillStyle=p.n.accent;ctx.globalAlpha=.18;ctx.fill();ctx.globalAlpha=1;}
+        shapePath(p.x,p.y,rr,kind);ctx.fillStyle=p.n.accent;ctx.fill();
+        shapePath(p.x,p.y,rr,kind);ctx.strokeStyle=star;ctx.globalAlpha=.25;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
         // label — only on hover, so the orbit stays a quiet backdrop
         if(isH){
           ctx.font='500 13px "JetBrains Mono", monospace';
