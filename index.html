@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Maggio Family</title>
+  <title>maggio.xyz</title>
   <meta name="description" content="The Maggio family hub — a front door to Ctrl+Click, Alberto's music, the kids' projects, the businesses, and everything else we make." />
-  <meta property="og:title" content="The Maggio Family" />
+  <meta property="og:title" content="maggio.xyz" />
   <meta property="og:description" content="One family, many orbits. A calm directory to everything the Maggios make." />
   <meta property="og:image" content="maggio.xyz%20logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -151,7 +151,7 @@
 <body>
   <header class="masthead">
     <div class="wrap row">
-      <a class="brandmark" href="#top">Maggio<span class="dot">.</span></a>
+      <a class="brandmark" href="#top">Maggio<span class="dot">.</span>xyz</a>
       <nav class="mh-links">
         <a href="#personal">Family</a>
         <a href="#projects">Projects</a>
@@ -165,24 +165,22 @@
     <section class="hero">
       <canvas id="constellation" aria-hidden="true"></canvas>
       <div class="wrap hero-head">
-        <span class="eyebrow">One family · many orbits</span>
-        <h1 class="wordmark">Maggio<span class="fam">Makers · coaches · musicians · tinkerers · adventurers</span></h1>
-        <p class="hero-sub">A calm front door to everything we make. Pick an orbit — the whole family's work is one click away.</p>
+        <h1 class="wordmark">Maggio</h1>
       </div>
       <div class="scroll-cue"><span>↓ &nbsp; the directory</span></div>
     </section>
 
     <section class="dir wrap">
-      <!-- featured: Ctrl+Click -->
-      <div class="sec-label"><h2>Featured</h2><span class="ln"></span><span class="ct">the business, reborn</span></div>
-      <a class="featured" href="https://it.maggio.xyz" target="_blank" rel="noopener" aria-label="Ctrl+Click — IT & AI">
-        <div class="thumb" data-icon="ctrlclick"></div>
+      <!-- featured: Maggio Arcade -->
+      <div class="sec-label"><h2>Featured</h2><span class="ln"></span><span class="ct">now playing</span></div>
+      <a class="featured" href="https://arcade.maggio.xyz" target="_blank" rel="noopener" aria-label="Maggio Arcade">
+        <div class="thumb" data-icon="arcade"></div>
         <div class="ft-copy">
-          <div class="k">Ctrl+Click · formerly Maggio Consulting</div>
-          <h3>AI &amp; IT, in plain English.</h3>
-          <p>Bay Area IT and AI help for businesses and families — set up right, taught so you own it, no mystery boxes.</p>
+          <div class="k">Maggio Arcade · homemade browser games</div>
+          <h3>Press start.</h3>
+          <p>A little arcade of games we built ourselves — pick up a controller and play.</p>
         </div>
-        <span class="go">Visit it.maggio.xyz →</span>
+        <span class="go">Visit arcade.maggio.xyz →</span>
       </a>
 
       <!-- family & personal -->
@@ -194,7 +192,7 @@
       <div class="grid" data-group="projects"></div>
 
       <!-- business -->
-      <div class="sec-label" id="business"><h2>Businesses &amp; Schools</h2><span class="ln"></span><span class="ct">the work</span></div>
+      <div class="sec-label" id="business"><h2>Businesses</h2><span class="ln"></span><span class="ct">the work</span></div>
       <div class="grid" data-group="business"></div>
     </section>
   </main>
@@ -203,8 +201,8 @@
     <div class="wrap fr">
       <span class="mono">maggio.xyz</span>
       <span>·</span>
-      <span>Made with a little <span class="heart">♥</span> in Lafayette, CA</span>
-      <span style="margin-left:auto" class="mono">© <span id="yr"></span> The Maggio Family</span>
+      <span>Made with a little <span class="heart">♥</span> in Northern California</span>
+      <span style="margin-left:auto" class="mono">© <span id="yr"></span> maggio.xyz</span>
     </div>
   </footer>
 
@@ -212,16 +210,17 @@
   /* ============ shared data: drives constellation + directory ============ */
   var SITES=[
     // group, name, role, blurb, url, accent, icon, star? (in constellation)
-    {g:"featured",name:"Ctrl+Click",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",star:true,short:"Ctrl+Click"},
+    {g:"featured",name:"Maggio Arcade",role:"Play",blurb:"A little arcade of homemade browser games.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
     {g:"personal",name:"Alberto — Music",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
     {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"gene/",accent:"#37b06a",icon:"gnome",star:true,short:"Gene"},
     {g:"personal",name:"Wildflour Bake Shop",role:"Gluten-free recipes",blurb:"Delicious recipes that just happen to be gluten-free — plus tips for eating well on the road.",url:"wildflour/",accent:"#4E8144",icon:"sprig",star:true,short:"Wildflour"},
+    {g:"personal",name:"Luca",role:"Personal site",blurb:"Luca's corner of the web.",url:"https://genemagg10.github.io/luca-website",accent:"#EE7A3C",icon:"rocket",star:true,short:"Luca"},
     {g:"personal",name:"Family Adventures",role:"Trails · Maps",blurb:"Where we've hiked, camped, and wandered together.",url:"https://www.google.com/maps/d/u/1/edit?mid=18ACNcn5M6lf3LPl4Dz39wG6JUOx4LGjp&usp=sharing",accent:"#3f6fd6",icon:"trail",star:true,short:"Adventures"},
-    {g:"projects",name:"Maggio Arcade",role:"Play",blurb:"A little arcade of homemade browser games.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
     {g:"projects",name:"Soccer Coaching",role:"Football training",blurb:"Sessions, stages, and a coaching philosophy.",url:"https://genemagg10.github.io/football-trainer",accent:"#3f8a5c",icon:"soccer",star:true,short:"Soccer"},
     {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",star:true,short:"Pulse"},
     {g:"projects",name:"Ninjago Temple",role:"Fan build",blurb:"A temple for the Ninjago faithful.",url:"https://ninjagotemple.com",accent:"#E0A93B",icon:"ninja",star:true,short:"Ninjago"},
     {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",star:false,short:"Experiments"},
+    {g:"business",name:"Ctrl+Click",role:"IT · AI",blurb:"Bay Area IT and AI help for businesses and families — formerly Maggio Consulting.",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",star:true,short:"Ctrl+Click"},
     {g:"business",name:"Growing Light Montessori",role:"School",blurb:"A Montessori school growing young minds.",url:"https://growinglight.net",accent:"#5cc8a0",icon:"sprout",star:true,short:"Growing Light"}
   ];
 
@@ -237,7 +236,8 @@
     ninja:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22c6-5 30-5 36 0-3 5-9 8-18 8S9 27 6 22z"/><path d="M18 23h5M25 23h6"/><path d="M40 20l4-3M8 20l-4-3"/></svg>',
     flask:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 6v13L8 37a4 4 0 003 6h26a4 4 0 003-6L29 19V6"/><path d="M16 6h16"/><path d="M14 30h20"/></svg>',
     sprout:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V22"/><path d="M24 26c-2-8-8-10-16-9 0 8 6 12 16 11z"/><path d="M24 22c1-7 6-9 14-8 0 7-5 10-14 10z"/></svg>',
-    sprig:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 44V10"/><path d="M24 20c-3-3-8-3-12-6M24 28c3-3 8-3 12-6M24 36c-3-3-8-3-12-6"/><circle cx="24" cy="8" r="3"/></svg>'
+    sprig:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 44V10"/><path d="M24 20c-3-3-8-3-12-6M24 28c3-3 8-3 12-6M24 36c-3-3-8-3-12-6"/><circle cx="24" cy="8" r="3"/></svg>',
+    rocket:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5c7 5 10 13 10 21l-4 5H18l-4-5c0-8 3-16 10-21z"/><circle cx="24" cy="19" r="3"/><path d="M14 33l-6 9 10-4M34 33l6 9-10-4"/></svg>'
   };
   function setIcon(el,name){el.innerHTML=ICONS[name]||'';}
 
