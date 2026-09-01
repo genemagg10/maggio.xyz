@@ -92,7 +92,7 @@
     .wordmark .fam{display:block;font-weight:500;font-style:italic;font-size:clamp(15px,2.4vw,20px);letter-spacing:.02em;
       color:var(--ink-soft);margin-top:14px;font-variation-settings:"opsz" 20}
     .hero-sub{max-width:56ch;margin:20px auto 0;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
-    #constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+    #constellation{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.72}
     .scroll-cue{position:relative;z-index:3;text-align:center;margin-top:30px;font-family:"JetBrains Mono",monospace;
       font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
     .scroll-cue span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
@@ -314,12 +314,18 @@
         ctx.fillStyle=p.n.accent;ctx.globalAlpha=isH?.20:0;ctx.fill();ctx.globalAlpha=1;
         ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.fillStyle=p.n.accent;ctx.fill();
         ctx.beginPath();ctx.arc(p.x,p.y,rr,0,7);ctx.strokeStyle=star;ctx.globalAlpha=.25;ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1;
-        // label
-        ctx.font='500 12px "JetBrains Mono", monospace';
-        ctx.fillStyle=isH?p.n.accent:muted;
-        ctx.textAlign=p.x<cx?'right':'left';
-        var lx=p.x<cx?p.x-14:p.x+14;
-        ctx.fillText(p.n.short,lx,p.y+4);
+        // label — only on hover, so the constellation stays a quiet backdrop
+        if(isH){
+          ctx.font='500 13px "JetBrains Mono", monospace';
+          ctx.textAlign=p.x<cx?'right':'left';
+          var lx=p.x<cx?p.x-14:p.x+14;
+          // legibility chip behind the label
+          var tw=ctx.measureText(p.n.short).width;
+          ctx.fillStyle=css('--panel');ctx.globalAlpha=.9;
+          ctx.fillRect(p.x<cx?lx-tw-8:lx-4, p.y-13, tw+12, 20);ctx.globalAlpha=1;
+          ctx.fillStyle=p.n.accent;
+          ctx.fillText(p.n.short,lx,p.y+3);
+        }
       });
     }
     window.__constDraw=draw;
