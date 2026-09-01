@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Michelle Maggio</title>
-<meta name="description" content="Michelle's gluten-free kitchen and well-worn passport — recipes that happen to be gluten-free, and tips for eating well on the road." />
-<meta property="og:title" content="Michelle Maggio" />
-<meta property="og:description" content="Gluten-free recipes and travel tips from Michelle." />
+<title>Wildflour Bake Shop</title>
+<meta name="description" content="Wildflour Bake Shop — delicious recipes that just happen to be gluten-free, plus tips for eating well on the road. From Michelle Maggio in Lafayette, CA." />
+<meta property="og:title" content="Wildflour Bake Shop" />
+<meta property="og:description" content="Delicious recipes that just happen to be gluten-free." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -46,8 +46,9 @@ a{color:inherit;text-decoration:none}
 .topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ground) 90%,transparent);
   backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
 .topbar .row{display:flex;align-items:center;gap:14px;height:58px}
-.brand{font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.01em}
-.brand .d{color:var(--apricot)}
+.brand{font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:8px}
+.brand .mark{width:19px;height:19px;color:var(--sage)}
+.brand .d{color:var(--sage);font-style:italic}
 .tlinks{margin-left:auto;display:flex;align-items:center;gap:4px}
 .tlinks a{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);padding:7px 10px;border-radius:8px}
 .tlinks a:hover{background:var(--panel)}
@@ -58,7 +59,9 @@ a{color:inherit;text-decoration:none}
 @media(max-width:760px){.hero .grid{grid-template-columns:1fr}}
 .hero h1{font-size:clamp(40px,7.5vw,74px);font-weight:900;letter-spacing:-.02em}
 .hero h1 em{font-style:italic;color:var(--sage)}
-.hero p.lead{font-size:clamp(16px,2.1vw,19px);color:var(--ink-soft);max-width:52ch;margin:20px 0 0}
+.hero .tagline{font-family:"Fraunces",serif;font-style:italic;font-weight:500;font-size:clamp(19px,2.6vw,25px);
+  color:var(--sage);margin:14px 0 0;max-width:26ch;line-height:1.25}
+.hero p.lead{font-size:clamp(16px,2.1vw,19px);color:var(--ink-soft);max-width:52ch;margin:16px 0 0}
 .paths{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
 .pbtn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:12px 18px;border-radius:12px;border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);transition:transform .14s ease}
 .pbtn:hover{transform:translateY(-3px)}
@@ -132,7 +135,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px 0 56px;margin-top:20px
 <body>
 <header class="topbar">
   <div class="wrap row">
-    <a class="brand" href="#top">Michelle<span class="d">.</span></a>
+    <a class="brand" href="#top"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V9"/><circle cx="12" cy="6" r="3"/><path d="M12 13c-2.5-1-5 0-7-2M12 16c2.5-1 5 0 7-2"/></svg>Wild<span class="d">flour</span></a>
     <nav class="tlinks">
       <a href="#recipes">Recipes</a>
       <a href="#travel">Travel</a>
@@ -146,18 +149,19 @@ footer{border-top:1px solid var(--line-soft);padding:34px 0 56px;margin-top:20px
   <section class="hero wrap">
     <div class="grid">
       <div>
-        <span class="eyebrow">Gluten-free kitchen · well-worn passport</span>
-        <h1 style="margin-top:16px">Good food, <em>everywhere</em>.</h1>
-        <p class="lead">I'm Michelle. I cook gluten-free because I have to — and make it good because I want to. This is where I keep the recipes worth repeating and the tips that keep me eating well on the road.</p>
+        <span class="eyebrow">Wildflour Bake Shop · Lafayette, CA</span>
+        <h1 style="margin-top:16px">Wild<em>flour</em></h1>
+        <p class="tagline">Delicious recipes that just happen to be gluten-free.</p>
+        <p class="lead">I'm Michelle — I bake because I love it and cook gluten-free because I have to. This is my little shop of the recipes worth repeating, plus the tips that keep me eating well on the road.</p>
         <div class="paths">
           <a class="pbtn sage" href="#recipes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v7a3 3 0 003 3v8M7 3v6M10 3v6M18 3c-2 2-2 5-2 7v11"/></svg> The recipes</a>
           <a class="pbtn" href="#travel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Travel tips</a>
         </div>
       </div>
       <div class="herocard">
-        <div class="k">This week's staple</div>
-        <h3>One-pan lemon herb chicken &amp; rice</h3>
-        <p>The weeknight dinner on repeat in our house — naturally gluten-free, one pan, and the kids actually eat it.</p>
+        <div class="k">This week's bake</div>
+        <h3>Brown butter chocolate chunk cookies</h3>
+        <p>Crisp edges, molten centers, and no one can tell they're gluten-free. The little bake on repeat at our house.</p>
         <svg class="sprig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22V4M12 8c-3-1-6 0-8-2M12 12c3-1 6 0 8-2M12 16c-3-1-6 0-8-2"/></svg>
       </div>
     </div>
@@ -204,9 +208,9 @@ footer{border-top:1px solid var(--line-soft);padding:34px 0 56px;margin-top:20px
 
 <footer>
   <div class="wrap foot">
-    <span class="mono">michelle · maggio.xyz</span>
+    <span class="mono">wildflour · maggio.xyz</span>
     <span>·</span>
-    <span>Cooked &amp; wandered with love.</span>
+    <span>Baked &amp; wandered with love, by Michelle.</span>
     <span class="crumbs"><a href="../">← Family hub</a><a href="../gene/">Gene's site</a></span>
   </div>
 </footer>
