@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gene Maggio</title>
+<meta name="description" content="Gene Maggio's workshop — a pixel-art corner of the East Bay hills where I build things on the web, and a crew of gnomes keeps the lights on." />
+<meta name="theme-color" content="#7db2e0" />
+<meta property="og:title" content="Gene Maggio" />
+<meta property="og:description" content="A pixel-art personal site in the Lafayette hills. GitHub garden, hidden gnomes, and things I build." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#7db2e0; --grass:#4f9d47; --dirt:#8a6b46; --wood:#5a4327; --wood-d:#3f2f1b;
+  --parch:#f2e6c8; --parch-line:#d8c69a; --ink:#2c2015; --ink-soft:#5a4830;
+  --gold:#e8b44a; --leaf:#3f8a4a; --creek:#4f9ac0; --flower:#e0556f; --accent:#2f7d6b;
+  --panel:rgba(244,233,205,.95);
+}
+:root[data-night="on"]{
+  --sky:#141a33; --parch:#20304a; --parch-line:#33507a; --ink:#e7eefb; --ink-soft:#a9bbdc;
+  --panel:rgba(24,34,54,.94); --gold:#ffd873; --accent:#5fd6bf;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--sky);color:var(--ink);
+  font-family:"VT323",ui-monospace,monospace;font-size:21px;line-height:1.35;
+  -webkit-font-smoothing:none;overflow-x:hidden;transition:background .8s ease,color .8s ease;
+}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+h1,h2,h3{font-family:"Silkscreen",monospace;line-height:1.5;margin:0;letter-spacing:.02em}
+.pixelfont{font-family:"Press Start 2P",monospace}
+canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+a{color:inherit}
+
+#scene{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+  box-shadow:inset 0 -90px 130px rgba(20,15,8,.30), inset 0 40px 90px rgba(20,15,8,.10)}
+
+.page{position:relative;z-index:2}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+
+.hud{position:fixed;top:14px;right:14px;z-index:6;display:flex;gap:8px}
+.hud button{font-family:"Silkscreen",monospace;font-size:12px;cursor:pointer;color:var(--ink);
+  background:var(--panel);border:3px solid var(--wood);border-bottom-width:5px;border-radius:4px;
+  padding:8px 10px;box-shadow:3px 3px 0 rgba(0,0,0,.25)}
+.hud button:active{transform:translate(2px,2px);border-bottom-width:3px}
+.hud a.home{display:flex;align-items:center}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:80px 20px 120px}
+.nameplate{background:var(--panel);border:5px solid var(--wood);border-radius:8px;
+  box-shadow:7px 7px 0 rgba(0,0,0,.3), inset 0 0 0 3px var(--parch-line);
+  padding:26px 34px 30px;max-width:640px}
+.hero h1{font-family:"Press Start 2P",monospace;font-size:clamp(20px,5vw,40px);color:var(--ink);
+  text-shadow:3px 3px 0 var(--gold);line-height:1.35}
+.hero .sub{font-size:26px;color:var(--ink-soft);margin-top:18px}
+.hero .sub b{color:var(--accent)}
+.badgeline{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.badge{font-family:"Silkscreen",monospace;font-size:11px;background:var(--wood);color:var(--parch);
+  padding:5px 9px;border-radius:3px}
+.enterhint{margin-top:26px;font-family:"Silkscreen",monospace;font-size:11px;color:var(--ink-soft);opacity:.9}
+.enterhint span{display:inline-block;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+.panel{background:var(--panel);border:5px solid var(--wood);border-radius:8px;
+  box-shadow:6px 6px 0 rgba(0,0,0,.28), inset 0 0 0 3px var(--parch-line);padding:26px 28px;margin:0 0 30px}
+.panel h2{font-size:clamp(15px,3.4vw,22px);color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.panel h2 .pin{width:16px;height:16px;background:var(--flower);border:2px solid var(--wood);border-radius:50%;flex:none}
+.panel .lead{font-size:22px;color:var(--ink-soft);margin:0 0 4px}
+.section-gap{height:14vh}
+
+.markers{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+@media(max-width:640px){.markers{grid-template-columns:1fr}}
+.marker{display:flex;gap:14px;align-items:flex-start;background:rgba(0,0,0,.04);border:2px dashed var(--parch-line);
+  border-radius:6px;padding:12px 14px}
+:root[data-night="on"] .marker{background:rgba(255,255,255,.05)}
+.marker .ic{width:44px;height:44px;flex:none}
+.marker h3{font-size:13px;color:var(--accent);margin-bottom:4px}
+.marker p{margin:0;font-size:20px;color:var(--ink-soft)}
+
+.gardenwrap{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:start}
+@media(max-width:720px){.gardenwrap{grid-template-columns:1fr}}
+.garden{overflow-x:auto;padding-bottom:6px}
+.gridcal{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;min-width:520px}
+.gridcal i{width:11px;height:11px;border-radius:2px;background:#cdbb8e;outline:1px solid rgba(0,0,0,.06)}
+:root[data-night="on"] .gridcal i{background:#2b3d59;outline-color:rgba(255,255,255,.05)}
+.gridcal i.l1{background:#a7d08c}.gridcal i.l2{background:#63b05e}.gridcal i.l3{background:#3f8a4a}.gridcal i.l4{background:#256b33}
+.gardenside{min-width:150px;text-align:center}
+.gardenside canvas{width:120px;height:120px;image-rendering:pixelated;cursor:pointer}
+.gardenside .cap{font-family:"Silkscreen",monospace;font-size:10px;color:var(--ink-soft);margin-top:2px}
+.legend{display:flex;align-items:center;gap:6px;font-family:"Silkscreen",monospace;font-size:10px;color:var(--ink-soft);margin-top:12px}
+.legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
+.gh-stat{font-family:"Silkscreen",monospace;font-size:12px;color:var(--accent);margin-top:2px}
+
+.repos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(max-width:640px){.repos{grid-template-columns:1fr}}
+.repo{display:block;background:rgba(0,0,0,.04);border:2px solid var(--parch-line);border-radius:6px;padding:12px 14px;
+  transition:transform .12s ease,border-color .12s ease}
+:root[data-night="on"] .repo{background:rgba(255,255,255,.05)}
+.repo:hover{transform:translateY(-3px);border-color:var(--accent)}
+.repo .rn{font-family:"Silkscreen",monospace;font-size:13px;color:var(--accent);word-break:break-word}
+.repo .rd{font-size:19px;color:var(--ink-soft);margin-top:3px}
+.repo .rm{font-family:"Silkscreen",monospace;font-size:10px;color:var(--ink-soft);opacity:.75;margin-top:7px;display:flex;gap:10px;flex-wrap:wrap}
+
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.linkbtn{font-family:"Silkscreen",monospace;font-size:12px;color:var(--parch);background:var(--wood);
+  border:3px solid var(--wood-d);border-radius:5px;padding:11px 15px;box-shadow:3px 3px 0 rgba(0,0,0,.28);
+  transition:transform .12s ease}
+.linkbtn:hover{transform:translate(-1px,-2px)}
+.linkbtn:active{transform:translate(2px,2px)}
+.linkbtn.teal{background:var(--accent);border-color:#1c5a4d;color:#04211a}
+
+.foot{padding:40px 0 60px;text-align:center;color:var(--ink-soft);font-size:19px}
+.foot .hints{font-family:"Silkscreen",monospace;font-size:10px;opacity:.78;margin-top:10px;line-height:1.9}
+
+#term{position:fixed;inset:0;z-index:20;background:rgba(6,10,18,.92);display:none;align-items:center;justify-content:center;padding:20px}
+#term.on{display:flex}
+.termbox{width:min(640px,94vw);background:#0b1220;border:4px solid #2f7d6b;border-radius:8px;
+  box-shadow:0 0 0 3px #06331f, 0 20px 60px rgba(0,0,0,.6);font-family:"VT323",monospace;color:#7cffb2;font-size:20px}
+.termbar{background:#123;padding:8px 12px;font-family:"Silkscreen",monospace;font-size:11px;color:#7cffb2;display:flex;justify-content:space-between}
+.termbody{padding:16px 18px;min-height:220px;max-height:60vh;overflow:auto;white-space:pre-wrap;line-height:1.3}
+.termline{display:flex;gap:8px;padding:0 18px 16px}
+.termline span{color:#e8b44a}
+#terminput{flex:1;background:transparent;border:none;outline:none;color:#7cffb2;font-family:"VT323",monospace;font-size:20px}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="vignette"></div>
+
+<div class="hud">
+  <a class="home" href="../" title="The family hub"><button>⌂ HUB</button></a>
+  <button id="daynight" title="Toggle day / night">☀ / ☾</button>
+  <button id="termbtn" title="Open the gnome terminal">▸_</button>
+</div>
+
+<div class="page">
+  <section class="hero">
+    <div class="nameplate">
+      <h1>GENE&nbsp;MAGGIO</h1>
+      <p class="sub">Builder in the <b>East Bay hills</b>. I make things for the web, coach a little soccer, and wander a lot of trails.</p>
+      <div class="badgeline">
+        <span class="badge">LAFAYETTE, CA</span>
+        <span class="badge">WEB · AI</span>
+        <span class="badge">@genemagg10</span>
+      </div>
+    </div>
+    <div class="enterhint"><span>↓ &nbsp;WANDER DOWN THE TRAIL&nbsp; ↓</span></div>
+  </section>
+
+  <div class="wrap">
+    <div class="section-gap"></div>
+    <section class="panel">
+      <h2><span class="pin"></span>THE TRAILHEAD</h2>
+      <p class="lead">Hi — I'm Gene. I like building small, playful things and shipping them. This corner of the internet is my workshop; a crew of gnomes keeps it running when I'm not looking.</p>
+      <div class="markers">
+        <div class="marker"><div class="ic" data-ic="code"></div><div><h3>MAKING FOR THE WEB</h3><p>Little sites, tools, and experiments — often for the family. Ctrl+Click is the day job.</p></div></div>
+        <div class="marker"><div class="ic" data-ic="trail"></div><div><h3>TRAILS &amp; HILLS</h3><p>The East Bay is a backyard of ridgelines. Mt. Diablo on the horizon, oaks and golden grass everywhere.</p></div></div>
+        <div class="marker"><div class="ic" data-ic="ball"></div><div><h3>SOCCER</h3><p>Coaching, drills, and a philosophy or two. The beautiful game, the patient way.</p></div></div>
+        <div class="marker"><div class="ic" data-ic="game"></div><div><h3>RETRO &amp; PIXELS</h3><p>Arcade games, chunky pixels, and hiding easter eggs where people least expect them.</p></div></div>
+      </div>
+    </section>
+
+    <div class="section-gap"></div>
+    <section class="panel">
+      <h2><span class="pin" style="background:var(--leaf)"></span>THE GITHUB GARDEN</h2>
+      <p class="lead">Every green square is a day I planted something. The gnomes water the busy plots — hover the garden and one comes out to tend it.</p>
+      <div class="gardenwrap">
+        <div>
+          <div class="garden" id="gardenScroll"><div class="gridcal" id="cal" aria-label="GitHub contribution calendar"></div></div>
+          <div class="legend">LESS <i style="background:#cdbb8e"></i><i style="background:#a7d08c"></i><i style="background:#63b05e"></i><i style="background:#3f8a4a"></i><i style="background:#256b33"></i> MORE
+            <span id="ghtotal" class="gh-stat" style="margin-left:14px"></span></div>
+        </div>
+        <div class="gardenside">
+          <canvas id="tender" width="32" height="32" title="wake the gnome"></canvas>
+          <div class="cap">ROOT, keeper<br>of the garden</div>
+        </div>
+      </div>
+      <div class="repos" id="repos"></div>
+      <div class="links" style="margin-top:18px">
+        <a class="linkbtn" href="https://github.com/genemagg10" target="_blank" rel="noopener">▸ ALL ON GITHUB</a>
+      </div>
+    </section>
+
+    <div class="section-gap"></div>
+    <section class="panel">
+      <h2><span class="pin" style="background:var(--accent)"></span>SIGNPOSTS</h2>
+      <p class="lead">Where else to find the family and the work.</p>
+      <div class="links">
+        <a class="linkbtn teal" href="https://it.maggio.xyz" target="_blank" rel="noopener">▸ CTRL+CLICK — IT &amp; AI</a>
+        <a class="linkbtn" href="../">▸ THE FAMILY HUB</a>
+        <a class="linkbtn" href="../michelle/">▸ MICHELLE — GF &amp; TRAVEL</a>
+        <a class="linkbtn" href="https://arcade.maggio.xyz" target="_blank" rel="noopener">▸ MAGGIO ARCADE</a>
+        <a class="linkbtn" href="https://github.com/genemagg10" target="_blank" rel="noopener">▸ GITHUB</a>
+      </div>
+    </section>
+
+    <div class="foot">
+      <div>Built by hand (and by gnomes) in the Lafayette hills.</div>
+      <div class="hints">SECRETS: CLICK THE SUN · FIND THE MUSHROOM · KNOCK ON THE COTTAGE · STAND STILL A WHILE · ↑↑↓↓←→←→BA · PRESS ~ FOR THE TERMINAL</div>
+    </div>
+  </div>
+</div>
+
+<div id="term">
+  <div class="termbox">
+    <div class="termbar"><span>gnome@workshop:~</span><span id="termclose" style="cursor:pointer">[esc] close</span></div>
+    <div class="termbody" id="termout"></div>
+    <div class="termline"><span>&gt;</span><input id="terminput" autocomplete="off" spellcheck="false" aria-label="terminal input" /></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   PIXEL LANDSCAPE ENGINE  —  hard-edged sprite/scanline rendering
+   Everything is drawn as blocks (no anti-aliased arcs) at a fixed pixel
+   scale, so the scene reads as detailed, crisp pixel art.
+   ===================================================================== */
+(function(){
+  var cv=document.getElementById('scene'), ctx=cv.getContext('2d');
+  ctx.imageSmoothingEnabled=false;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var BUFW=0,BUFH=0,t=0,night=false,mx=0.5;
+  var TARGET=4.5;                 // approx screen px per art-pixel
+
+  /* ---------- palettes ---------- */
+  function pal(){
+    return night ? {
+      sky:['#0b1030','#141a3a','#233156','#3a4a72'],
+      haze:'#33406a', sun:'#e9edff', sunShade:'#141a3a', star:'#dfe8ff',
+      mFar:'#2a3358', mBase:'#232c4c', mLit:'#33406a', mDark:'#161d38', snow:'#8ea0c8',
+      hFar:'#2c4a44', hMid:'#26483a', hNear:'#1f3d30', hCrest:'#3a5e4c', hShade:'#16301f',
+      grassBlade:'#3a5e4c',
+      dirt:'#6a5236', dirt2:'#7d6446', stone:'#8a90a0',
+      water:['#2d4f78','#274568','#1f3956'], foam:'#5f7fa6', bank:'#4a3c28',
+      trunk:'#3a2c1c', trunkD:'#2a2014', leaf:'#274d38', leafL:'#356b48', leafD:'#1b3626',
+      wall:'#4a5670', wallD:'#3a4560', roof:'#6a4a30', roofD:'#4a331f', door:'#2a2014',
+      win:'#ffcf6b', smoke:'#3a4560',
+      fA:'#b5556f', fB:'#c9a24a', fC:'#8a6fc0', fD:'#c9c4b0', fE:'#c07f9a',
+      mushCap:'#a53a3a', mushStem:'#c9c4b0',
+      bush:'#274d38', bushL:'#356b48', rock:'#3a4256', rockL:'#4c5670',
+      lantern:'#ffcf6b'
+    } : {
+      sky:['#6ea6dc','#84b6e6','#a6d0ee','#c8e6f4'],
+      haze:'#bcd6ea', sun:'#ffe066', sunShade:'#f4c53a', star:'#ffffff',
+      mFar:'#9aa6c4', mBase:'#8390ae', mLit:'#a3b0c8', mDark:'#6b7898', snow:'#eef3f9',
+      hFar:'#79b463', hMid:'#5da150', hNear:'#4a923f', hCrest:'#8ecf72', hShade:'#357a30',
+      grassBlade:'#8ecf72',
+      dirt:'#b78a52', dirt2:'#caa066', stone:'#d8cba8',
+      water:['#6db6d8','#4f9ac0','#3f83aa'], foam:'#cdeaf5', bank:'#8a6b46',
+      trunk:'#6b4a2b', trunkD:'#513620', leaf:'#3f8a3f', leafL:'#5fb054', leafD:'#2c6a2e',
+      wall:'#ecdfbe', wallD:'#d3c199', roof:'#bb8a48', roofD:'#93692f', door:'#6b4a2b',
+      win:'#8fc6da', smoke:'#e3e7ea',
+      fA:'#e0556f', fB:'#f0c33f', fC:'#a870dc', fD:'#f4f0e0', fE:'#e58fb0',
+      mushCap:'#d24b4b', mushStem:'#f0ead6',
+      bush:'#3f8a3f', bushL:'#5fb054', rock:'#9aa0ac', rockL:'#c2c7d0',
+      lantern:'#ffcf6b'
+    };
+  }
+
+  function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x|0,y|0,w|0,h|0);}
+  // hard-edged filled disc (blocky)
+  function disc(cx,cy,r,c){ctx.fillStyle=c;for(var dy=-r;dy<=r;dy++){var w=Math.floor(Math.sqrt(r*r-dy*dy));ctx.fillRect((cx-w)|0,(cy+dy)|0,(2*w+1)|0,1);}}
+  // partial disc for shading (only pixels on a given side)
+  function discSide(cx,cy,r,c,side){ctx.fillStyle=c;for(var dy=-r;dy<=r;dy++){var w=Math.floor(Math.sqrt(r*r-dy*dy));
+    if(side==='top'&&dy>0)continue; if(side==='bottom'&&dy<0)continue;
+    var x0=cx-w,x1=cx+w; if(side==='tl'){x1=cx;} if(side==='br'){x0=cx;}
+    ctx.fillRect(x0|0,(cy+dy)|0,(x1-x0+1)|0,1);}}
+
+  /* ---------- sprite drawing from string matrices ---------- */
+  function sprite(x,y,rows,map,s){s=s||1;
+    for(var r=0;r<rows.length;r++){var row=rows[r];
+      for(var c=0;c<row.length;c++){var col=map[row[c]];if(col){ctx.fillStyle=col;ctx.fillRect((x+c*s)|0,(y+r*s)|0,s,s);}}}}
+
+  /* ---------- gnome sprite ---------- */
+  var GN=[
+   "..RRRR..",
+   ".RRRRRR.",
+   "RRRRRRRR",
+   "RRRRRRRR",
+   "kkkkkkkk",
+   ".ssssss.",
+   ".seXXes.",
+   ".ssnnss.",
+   ".wwwwww.",
+   "wwwwwwww",
+   "wWwwwwWw",
+   ".wwwwww.",
+   "..gggg..",
+   ".gGbbGg.",
+   ".gg..gg.",
+   ".o....o."
+  ];
+  function gmap(hat,hatD,tunic,tunicD){return {R:hat,k:hatD,s:'#e8b48c',X:'#20303a',e:'#cf9a72',
+    n:'#cf9a72',w:'#eef2f4',W:'#c3ccd2',g:tunic,G:tunicD,b:'#e8b44a',o:'#43331f','.':null};}
+  var GNKIT=[
+    ['#cf4444','#9c2f2f','#3f8a5c','#2c6844'],
+    ['#3f6fd6','#2c4fa8','#8a5cc0','#5f3f8c'],
+    ['#e0a93b','#b8862a','#c74a6f','#93324f'],
+    ['#2c8a7a','#1e6b5e','#6b4a2b','#4a3320'],
+    ['#8a5cc0','#5f3f8c','#3f6fd6','#2c4fa8']
+  ];
+
+  /* ---------- cottage sprite (a home for the gnomes) ---------- */
+  var COT=[
+   "..........CC....",
+   "..........CC....",
+   ".....RRRRRRRRR..",
+   "....RRRRRRRRRRR.",
+   "...RRRRRRRRRRRRR",
+   "..RRRRRRRRRRRRRR",
+   ".rrrrrrrrrrrrrrr",
+   "..wwwwwwwwwwwww.",
+   "..wwWnnwwwwWWww.",
+   "..wwWnnwwwwddww.",
+   "..wwwwwwwwwddww.",
+   "..wwwwwwwwwddww.",
+   "..sssssssssssss."
+  ];
+  function cmap(p){return {C:p.roofD,R:p.roof,r:p.roofD,w:p.wall,W:p.wallD,n:p.win,d:p.door,s:p.wallD,'.':null};}
+
+  /* ---------- decor state ---------- */
+  var stars=[],clouds=[],flowers=[],grass=[],smoke=[],birds=[];
+  function seed(){
+    stars=[];for(var i=0;i<90;i++)stars.push({x:Math.random(),y:Math.random()*0.42,tw:Math.random()*7});
+    clouds=[];for(var j=0;j<4;j++)clouds.push({x:Math.random(),y:0.07+Math.random()*0.16,sp:0.15+Math.random()*0.5,s:2+Math.floor(Math.random()*2)});
+    birds=[{x:0.3,y:0.16},{x:0.34,y:0.14},{x:0.38,y:0.17}];
+  }
+  function seedGround(){
+    flowers=[];var cols=['fA','fB','fC','fD','fE'];
+    for(var i=0;i<70;i++)flowers.push({x:Math.random(),y:0.80+Math.random()*0.185,c:cols[i%5],h:2+Math.floor(Math.random()*3)});
+    grass=[];for(var g=0;g<160;g++)grass.push({x:Math.random(),y:0.80+Math.random()*0.19,h:2+Math.floor(Math.random()*3)});
+  }
+
+  function resize(){
+    BUFW=Math.max(120,Math.round(window.innerWidth/TARGET));
+    BUFH=Math.max(90,Math.round(window.innerHeight/TARGET));
+    cv.width=BUFW;cv.height=BUFH;cv.style.width=window.innerWidth+'px';cv.style.height=window.innerHeight+'px';
+    ctx.imageSmoothingEnabled=false;
+  }
+
+  /* ---------- cloud (blocky, 2-tone) ---------- */
+  var CLOUD=[
+   "..bbbb....",
+   ".bwwwwbb..",
+   "bwwwwwwwb.",
+   "bwwwwwwwwb",
+   ".bwwwwwwb.",
+   "..bbbbbb.."
+  ];
+  function cmapCloud(p){return {w:p.smoke==='#e3e7ea'?'#ffffff':'#cfd7ea',b:p.haze,'.':null};}
+
+  /* ---------- pine on distant hills ---------- */
+  function pine(x,groundY,h,p){
+    px(x,groundY-2,2,3,p.trunk);
+    for(var i=0;i<h;i++){var w=2+i*2;var yy=groundY-4-i*3;
+      ctx.fillStyle=(i%2)?p.leafD:p.leaf;ctx.fillRect((x-w/2)|0,yy|0,w|0,4);}
+    ctx.fillStyle=p.leaf;ctx.fillRect((x-1)|0,(groundY-4-h*3)|0,2,3);
+  }
+
+  /* ---------- detailed oak ---------- */
+  function oak(x,groundY,scale,p){
+    var s=scale;
+    // trunk with bark shading
+    px(x-1*s,groundY-7*s,2*s,8*s,p.trunk);
+    px(x-1*s,groundY-7*s,1,8*s,p.trunkD);
+    px(x+ (s-1),groundY-3*s,1,4*s,p.trunkD);
+    // a couple of roots
+    px(x-2*s,groundY,1,1*s,p.trunkD);px(x+2*s-1,groundY,1,1*s,p.trunkD);
+    // canopy lobes
+    var lobes=[[0,-13,7],[-6,-10,5],[6,-10,5],[-3,-15,4.5],[4,-15,4.5],[0,-8,6]];
+    for(var i=0;i<lobes.length;i++){var lx=x+lobes[i][0]*s*0.7, ly=groundY+lobes[i][1]*s, lr=lobes[i][2]*s*0.7;
+      disc(lx,ly,lr,p.leaf);}
+    // shadow lower-right, highlight upper-left
+    for(i=0;i<lobes.length;i++){var lx2=x+lobes[i][0]*s*0.7, ly2=groundY+lobes[i][1]*s, lr2=lobes[i][2]*s*0.7;
+      discSide(lx2+lr2*0.25,ly2+lr2*0.25,lr2*0.85,p.leafD,'br');
+      discSide(lx2-lr2*0.3,ly2-lr2*0.3,lr2*0.6,p.leafL,'tl');}
+    // scattered leaf detail
+    ctx.fillStyle=p.leafD;
+    var dd=[[-4,-9],[3,-12],[5,-8],[-2,-14],[1,-7]];
+    for(i=0;i<dd.length;i++)ctx.fillRect((x+dd[i][0]*s)|0,(groundY+dd[i][1]*s)|0,s,s);
+  }
+
+  /* ---------- bush ---------- */
+  function bush(x,groundY,p){disc(x,groundY-3,4,p.bush);disc(x-3,groundY-2,3,p.bush);disc(x+3,groundY-2,3,p.bush);
+    discSide(x-1,groundY-4,4,p.bushL,'tl');discSide(x+1,groundY-1,4,p.bush,'br');}
+
+  /* ---------- rock ---------- */
+  function rock(x,groundY,p){disc(x,groundY-2,3,p.rock);discSide(x-1,groundY-3,3,p.rockL,'tl');}
+
+  /* ---------- mountain range with ridge + snow ---------- */
+  function ranges(horizon,p){
+    // farthest haze range
+    ridge(horizon-6, BUFW*0.16, 0.9, p.mFar, p.mFar, null);
+    // main Mt Diablo double-peak
+    var base=horizon+2;
+    peak(BUFW*0.52, base, BUFW*0.34, BUFH*0.34, p.mBase, p.mLit, p.mDark, p.snow);
+    peak(BUFW*0.30, base, BUFW*0.22, BUFH*0.20, p.mBase, p.mLit, p.mDark, null);
+    peak(BUFW*0.74, base, BUFW*0.24, BUFH*0.24, p.mBase, p.mLit, p.mDark, p.snow);
+    window.__peak={x:BUFW*0.52*TARGET, y:(base-BUFH*0.34)*TARGET};
+  }
+  function ridge(y,amp,wl,c){ctx.fillStyle=c;for(var x=0;x<=BUFW;x++){var yy=y+Math.sin(x*0.02/wl)*amp*0.2+Math.sin(x*0.05)*2;ctx.fillRect(x,yy|0,1,BUFH-(yy|0));}}
+  function peak(cx,base,halfW,tall,base_c,lit_c,dark_c,snow_c){
+    for(var x=-halfW;x<=halfW;x++){
+      var frac=1-Math.abs(x)/halfW;
+      var h=tall*frac + Math.sin(x*0.5)*1.5*frac;
+      var topY=base-h;
+      // lit side (right of ridge) vs shadow side
+      var c = (x>0)? lit_c : base_c;
+      ctx.fillStyle=c;ctx.fillRect((cx+x)|0,topY|0,1,(base-topY+3)|0);
+      // ridge shadow crease near center
+      if(x<0 && x>-3){ctx.fillStyle=dark_c;ctx.fillRect((cx+x)|0,topY|0,1,(base-topY)|0);}
+    }
+    if(snow_c){ // snow cap near summit
+      var sy=base-tall;
+      ctx.fillStyle=snow_c;
+      for(var sx=-Math.floor(halfW*0.34);sx<=Math.floor(halfW*0.34);sx++){
+        var frac2=1-Math.abs(sx)/halfW; var hh=tall*frac2;
+        var jag=(Math.abs(sx)%3===0)?2:0;
+        ctx.fillRect((cx+sx)|0,(base-hh)|0,1,(4+Math.floor(frac2*5)+jag));
+      }
+    }
+  }
+
+  /* ---------- rolling hill band with lit crest + texture ---------- */
+  function hill(baseFrac,amp,wl,phase,c,crest,shade){
+    var baseY=BUFH*baseFrac;
+    for(var x=0;x<=BUFW;x++){
+      var y=baseY + Math.sin(x/wl+phase)*amp + Math.sin(x/(wl*0.4)+phase*1.7)*amp*0.35;
+      y=y|0;
+      ctx.fillStyle=c;ctx.fillRect(x,y,1,BUFH-y);
+      ctx.fillStyle=crest;ctx.fillRect(x,y,1,2);           // sunlit crest
+      // sparse, varied grass specks for texture (not a regular fence line)
+      var hsh=(x*37+ (y|0)*17)%97;
+      if(hsh<6){ctx.fillStyle=shade;ctx.fillRect(x,y+3+(hsh%4),1,1);}
+      else if(hsh>92){ctx.fillStyle=crest;ctx.fillRect(x,y+2+(hsh%3),1,1);}
+    }
+  }
+
+  /* ---------- winding river with banks + ripples ---------- */
+  function river(p){
+    var topF=0.72;
+    for(var yy=Math.floor(BUFH*topF);yy<BUFH;yy++){
+      var prog=(yy-BUFH*topF)/(BUFH*(1-topF));
+      var cxr=BUFW*0.52 + Math.sin(yy/7)*BUFW*0.05;
+      var w=3+prog*prog*BUFW*0.10;
+      var x0=cxr-w/2, x1=cxr+w/2;
+      // banks
+      px(x0-2,yy,2,1,p.bank);px(x1,yy,2,1,p.bank);
+      // water bands
+      var band=p.water[Math.floor(prog*p.water.length*0.999)];
+      ctx.fillStyle=band;ctx.fillRect(x0|0,yy,(x1-x0)|0,1);
+      // ripples/foam (animated)
+      if((yy+ (reduce?0:Math.floor(t/12)))%4===0){ctx.fillStyle=p.foam;var fx=x0+ (Math.abs(Math.sin(yy*1.3))* (x1-x0));ctx.fillRect(fx|0,yy,2,1);}
+    }
+  }
+
+  /* ---------- trail with stones ---------- */
+  function trail(p){
+    for(var yy=Math.floor(BUFH*0.60);yy<BUFH*0.80;yy++){
+      var prog=(yy-BUFH*0.60)/(BUFH*0.20);
+      var xt=BUFW*0.20 + Math.sin(prog*3)*BUFW*0.03;
+      var w=1+prog*4;
+      ctx.fillStyle=p.dirt;ctx.fillRect(xt|0,yy,w|0,1);
+      ctx.fillStyle=p.dirt2;ctx.fillRect(xt|0,yy,1,1);
+      if(yy%5===0){ctx.fillStyle=p.stone;ctx.fillRect((xt+w*0.5)|0,yy,1,1);}
+    }
+  }
+
+  /* ---------- gnome ACTS ---------- */
+  var acts=[];
+  window.__cottage={};
+  function drawActs(p){
+    for(var i=acts.length-1;i>=0;i--){var a=acts[i];a.t++;
+      var kit=GNKIT[(a.kit||0)%5];var map=gmap(kit[0],kit[1],kit[2],kit[3]);
+      if(a.type==='peek'){var prog=Math.max(0,Math.min(1,Math.min(a.t/24,(a.life-a.t)/24)));
+        var gy=a.gy-16+(1-prog)*15;
+        ctx.save();ctx.beginPath();ctx.rect(a.x-1,a.gy-16,8,16);ctx.clip();sprite(a.x,gy,GN,map,1);ctx.restore();
+      } else if(a.type==='wander'){a.x+=0.35*(a.dir||1);var by=a.gy-16+Math.sin(a.t/6)*1;sprite(a.x,by,GN,map,1);
+      } else if(a.type==='pop'){var pr=Math.max(0,Math.min(1,Math.min(a.t/16,(a.life-a.t)/16)));
+        ctx.save();ctx.beginPath();ctx.rect(a.x-1,a.gy-16,8,16);ctx.clip();sprite(a.x,a.gy-16*pr,GN,map,1);ctx.restore();}
+      if(a.t>a.life||a.x>BUFW+10||a.x<-12)acts.splice(i,1);}
+  }
+
+  /* ---------- master frame ---------- */
+  function frame(){
+    var p=pal();
+    // sky bands
+    var bands=p.sky, bh=Math.ceil(BUFH*0.52/bands.length);
+    for(var b=0;b<bands.length;b++){px(0,b*bh,BUFW,bh+1,bands[b]);}
+    // stars
+    if(night){for(var i=0;i<stars.length;i++){var st=stars[i];if((Math.floor(t/8)+i)%9!==0||Math.random()<0.995){var a=0.5+0.5*Math.abs(Math.sin((t+st.tw*20)/40));ctx.globalAlpha=a;px(st.x*BUFW,st.y*BUFH,1,1,p.star);}}ctx.globalAlpha=1;}
+    // sun / moon (blocky disc) with parallax
+    var sunX=BUFW*(0.80-(mx-0.5)*0.02), sunY=BUFH*0.18, sr=Math.round(BUFH*0.05);
+    disc(sunX,sunY,sr,p.sun); discSide(sunX+1,sunY+1,sr-1,p.sunShade,'br');
+    if(night){disc(sunX-sr*0.5,sunY-sr*0.35,sr*0.85,p.sky[0]);}
+    window.__sun={x:sunX*TARGET,y:sunY*TARGET,r:(sr+2)*TARGET};
+    // birds (day)
+    if(!night){ctx.fillStyle=p.mDark;birds.forEach(function(bd,k){var bx=(bd.x+ (reduce?0:t*0.0006))%1;ctx.fillRect((bx*BUFW)|0,(bd.y*BUFH+Math.sin(t/30+k)*1)|0,1,1);ctx.fillRect((bx*BUFW+1)|0,(bd.y*BUFH-1+Math.sin(t/30+k)*1)|0,1,1);ctx.fillRect((bx*BUFW+2)|0,(bd.y*BUFH+Math.sin(t/30+k)*1)|0,1,1);});}
+    // clouds
+    for(var c2=0;c2<clouds.length;c2++){var cl=clouds[c2];if(!reduce)cl.x+=cl.sp/9000;if(cl.x>1.2)cl.x=-0.2;
+      sprite((cl.x*BUFW-(mx-0.5)*4)|0,(cl.y*BUFH)|0,CLOUD,cmapCloud(p),cl.s);}
+    var horizon=BUFH*0.48;
+    ranges(horizon,p);
+    // hills back->front
+    hill(0.52,3,BUFW*0.5,0.4,p.hFar,p.hCrest,p.hShade);
+    // a few pines on the far hill
+    for(var pnx=0.1;pnx<1;pnx+=0.16){pine(BUFW*pnx, BUFH*0.52+Math.sin(BUFW*pnx/(BUFW*0.5)+0.4)*3, 3, p);}
+    hill(0.60,5,BUFW*0.42,2.1,p.hMid,p.hCrest,p.hShade);
+    hill(0.72,7,BUFW*0.55,4.0,p.hNear,p.hCrest,p.hShade);
+    // cottage on the right mid hill
+    var cotX=BUFW*0.80, cotY=BUFH*0.60;
+    sprite(cotX|0,cotY|0,COT,cmap(p),1);
+    window.__cottage={x:cotX*TARGET,y:cotY*TARGET,w:16*TARGET,h:14*TARGET};
+    if(night){px(cotX+3,cotY+8,2,2,p.lantern);} // window glow handled by 'n'
+    // chimney smoke
+    if(!reduce){smoke.push({x:cotX+10,y:cotY-1,t:0});}
+    for(var sI=smoke.length-1;sI>=0;sI--){var sm=smoke[sI];sm.t++;var sy=sm.y-sm.t*0.15;ctx.globalAlpha=Math.max(0,0.6-sm.t/90);px(sm.x+Math.sin(sm.t/10)*1,sy,1,1,p.smoke);ctx.globalAlpha=1;if(sm.t>90)smoke.splice(sI,1);}
+    // trail on the left near hill
+    trail(p);
+    // river through foreground
+    river(p);
+    // foreground trees + bushes + rocks
+    oak(BUFW*0.13, BUFH*0.83, 2, p);
+    oak(BUFW*0.90, BUFH*0.80, 2.4, p);
+    bush(BUFW*0.34, BUFH*0.86, p);
+    bush(BUFW*0.70, BUFH*0.90, p);
+    rock(BUFW*0.62, BUFH*0.88, p);
+    rock(BUFW*0.44, BUFH*0.93, p);
+    // meadow base strip
+    px(0,BUFH*0.90|0,BUFW,BUFH,p.hNear);
+    // grass blades
+    for(var gI=0;gI<grass.length;gI++){var gb=grass[gI];ctx.fillStyle=p.grassBlade;ctx.fillRect((gb.x*BUFW)|0,(gb.y*BUFH)|0,1,gb.h);}
+    // flowers
+    for(var fI=0;fI<flowers.length;fI++){var fl=flowers[fI];var fx=(fl.x*BUFW)|0,fy=(fl.y*BUFH)|0;
+      ctx.fillStyle=p.hShade;ctx.fillRect(fx,fy,1,fl.h); // stem
+      ctx.fillStyle=p[fl.c];ctx.fillRect(fx-1,fy-2,3,2);ctx.fillRect(fx,fy-3,1,1);
+      ctx.fillStyle='#fff8d0';ctx.fillRect(fx,fy-1,1,1);}
+    // the smug mushroom (clickable)
+    var mX=BUFW*0.19, mY=BUFH*0.905;
+    px(mX,mY,2,3,p.mushStem);px(mX-2,mY-2,6,2,p.mushCap);px(mX-1,mY-3,4,1,p.mushCap);
+    px(mX,mY-1,1,1,'#fff');px(mX+2,mY-2,1,1,'#fff');
+    window.__mush={x:mX*TARGET,y:mY*TARGET,r:7*TARGET};
+    // night lantern by the trail
+    if(night){ctx.globalAlpha=.22+0.08*Math.sin(t/12);disc(BUFW*0.13,BUFH*0.80,7,p.lantern);ctx.globalAlpha=1;px(BUFW*0.13|0,(BUFH*0.80-2)|0,1,3,p.lantern);}
+    // acts
+    drawActs(p);
+    t++;
+    if(!reduce)requestAnimationFrame(frame);
+  }
+
+  /* scheduler: rare peeks */
+  function schedule(){if(reduce)return;setInterval(function(){if(document.hidden)return;if(acts.length<2&&Math.random()<0.45)spawnPeek();},10000);}
+
+  function spawnPeek(){var trees=[{x:BUFW*0.13,y:BUFH*0.83},{x:BUFW*0.90,y:BUFH*0.80}];var tr=trees[Math.floor(Math.random()*trees.length)];
+    acts.push({type:'peek',x:tr.x-(Math.random()<.5?7:-3),gy:tr.y-8,t:0,life:200,kit:Math.floor(Math.random()*5)});}
+  function spawnWander(){acts.push({type:'wander',x:-10,gy:BUFH*0.93,t:0,life:BUFW*3,dir:1,kit:Math.floor(Math.random()*5)});}
+  function spawnParade(){for(var i=0;i<5;i++)acts.push({type:'wander',x:-10-i*12,gy:BUFH*0.93-(i%2)*2,t:0,life:BUFW*3,dir:1,kit:i});}
+  function spawnPop(bx,by){acts.push({type:'pop',x:bx,gy:by,t:0,life:120,kit:Math.floor(Math.random()*5)});}
+
+  window.__gnomes={peek:spawnPeek,wander:spawnWander,parade:spawnParade,pop:spawnPop,
+    setNight:function(v){night=v;document.documentElement.setAttribute('data-night',v?'on':'off');}};
+  window.__isNight=function(){return night;};
+
+  resize();seed();seedGround();frame();schedule();
+  window.addEventListener('resize',resize);
+  window.addEventListener('mousemove',function(e){mx=e.clientX/window.innerWidth;});
+
+  cv.addEventListener('click',function(e){
+    var x=e.clientX,y=e.clientY;
+    var s=window.__sun; if(s&&Math.hypot(x-s.x,y-s.y)<s.r){toggleNight();return;}
+    var m=window.__mush; if(m&&Math.hypot(x-m.x,y-m.y)<m.r){spawnPop(m.x/TARGET,m.y/TARGET+2);return;}
+    var co=window.__cottage; if(co.x&&x>co.x&&x<co.x+co.w&&y>co.y&&y<co.y+co.h){window.__flash&&window.__flash('*knock knock* a gnome answers!');spawnPop(co.x/TARGET+8,(co.y+co.h)/TARGET);return;}
+  });
+})();
+
+/* ============ day / night ============ */
+function toggleNight(){var now=!window.__isNight();window.__gnomes.setNight(now);window.__gnomes.peek();}
+document.getElementById('daynight').addEventListener('click',toggleNight);
+
+/* ============ marker icons ============ */
+(function(){
+  var IC={
+   code:'<svg viewBox="0 0 24 24" fill="none" stroke="#2f7d6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 5l-2 14"/></svg>',
+   trail:'<svg viewBox="0 0 24 24" fill="none" stroke="#2f7d6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21l7-13 4 6 3-5 6 12z"/><path d="M9 21c1-3-1-5 2-8" stroke-dasharray="1 3"/></svg>',
+   ball:'<svg viewBox="0 0 24 24" fill="none" stroke="#2f7d6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 5h-5L8 10z"/></svg>',
+   game:'<svg viewBox="0 0 24 24" fill="none" stroke="#2f7d6b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="11" rx="3"/><path d="M8 13h4M10 11v4"/><circle cx="16" cy="12" r="1" fill="#2f7d6b"/><circle cx="18" cy="15" r="1" fill="#2f7d6b"/></svg>'
+  };
+  document.querySelectorAll('[data-ic]').forEach(function(el){el.innerHTML=IC[el.getAttribute('data-ic')]||'';var s=el.querySelector('svg');if(s){s.style.width='100%';s.style.height='100%';}});
+})();
+
+/* ============ garden tender gnome ============ */
+(function(){
+  var cv=document.getElementById('tender'),ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=false;
+  var GN=["..RRRR..",".RRRRRR.","RRRRRRRR","kkkkkkkk",".ssssss.",".seXXes.",".wwwwww.","wwwwwwww",".wwwwww.","..gggg..",".gGbbGg.",".o....o."];
+  var map={R:'#2c8a7a',k:'#1e6b5e',s:'#e8b48c',X:'#20303a',e:'#cf9a72',w:'#eef2f4',g:'#6b4a2b',G:'#4a3320',b:'#e0a93b',o:'#43331f','.':null};
+  function draw(dy,water){ctx.clearRect(0,0,32,32);var s=2;
+    for(var r=0;r<GN.length;r++)for(var c=0;c<GN[r].length;c++){var col=map[GN[r][c]];if(col){ctx.fillStyle=col;ctx.fillRect(8+c*s,4+r*s+dy,s,s);}}
+    if(water){ctx.fillStyle='#5fa8c8';ctx.fillRect(24,14+dy,2,2);ctx.fillRect(26,17+dy,2,2);ctx.fillRect(25,20+dy,2,2);}}
+  var busy=false;
+  function wake(){if(busy)return;busy=true;var i=0;var iv=setInterval(function(){draw(Math.sin(i/3)*2,i%4<2);if(++i>44){clearInterval(iv);busy=false;draw(0,false);}},50);}
+  draw(0,false);cv.addEventListener('click',wake);
+  var gs=document.getElementById('gardenScroll');if(gs)gs.addEventListener('mouseenter',wake);
+})();
+
+/* ============ github data ============ */
+(function(){
+  var cal=document.getElementById('cal'),totalEl=document.getElementById('ghtotal');
+  function lc(l){return l>=4?'l4':l>=3?'l3':l>=2?'l2':l>=1?'l1':'';}
+  function render(days){cal.innerHTML='';days.forEach(function(d){var i=document.createElement('i');var k=lc(d.level);if(k)i.className=k;i.title=(d.date?d.date+' · ':'')+d.count+' contributions';cal.appendChild(i);});}
+  fetch('https://github-contributions-api.jogruber.de/v4/genemagg10?y=last')
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(j){var arr=(j.contributions||[]).slice(-371);render(arr);
+      var tot=j.total?(j.total.lastYear||Object.values(j.total)[0]):arr.reduce(function(a,b){return a+b.count;},0);totalEl.textContent=tot+' this year';})
+    .catch(function(){var days=[],seed=42;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+      for(var i=0;i<371;i++){var v=rnd();var lvl=v>0.86?4:v>0.72?3:v>0.55?2:v>0.34?1:0;days.push({date:'',count:lvl,level:lvl});}
+      render(days);totalEl.textContent='@genemagg10';});
+  fetch('https://api.github.com/users/genemagg10/repos?sort=updated&per_page=6',{headers:{'Accept':'application/vnd.github+json'}})
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(repos){if(!Array.isArray(repos))return;var host=document.getElementById('repos');
+      repos.slice(0,6).forEach(function(rp){var a=document.createElement('a');a.className='repo';a.href=rp.html_url;a.target='_blank';a.rel='noopener';
+        a.innerHTML='<div class="rn">'+esc(rp.name)+'</div>'+(rp.description?'<div class="rd">'+esc(rp.description)+'</div>':'')+
+          '<div class="rm">'+(rp.language?'<span>◆ '+esc(rp.language)+'</span>':'')+'<span>★ '+(rp.stargazers_count||0)+'</span></div>';host.appendChild(a);});})
+    .catch(function(){});
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+})();
+
+/* ============ easter eggs ============ */
+(function(){
+  var seq=[38,38,40,40,37,39,37,39,66,65],buf=[];
+  window.addEventListener('keydown',function(e){buf.push(e.keyCode);if(buf.length>seq.length)buf.shift();
+    if(seq.every(function(v,i){return buf[i]===v;})){window.__gnomes.parade();buf=[];flash('THE CREW MARCHES!');}
+    if(e.key==='~'||e.key==='`')toggleTerm();});
+  var idle;function resetIdle(){clearTimeout(idle);idle=setTimeout(function(){window.__gnomes.wander();},22000);}
+  ['mousemove','scroll','keydown','touchstart'].forEach(function(ev){window.addEventListener(ev,resetIdle,{passive:true});});resetIdle();
+  function flash(msg){var d=document.createElement('div');d.textContent=msg;
+    d.style.cssText='position:fixed;left:50%;top:22%;transform:translateX(-50%);z-index:30;font-family:"Silkscreen",monospace;font-size:13px;color:#fff;background:#2f7d6b;border:3px solid #06331f;padding:10px 16px;border-radius:5px;box-shadow:4px 4px 0 rgba(0,0,0,.4)';
+    document.body.appendChild(d);setTimeout(function(){d.style.transition='opacity .5s';d.style.opacity='0';},1400);setTimeout(function(){d.remove();},2000);}
+  window.__flash=flash;
+  var term=document.getElementById('term'),out=document.getElementById('termout'),inp=document.getElementById('terminput');
+  window.toggleTerm=function(){term.classList.toggle('on');if(term.classList.contains('on')){if(!out.dataset.init){print("gnome shell v1.0 — the workshop is staffed by gnomes.\nType 'help' to see what they can do.\n");out.dataset.init='1';}inp.focus();}};
+  document.getElementById('termbtn').addEventListener('click',toggleTerm);
+  document.getElementById('termclose').addEventListener('click',toggleTerm);
+  window.addEventListener('keydown',function(e){if(e.key==='Escape')term.classList.remove('on');});
+  function print(s){out.textContent+=s+"\n";out.scrollTop=out.scrollHeight;}
+  var CMDS={help:function(){return "commands: whoami · gnomes · roster · parade · night · day · flowers · cottage · sudo · clear · links";},
+    whoami:function(){return "gene — builder in the Lafayette hills. github: @genemagg10";},
+    gnomes:function(){window.__gnomes.peek();return "*a gnome peeks out from behind an oak*";},
+    roster:function(){return "PATCH (deploys) · BYTE (bugs) · FLUX (animation) · ROOT (the garden) · NOMAD (the wanderer)";},
+    parade:function(){window.__gnomes.parade();return "the whole crew marches across the hills!";},
+    night:function(){window.__gnomes.setNight(true);return "lanterns lit. the gnomes prefer the dark.";},
+    day:function(){window.__gnomes.setNight(false);return "sunrise over Mt. Diablo.";},
+    cottage:function(){return "the little cottage on the hill is gnome HQ. knock on it.";},
+    flowers:function(){return "wildflowers: poppies, lupine, and one very smug mushroom by the creek.";},
+    sudo:function(){return "the gnomes do not recognize your authority here. (nice try)";},
+    links:function(){return "ctrl+click: it.maggio.xyz · family: maggio.xyz · github: github.com/genemagg10";},
+    clear:function(){out.textContent='';return "";}};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){var v=inp.value.trim().toLowerCase();inp.value='';if(!v)return;print("> "+v);var fn=CMDS[v.split(' ')[0]];print(fn?fn():("gnome: command not found: "+v+"  (try 'help')"));}});
+})();
+console.log('%c🍄 welcome to the workshop','font-size:16px;color:#3f8a4a');
+console.log('%cthe gnomes are watching. try the Konami code, knock on the cottage, or press ~ for the terminal.','color:#2f7d6b');
+</script>
+</body>
+</html>
