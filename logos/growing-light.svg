@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+  <!-- radiant light -->
+  <g stroke="#E9A83B" stroke-width="3.4" stroke-linecap="round">
+    <line x1="32" y1="5" x2="32" y2="12"/>
+    <line x1="14.5" y1="12.5" x2="19" y2="17"/>
+    <line x1="49.5" y1="12.5" x2="45" y2="17"/>
+    <line x1="8" y1="30" x2="14" y2="30"/>
+    <line x1="56" y1="30" x2="50" y2="30"/>
+  </g>
+  <circle cx="32" cy="27" r="9.5" fill="#F4C15A"/>
+  <!-- growing sprout -->
+  <path d="M32 58 V36" fill="none" stroke="#3F8A5C" stroke-width="4" stroke-linecap="round"/>
+  <path d="M32 44c-3.5-4.2-9-4-13-6.2 0 6 4.4 8.8 13 8z" fill="#4E9E6A"/>
+  <path d="M32 40c3-4 8-3.8 12-5.6 0 5.4-4 8-12 7.4z" fill="#5CB37B"/>
+</svg>
