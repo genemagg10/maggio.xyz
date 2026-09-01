@@ -77,7 +77,8 @@
       backdrop-filter:blur(10px);position:sticky;top:0;z-index:40}
     .masthead .row{display:flex;align-items:center;gap:16px;height:58px}
     .brandmark{font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.02em}
-    .brandmark .dot{color:var(--coral)}
+    .brandmark .dot{color:var(--coral);font-family:"Archivo",sans-serif;font-size:.72em;
+      margin:0 .05em;display:inline-block;vertical-align:.02em}
     .mh-links{margin-left:auto;display:flex;align-items:center;gap:4px}
     .mh-links a{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);padding:7px 10px;border-radius:8px}
     .mh-links a:hover{background:var(--panel)}
@@ -91,8 +92,8 @@
     .hero-head .eyebrow{margin-bottom:18px;display:inline-block}
     .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(56px,12.5vw,134px);letter-spacing:-.04em;line-height:.9}
     .wordmark .tld{font-size:.46em;letter-spacing:-.02em;vertical-align:.16em}
-    .wordmark .heart{color:var(--coral);font-family:"Archivo",sans-serif;font-weight:700;margin:0 .015em;
-      font-size:.82em;line-height:1;display:inline-block;transform:translateY(.03em)}
+    .wordmark .heart{color:var(--coral);font-family:"Archivo",sans-serif;font-weight:700;margin:0 .06em;
+      font-size:.58em;line-height:1;display:inline-block;transform:translateY(-.02em)}
     .wordmark .fam{display:block;font-weight:500;font-style:italic;font-size:clamp(15px,2.4vw,20px);letter-spacing:.02em;
       color:var(--ink-soft);margin-top:14px;font-variation-settings:"opsz" 20}
     .hero-sub{max-width:56ch;margin:20px auto 0;color:var(--ink-soft);font-size:clamp(15px,2vw,18px)}
@@ -160,7 +161,7 @@
 <body>
   <header class="masthead">
     <div class="wrap row">
-      <a class="brandmark" href="#top">Maggio<span class="dot">.</span>xyz</a>
+      <a class="brandmark" href="#top" aria-label="Maggio.xyz">Maggio<span class="dot" aria-hidden="true">&#9829;</span>xyz</a>
       <nav class="mh-links">
         <a href="#personal">Family</a>
         <a href="#projects">Projects</a>
