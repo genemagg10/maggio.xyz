@@ -137,6 +137,58 @@ section.block{padding:64px 0}
 .bake p{margin:0;font-size:14px;color:var(--ink-soft);flex:1}
 .bake .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:11px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.bake{cursor:pointer}
+.bake:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+.bake .open{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:12.5px;font-weight:600;
+  letter-spacing:.02em;color:var(--bronze-deep)}
+.bake .open svg{width:15px;height:15px;transition:transform .15s ease}
+.bake:hover .open svg{transform:translateX(3px)}
+
+/* recipe modal */
+.rmodal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px}
+.rmodal[hidden]{display:none}
+.rmodal .back{position:absolute;inset:0;background:rgba(30,22,14,.55);backdrop-filter:blur(3px);animation:rmfade .18s ease}
+.rmodal .panel{position:relative;width:min(720px,100%);max-height:min(90vh,900px);overflow:auto;
+  background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-lg);
+  animation:rmrise .2s cubic-bezier(.2,.8,.2,1);-webkit-overflow-scrolling:touch}
+@keyframes rmfade{from{opacity:0}to{opacity:1}}
+@keyframes rmrise{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.rmodal .x{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:color-mix(in srgb,var(--paper) 82%,transparent);backdrop-filter:blur(6px);
+  color:var(--ink);font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.rmodal .x:hover{color:var(--bronze-deep);border-color:var(--bronze)}
+.rm-hero{position:relative;padding:26px 24px 22px;border-bottom:1px solid var(--line);overflow:hidden}
+.rm-hero .figure{height:150px;border-radius:16px;display:grid;place-items:center;border:1px solid var(--line);position:relative;overflow:hidden}
+.rm-hero .figure .icon{display:grid;place-items:center}
+.rm-hero .figure .icon svg{width:88px;height:88px}
+.rm-hero .figure .fl{position:absolute;pointer-events:none;opacity:.7}
+.rm-hero .figure .fl1{left:-6px;bottom:-14px;width:74px;transform:rotate(-10deg)}
+.rm-hero .figure .fl2{right:-4px;top:-16px;width:64px;transform:rotate(12deg)}
+.rm-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.rm-gallery .thumb{height:66px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;position:relative}
+.rm-gallery .thumb svg{width:40px;height:40px}
+.rm-note{font-size:11px;color:var(--muted);text-align:center;margin-top:9px;font-style:italic}
+.rm-body{padding:24px}
+.rm-badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--sage-deep);
+  background:color-mix(in srgb,var(--sage) 16%,transparent);padding:4px 10px;border-radius:999px}
+.rm-body h2{font-size:clamp(23px,4vw,30px);font-weight:600;letter-spacing:-.01em;margin:12px 0 0}
+.rm-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;color:var(--ink-soft);font-size:13.5px}
+.rm-meta span{display:inline-flex;align-items:center;gap:6px}
+.rm-meta svg{width:15px;height:15px;color:var(--bronze)}
+.rm-about{color:var(--ink-soft);font-size:15.5px;margin:16px 0 0}
+.rm-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.rm-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px;margin-top:24px}
+@media(max-width:600px){.rm-grid{grid-template-columns:1fr;gap:22px}}
+.rm-grid h3{font-family:"Fraunces",serif;font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;margin:0 0 12px}
+.rm-grid h3 svg{width:17px;height:17px;color:var(--bronze)}
+.rm-ing ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.rm-ing li{display:flex;gap:9px;font-size:14px;color:var(--ink-soft);align-items:flex-start;line-height:1.5}
+.rm-ing li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--sage);margin-top:7px}
+.rm-steps ol{margin:0;padding:0;list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:14px}
+.rm-steps li{position:relative;padding-left:40px;font-size:14.5px;color:var(--ink-soft);line-height:1.55;counter-increment:step}
+.rm-steps li::before{content:counter(step);position:absolute;left:0;top:-1px;width:28px;height:28px;border-radius:50%;
+  background:var(--bronze);color:#fff;font-family:"Fraunces",serif;font-size:14px;font-weight:600;display:grid;place-items:center}
+body.rm-open{overflow:hidden}
 
 /* promise / about */
 .promise{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--line);background:var(--paper);
@@ -349,6 +401,36 @@ footer .fl{position:absolute;bottom:-10px;right:2%;width:150px;opacity:.5;pointe
       </div>
     </div>
   </section>
+
+  <!-- RECIPE MODAL -->
+  <div class="rmodal" id="rmodal" hidden>
+    <div class="back" data-close></div>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rm-title">
+      <button class="x" data-close aria-label="Close recipe">&times;</button>
+      <div class="rm-hero">
+        <div class="figure" id="rm-figure"></div>
+        <div class="rm-gallery" id="rm-gallery"></div>
+        <div class="rm-note">Illustrations, not photos — every bake is styled by hand, like the rest of the shop.</div>
+      </div>
+      <div class="rm-body">
+        <span class="rm-badge" id="rm-badge"></span>
+        <h2 id="rm-title"></h2>
+        <div class="rm-meta" id="rm-meta"></div>
+        <p class="rm-about" id="rm-about"></p>
+        <div class="rm-tags" id="rm-tags"></div>
+        <div class="rm-grid">
+          <div class="rm-ing">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12M6 2v6a6 6 0 0012 0V2M9 22h6M12 14v8"/></svg> Ingredients</h3>
+            <ul id="rm-ing"></ul>
+          </div>
+          <div class="rm-steps">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg> Method</h3>
+            <ol id="rm-steps"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer>
@@ -383,26 +465,69 @@ var BICON={
 };
 var TINT={pastry:'#FBEFE1',bread:'#F3EEE1',cookie:'#F6ECDD',cake:'#FBEAF1'};
 var BAKES=[
-  {n:"Brown Butter Choc-Chunk Cookies",cat:["cookie"],ic:"cookie",tint:"cookie",price:"3.5",badge:"GF · daily",d:"Crisp edges, molten centers, flaky salt. The one on repeat — and no one can tell.",tags:["bestseller","warm at 8am"]},
-  {n:"Almond Croissant",cat:["pastry"],ic:"croissant",tint:"pastry",price:"5",badge:"GF laminated",d:"Weeks of dough-folding to prove GF can shatter and flake. Frangipane inside, sugar on top.",tags:["pastry","limited"]},
-  {n:"Country Sourdough Boule",cat:["bread"],ic:"loaf",tint:"bread",price:"9",badge:"GF · levain",d:"A real crackling crust and an open crumb, naturally leavened over two days. Toast-worthy.",tags:["bread","by the loaf"]},
-  {n:"Wildflower Honey Scone",cat:["pastry"],ic:"scone",tint:"pastry",price:"4",badge:"GF",d:"Tender, buttery, glazed with local honey and a scatter of edible petals.",tags:["morning","not too sweet"]},
-  {n:"Berry Lattice Tart",cat:["cake","pastry"],ic:"tart",tint:"pastry",price:"6",badge:"GF · seasonal",d:"Almond crust, vanilla custard, whatever's ripe at the market this week.",tags:["seasonal","pretty"]},
-  {n:"Olive Oil Citrus Cake",cat:["cake"],ic:"cake",tint:"cake",price:"5.5",badge:"GF · dairy-lite",d:"Moist, golden, brightened with orange and a whisper of rosemary. Keeps beautifully.",tags:["cake","freezes well"]},
-  {n:"Blueberry Corn Muffin",cat:["pastry","bread"],ic:"muffin",tint:"pastry",price:"4",badge:"GF",d:"Craggy-topped, corn-sweet, packed with berries. Naturally gluten-free from the start.",tags:["breakfast","kid-approved"]},
-  {n:"Salted Maple Pecan Pie",cat:["cake"],ic:"pie",tint:"cake",price:"6.5",badge:"GF",d:"A slice of the holidays year-round — gooey maple center, toasted pecans, flaky GF crust.",tags:["slice or whole","rich"]},
-  {n:"Double Chocolate Rye-Style Loaf",cat:["bread","cake"],ic:"loaf",tint:"bread",price:"8",badge:"GF",d:"Deep, dark, barely sweet quick bread with molten chocolate pockets. Great with coffee.",tags:["bread","fudgy"]}
+  {n:"Brown Butter Choc-Chunk Cookies",cat:["cookie"],ic:"cookie",tint:"cookie",badge:"GF · daily",d:"Crisp edges, molten centers, flaky salt. The one on repeat — and no one can tell.",tags:["bestseller","warm at 8am"],
+    yield:"Makes about 18",time:"45 min + chill",
+    about:"Browned butter is the whole secret — it turns a good gluten-free cookie into one nobody believes is gluten-free. Don't skip the chill; it keeps them thick and chewy.",
+    ing:["1 cup (226g) butter","1 cup packed brown sugar","½ cup granulated sugar","2 eggs, room temperature","2 tsp vanilla extract","2½ cups (315g) 1:1 gluten-free flour blend","1 tsp baking soda","¾ tsp fine sea salt","8 oz dark chocolate, chopped","Flaky salt, to finish"],
+    steps:["Brown the butter in a light pan over medium heat until it smells nutty and turns amber, 6–8 minutes. Pour into a bowl and cool 15 minutes.","Whisk the browned butter with both sugars until glossy, then beat in the eggs and vanilla.","Stir together the flour blend, baking soda, and salt; fold into the wet mix until just combined, then fold in the chocolate.","Chill the dough at least 1 hour — overnight is better.","Scoop into balls, space well on lined trays, and bake at 350°F (175°C) for 11–13 minutes until the edges set but centers look soft.","Finish with flaky salt and cool on the tray 10 minutes so they set up."]},
+  {n:"Almond Croissant",cat:["pastry"],ic:"croissant",tint:"pastry",badge:"GF laminated",d:"Weeks of dough-folding to prove GF can shatter and flake. Frangipane inside, sugar on top.",tags:["pastry","limited"],
+    yield:"Makes 8",time:"Half a day (mostly chilling)",
+    about:"Gluten-free lamination takes patience and a cold kitchen, but the shatter is worth it. These are filled and re-baked almond-croissant style, so even day-old dough turns spectacular.",
+    ing:["3 cups (375g) GF bread flour blend (with xanthan)","1 tbsp instant yeast","3 tbsp sugar","1 tsp salt","1¼ cups warm milk","1 egg","1 cup (226g) cold butter, for the butter block","Frangipane: 1 cup almond flour, ½ cup sugar, 1 stick soft butter, 1 egg, ½ tsp almond extract","Sliced almonds and powdered sugar, to finish"],
+    steps:["Mix flour, yeast, sugar, salt, milk, and egg into a soft dough; chill 1 hour.","Pound the cold butter into a flat square. Roll the dough, enclose the butter, and do three letter-folds, chilling 30 minutes between each.","Roll out, cut triangles, roll into crescents, and proof until puffy, about 1 hour.","Bake at 400°F (205°C) for 18–20 minutes until deep golden; cool completely.","Beat the frangipane smooth. Split each croissant, fill with frangipane, and spread a little on top.","Scatter with sliced almonds and bake again at 350°F (175°C) for 12 minutes. Dust with powdered sugar."]},
+  {n:"Country Sourdough Boule",cat:["bread"],ic:"loaf",tint:"bread",badge:"GF · levain",d:"A real crackling crust and an open crumb, naturally leavened over two days. Toast-worthy.",tags:["bread","by the loaf"],
+    yield:"One boule",time:"2 days",
+    about:"A true gluten-free sourdough with an open crumb and a crust that crackles. It leans on a lively rice-flour starter and a long, slow ferment — no gums doing the heavy lifting.",
+    ing:["100g active gluten-free sourdough starter","400g brown rice flour","100g sorghum flour","100g tapioca starch","20g psyllium husk","550g warm water","12g fine sea salt","1 tbsp honey"],
+    steps:["Whisk the psyllium into the water and let it gel for 5 minutes.","Mix the flours, starch, and salt; add the starter, honey, and psyllium gel and stir into a thick, tacky dough.","Cover and bulk ferment at room temperature 4–6 hours until risen and domed.","Shape into a round, place seam-side up in a floured banneton, and cold-proof overnight in the fridge.","Preheat a Dutch oven to 480°F (250°C). Turn the loaf out, score, and bake covered 30 minutes.","Uncover and bake 20–25 minutes more until deep brown. Cool completely before slicing."]},
+  {n:"Wildflower Honey Scone",cat:["pastry"],ic:"scone",tint:"pastry",badge:"GF",d:"Tender, buttery, glazed with local honey and a scatter of edible petals.",tags:["morning","not too sweet"],
+    yield:"Makes 8",time:"35 min",
+    about:"Barely sweet, tender, and freckled with edible petals. Cold butter and a gentle hand are everything here.",
+    ing:["2½ cups (315g) 1:1 GF flour blend","⅓ cup sugar","1 tbsp baking powder","½ tsp salt","½ cup (113g) cold butter, cubed","⅔ cup cold cream, plus more for brushing","1 egg","3 tbsp honey, plus more to glaze","Dried edible flower petals"],
+    steps:["Whisk the dry ingredients. Cut in the cold butter until the pieces are pea-sized.","Whisk the cream, egg, and honey; stir into the dry mix until just shaggy.","Pat into a 1-inch round and cut into 8 wedges.","Brush with cream and chill 15 minutes on the tray.","Bake at 400°F (205°C) for 18–20 minutes until golden.","Warm a little honey and brush over the tops, then scatter with petals."]},
+  {n:"Berry Lattice Tart",cat:["cake","pastry"],ic:"tart",tint:"pastry",badge:"GF · seasonal",d:"Almond crust, vanilla custard, whatever's ripe at the market this week.",tags:["seasonal","pretty"],
+    yield:"One 9-inch tart",time:"2 hours + chill",
+    about:"An almond shortcrust, silky vanilla custard, and whatever's ripest at the market. The lattice is easier than it looks with a well-chilled gluten-free dough.",
+    ing:["1¼ cups GF flour blend","½ cup almond flour","½ cup (113g) cold butter","⅓ cup sugar","1 egg yolk","Custard: 2 cups milk, 4 yolks, ½ cup sugar, 3 tbsp cornstarch, 1 vanilla bean","3 cups mixed berries","1 egg, beaten, for the lattice"],
+    steps:["Pulse the flours, sugar, butter, and yolk into a dough; press two-thirds into a tart pan and chill.","Whisk the custard base and cook over medium heat until thick; cool with plastic on the surface.","Blind-bake the shell at 375°F (190°C) for 18 minutes.","Spread the custard, top with berries, and lay strips of the remaining dough into a lattice.","Brush the lattice with egg and bake 25–30 minutes until golden.","Cool fully so the custard sets before slicing."]},
+  {n:"Olive Oil Citrus Cake",cat:["cake"],ic:"cake",tint:"cake",badge:"GF · dairy-lite",d:"Moist, golden, brightened with orange and a whisper of rosemary. Keeps beautifully.",tags:["cake","freezes well"],
+    yield:"One 9-inch cake",time:"1 hour",
+    about:"Moist, golden, and bright with orange and a whisper of rosemary. It keeps for days and freezes beautifully.",
+    ing:["1¾ cups GF flour blend","1 tsp baking powder","½ tsp baking soda","½ tsp salt","1 cup sugar","3 eggs","¾ cup good olive oil","¾ cup yogurt","Zest and juice of 2 oranges","1 tsp finely chopped rosemary"],
+    steps:["Whisk the dry ingredients together in one bowl.","In another, whisk the sugar, eggs, olive oil, yogurt, zest, juice, and rosemary until smooth.","Fold wet into dry until just combined.","Pour into a greased, lined 9-inch pan.","Bake at 350°F (175°C) for 40–45 minutes until a tester comes out clean.","Cool, then finish with a simple orange glaze if you like."]},
+  {n:"Blueberry Corn Muffin",cat:["pastry","bread"],ic:"muffin",tint:"pastry",badge:"GF",d:"Craggy-topped, corn-sweet, packed with berries. Naturally gluten-free from the start.",tags:["breakfast","kid-approved"],
+    yield:"Makes 12",time:"40 min",
+    about:"Craggy-topped and corn-sweet, packed with berries — naturally gluten-free from the start thanks to real cornmeal.",
+    ing:["1 cup GF flour blend","1 cup fine cornmeal","⅔ cup sugar","1 tbsp baking powder","½ tsp salt","2 eggs","1 cup buttermilk","½ cup melted butter","1½ cups blueberries","Coarse sugar, for the tops"],
+    steps:["Whisk the flour, cornmeal, sugar, baking powder, and salt.","Whisk the eggs, buttermilk, and melted butter; stir into the dry mix until just combined.","Toss the blueberries with a spoonful of flour and fold in.","Divide into a lined muffin tin and top with coarse sugar.","Bake at 400°F (205°C) for 18–20 minutes until golden and springy.","Cool 10 minutes before turning out."]},
+  {n:"Salted Maple Pecan Pie",cat:["cake"],ic:"pie",tint:"cake",badge:"GF",d:"A slice of the holidays year-round — gooey maple center, toasted pecans, flaky GF crust.",tags:["slice or whole","rich"],
+    yield:"One 9-inch pie",time:"1½ hours + cool",
+    about:"A slice of the holidays year-round — a gooey maple center, toasted pecans, and a flaky gluten-free crust with a hit of flaky salt.",
+    ing:["GF pie crust for one 9-inch pie","3 eggs","¾ cup pure maple syrup","½ cup brown sugar","3 tbsp melted butter","1 tsp vanilla","½ tsp salt","2 cups toasted pecans","Flaky salt, to finish"],
+    steps:["Roll and fit the crust into a pie plate; crimp and chill.","Whisk the eggs, maple syrup, brown sugar, butter, vanilla, and salt.","Scatter the pecans in the shell and pour the filling over.","Bake at 350°F (175°C) for 45–55 minutes until the center is just set with a slight jiggle.","Finish with flaky salt and cool completely so it slices clean."]},
+  {n:"Double Chocolate Rye-Style Loaf",cat:["bread","cake"],ic:"loaf",tint:"bread",badge:"GF",d:"Deep, dark, barely sweet quick bread with molten chocolate pockets. Great with coffee.",tags:["bread","fudgy"],
+    yield:"One loaf",time:"1¼ hours",
+    about:"Deep, dark, and barely sweet, with molten chocolate pockets and a rye-like maltiness — no rye, all gluten-free. Perfect with coffee.",
+    ing:["1½ cups GF flour blend","½ cup buckwheat flour","¾ cup cocoa powder","1 tsp baking soda","½ tsp salt","¾ cup brown sugar","2 eggs","1 cup buttermilk","½ cup melted butter","1 cup dark chocolate chunks"],
+    steps:["Whisk the flours, cocoa, baking soda, and salt.","In another bowl whisk the brown sugar, eggs, buttermilk, and melted butter.","Fold wet into dry, then fold in most of the chocolate chunks.","Scrape into a lined loaf pan and press the remaining chunks on top.","Bake at 350°F (175°C) for 50–60 minutes until a tester has moist crumbs.","Cool in the pan 15 minutes, then fully on a rack."]}
 ];
 (function(){
   var host=document.getElementById('cards');
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function tint(b){return TINT[b.tint]||'#F6ECDD';}
   function render(filter){
     host.innerHTML='';
-    BAKES.filter(function(b){return filter==='all'||b.cat.indexOf(filter)>=0;}).forEach(function(b){
+    BAKES.forEach(function(b,i){
+      if(!(filter==='all'||b.cat.indexOf(filter)>=0))return;
       var el=document.createElement('article');el.className='bake';
-      el.innerHTML='<div class="top" style="background:'+(TINT[b.tint]||'#F6ECDD')+'">'
-        +'<span class="badge">'+b.badge+'</span>'+BICON[b.ic]+'</div>'
-        +'<div class="b"><h3>'+b.n+'</h3><p>'+b.d+'</p>'
-        +'<div class="tags">'+b.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div></div>';
+      el.setAttribute('role','button');el.setAttribute('tabindex','0');
+      el.setAttribute('aria-label','View recipe: '+b.n);
+      el.dataset.i=i;
+      el.innerHTML='<div class="top" style="background:'+tint(b)+'">'
+        +'<span class="badge">'+esc(b.badge)+'</span>'+BICON[b.ic]+'</div>'
+        +'<div class="b"><h3>'+esc(b.n)+'</h3><p>'+esc(b.d)+'</p>'
+        +'<div class="tags">'+b.tags.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('')+'</div>'
+        +'<span class="open">View recipe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>';
       host.appendChild(el);
     });
   }
@@ -412,6 +537,50 @@ var BAKES=[
     this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});
     b.setAttribute('aria-pressed','true');render(b.getAttribute('data-f'));
   });
+
+  /* ---- recipe modal ---- */
+  var modal=document.getElementById('rmodal'),panel=modal.querySelector('.panel'),lastFocus=null;
+  var FLOWERS=['#poppy','#bluef','#goldf','#lupine'];
+  function fig(id){return '<svg viewBox="0 0 100 150"><use href="'+id+'"/></svg>';}
+  function open(i){
+    var b=BAKES[i];if(!b)return;
+    lastFocus=document.activeElement;
+    document.getElementById('rm-badge').textContent=b.badge;
+    document.getElementById('rm-title').textContent=b.n;
+    document.getElementById('rm-about').textContent=b.about||b.d;
+    document.getElementById('rm-meta').innerHTML=
+      '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'+esc(b.time)+'</span>'
+      +'<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M6 11a6 6 0 0112 0M4 15h16"/></svg>'+esc(b.yield)+'</span>';
+    var figure=document.getElementById('rm-figure');
+    figure.style.background=tint(b);
+    figure.innerHTML='<span class="icon">'+BICON[b.ic]+'</span>'
+      +'<svg class="fl fl1" viewBox="0 0 100 150"><use href="'+FLOWERS[i%FLOWERS.length]+'"/></svg>'
+      +'<svg class="fl fl2" viewBox="0 0 100 150"><use href="'+FLOWERS[(i+2)%FLOWERS.length]+'"/></svg>';
+    var tints=['#FBEFE1','#F3EEE1','#FBEAF1'];
+    document.getElementById('rm-gallery').innerHTML=[0,1,2].map(function(k){
+      var inner=k===0?BICON[b.ic]:fig(FLOWERS[(i+k)%FLOWERS.length]);
+      return '<div class="thumb" style="background:'+tints[k]+'">'+inner+'</div>';
+    }).join('');
+    document.getElementById('rm-tags').innerHTML=b.tags.map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join('');
+    document.getElementById('rm-ing').innerHTML=b.ing.map(function(x){return '<li>'+esc(x)+'</li>';}).join('');
+    document.getElementById('rm-steps').innerHTML=b.steps.map(function(x){return '<li>'+esc(x)+'</li>';}).join('');
+    modal.hidden=false;document.body.classList.add('rm-open');
+    panel.scrollTop=0;modal.querySelector('.x').focus();
+  }
+  function close(){
+    if(modal.hidden)return;
+    modal.hidden=true;document.body.classList.remove('rm-open');
+    if(lastFocus&&lastFocus.focus)lastFocus.focus();
+  }
+  host.addEventListener('click',function(e){
+    var card=e.target.closest('.bake');if(!card)return;open(+card.dataset.i);
+  });
+  host.addEventListener('keydown',function(e){
+    var card=e.target.closest('.bake');if(!card)return;
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();open(+card.dataset.i);}
+  });
+  modal.addEventListener('click',function(e){if(e.target.hasAttribute('data-close'))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 })();
 </script>
 </body>
