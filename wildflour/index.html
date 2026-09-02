@@ -6,7 +6,7 @@
 <title>Wildflour Bake Shop</title>
 <meta name="description" content="Wildflour Bake Shop — Michelle's gluten-free baking journal: recipes worth repeating, road-tested food finds, and a map of the best gluten-free bakeries." />
 <meta property="og:title" content="Wildflour Bake Shop" />
-<meta property="og:description" content="A little gluten-free bakery & café — fresh bakes, bronze-pulled espresso, and six curated scoops." />
+<meta property="og:description" content="A little gluten-free baking journal — Michelle's story, recipes worth repeating, and a map of the best gluten-free bakeries." />
 <meta name="theme-color" content="#FBF6EC" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -132,43 +132,11 @@ section.block{padding:64px 0}
 .bake .top svg{width:60px;height:60px}
 .bake .badge{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.08em;
   background:rgba(255,255,255,.94);color:var(--sage-deep);padding:4px 9px;border-radius:999px}
-.bake .price{position:absolute;top:12px;right:12px;font-family:"Fraunces",serif;font-weight:600;font-size:15px;
-  background:rgba(255,255,255,.94);color:var(--ink);padding:3px 10px;border-radius:999px}
 .bake .b{padding:17px 18px 19px;display:flex;flex-direction:column;gap:8px;flex:1}
 .bake h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
 .bake p{margin:0;font-size:14px;color:var(--ink-soft);flex:1}
 .bake .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:11px;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
-
-/* espresso bar */
-.espresso{position:relative}
-.espresso-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-top:14px}
-@media(max-width:800px){.espresso-grid{grid-template-columns:1fr;gap:30px}}
-.machine{background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
-  padding:26px;display:grid;place-items:center;position:relative;overflow:hidden}
-.machine .tilebg{position:absolute;inset:0;opacity:.8}
-.machine svg{position:relative;width:100%;max-width:340px;height:auto;filter:drop-shadow(0 12px 24px rgba(140,83,38,.22))}
-.coffeelist{list-style:none;margin:0;padding:0}
-.coffeelist li{display:flex;align-items:baseline;gap:12px;padding:15px 0;border-bottom:1px dashed var(--line)}
-.coffeelist li:last-child{border-bottom:0}
-.coffeelist .nm{font-family:"Fraunces",serif;font-size:18px;font-weight:600}
-.coffeelist .ds{font-size:13.5px;color:var(--muted);display:block;margin-top:2px}
-.coffeelist .dots{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px);min-width:12px}
-.coffeelist .pr{font-family:"Fraunces",serif;font-weight:600;color:var(--bronze-deep);font-size:16px;white-space:nowrap}
-
-/* ice cream */
-.scoops{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:30px}
-@media(max-width:900px){.scoops{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:520px){.scoops{grid-template-columns:repeat(2,1fr)}}
-.scoop{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 14px 16px;text-align:center;
-  box-shadow:var(--shadow);transition:transform .16s ease}
-.scoop:hover{transform:translateY(-5px)}
-.scoop .ball{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;position:relative;
-  box-shadow:inset 0 -6px 12px rgba(0,0,0,.12), 0 6px 14px rgba(51,41,31,.14)}
-.scoop .ball::after{content:"";position:absolute;top:12px;left:14px;width:18px;height:12px;border-radius:50%;
-  background:rgba(255,255,255,.45);transform:rotate(-20deg)}
-.scoop h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
-.scoop .note{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* promise / about */
 .promise{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--line);background:var(--paper);
@@ -280,9 +248,8 @@ footer .fl{position:absolute;bottom:-10px;right:2%;width:150px;opacity:.5;pointe
       <span class="w">wildflour</span><span class="sub">bake&nbsp;shop</span>
     </a>
     <nav class="tlinks">
+      <a href="#about">The Baker</a>
       <a href="#case">The Case</a>
-      <a href="#espresso">Espresso</a>
-      <a href="#icecream">Ice Cream</a>
       <a href="map/">Bakery Map</a>
       <a class="keep" href="../">Family hub</a>
       <button class="themebtn" id="themebtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
@@ -303,132 +270,11 @@ footer .fl{position:absolute;bottom:-10px;right:2%;width:150px;opacity:.5;pointe
       <div class="baker">bake shop</div>
       <p class="lead">A little corner of white subway tile and warm bronze, where everything in the case just happens to be gluten-free — and no one can tell. Pull up a stool.</p>
       <div class="paths">
-        <a class="pbtn bronze" href="#case"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a4 4 0 014-4h8a4 4 0 014 4v1H4z"/><rect x="4" y="12" width="16" height="7" rx="2"/></svg> See the case</a>
-        <a class="pbtn" href="#espresso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13v5a5 5 0 01-5 5H9a5 5 0 01-5-5z"/><path d="M17 9h2a2 2 0 010 4h-2"/><path d="M8 3v2M11 3v2M14 3v2"/></svg> The espresso bar</a>
+        <a class="pbtn bronze" href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V4M12 8c-3-1-6 0-8-2M12 12c3-1 6 0 8-2M12 16c-3-1-6 0-8-2"/></svg> Meet the baker</a>
+        <a class="pbtn" href="#case"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a4 4 0 014-4h8a4 4 0 014 4v1H4z"/><rect x="4" y="12" width="16" height="7" rx="2"/></svg> See the case</a>
       </div>
     </div>
   </section>
-
-  <!-- THE CASE -->
-  <section class="block" id="case">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Fresh from</div>
-        <h2>The Display Case</h2>
-        <p>Everything is baked in-house and naturally gluten-free — no gritty substitutions, no gum you can taste. Pulled warm most mornings until we sell out.</p>
-      </div>
-      <div class="filters" id="filters">
-        <button aria-pressed="true" data-f="all">Everything</button>
-        <button aria-pressed="false" data-f="pastry">Pastry</button>
-        <button aria-pressed="false" data-f="bread">Bread</button>
-        <button aria-pressed="false" data-f="cookie">Cookies</button>
-        <button aria-pressed="false" data-f="cake">Cakes</button>
-      </div>
-      <div class="cards" id="cards"></div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ESPRESSO BAR -->
-  <section class="block espresso" id="espresso">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Pulled on the</div>
-        <h2>Bronze Espresso Bar</h2>
-        <p>One beautiful bronze machine, single-origin beans, and milk steamed just so. The quiet heart of the shop.</p>
-      </div>
-      <div class="espresso-grid">
-        <div class="machine">
-          <div class="tilebg tiles"></div>
-          <!-- bronze espresso machine -->
-          <svg viewBox="0 0 340 280" role="img" aria-label="Bronze espresso machine">
-            <defs>
-              <linearGradient id="brz" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#D79A5C"/><stop offset=".5" stop-color="#B0703A"/><stop offset="1" stop-color="#8C5326"/>
-              </linearGradient>
-              <linearGradient id="brzTop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#E7B888"/><stop offset="1" stop-color="#B67C45"/>
-              </linearGradient>
-              <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#F3ECE0"/><stop offset="1" stop-color="#CFC3AE"/>
-              </linearGradient>
-            </defs>
-            <!-- counter -->
-            <rect x="20" y="250" width="300" height="14" rx="4" fill="#8C5326" opacity=".28"/>
-            <!-- steam -->
-            <g fill="none" stroke="#C9BBA6" stroke-width="4" stroke-linecap="round" opacity=".8" class="steam">
-              <path d="M150 44 C144 34 156 28 150 16"/>
-              <path d="M176 44 C170 34 182 28 176 16"/>
-            </g>
-            <!-- main body -->
-            <rect x="46" y="60" width="248" height="120" rx="14" fill="url(#brz)"/>
-            <rect x="46" y="60" width="248" height="120" rx="14" fill="none" stroke="#7A481F" stroke-width="2" opacity=".5"/>
-            <!-- top warming tray -->
-            <rect x="60" y="46" width="220" height="20" rx="8" fill="url(#brzTop)"/>
-            <rect x="150" y="34" width="44" height="14" rx="5" fill="#7A481F"/>
-            <!-- cups warming on top -->
-            <g fill="url(#steel)" stroke="#B7A894" stroke-width="1.5">
-              <rect x="86" y="34" width="22" height="13" rx="3"/>
-              <rect x="116" y="34" width="22" height="13" rx="3"/>
-              <rect x="210" y="34" width="22" height="13" rx="3"/>
-            </g>
-            <!-- group head -->
-            <rect x="150" y="180" width="44" height="26" rx="5" fill="url(#brzTop)"/>
-            <path d="M158 206 h28 l-5 16 h-18 z" fill="#7A481F"/>
-            <rect x="150" y="222" width="44" height="8" rx="3" fill="#5E3A17"/>
-            <!-- portafilter handle -->
-            <rect x="194" y="212" width="70" height="12" rx="6" fill="#3C2712"/>
-            <circle cx="268" cy="218" r="10" fill="#2E1E0E"/>
-            <!-- pressure gauge -->
-            <circle cx="90" cy="112" r="26" fill="url(#steel)" stroke="#8C5326" stroke-width="4"/>
-            <circle cx="90" cy="112" r="4" fill="#8C5326"/>
-            <path d="M90 112 L104 100" stroke="#B0703A" stroke-width="3" stroke-linecap="round"/>
-            <g stroke="#9A8B76" stroke-width="2" stroke-linecap="round"><path d="M90 92v5M110 112h-5M90 132v-5M70 112h5"/></g>
-            <!-- knobs -->
-            <circle cx="240" cy="104" r="12" fill="url(#steel)" stroke="#8C5326" stroke-width="3"/>
-            <circle cx="270" cy="104" r="12" fill="url(#steel)" stroke="#8C5326" stroke-width="3"/>
-            <!-- steam wand -->
-            <path d="M300 96 C316 108 314 150 300 176" fill="none" stroke="#B67C45" stroke-width="7" stroke-linecap="round"/>
-            <circle cx="300" cy="180" r="5" fill="#7A481F"/>
-            <!-- badge -->
-            <rect x="140" y="96" width="64" height="34" rx="8" fill="#F3ECE0" opacity=".9"/>
-            <text x="172" y="118" text-anchor="middle" font-family="Parisienne, cursive" font-size="22" fill="#8C5326">wf</text>
-            <!-- feet -->
-            <rect x="60" y="180" width="16" height="12" rx="3" fill="#5E3A17"/>
-            <rect x="264" y="180" width="16" height="12" rx="3" fill="#5E3A17"/>
-            <!-- cup under group head -->
-            <path d="M158 240 h32 v10 a10 10 0 01-10 10 h-12 a10 10 0 01-10 -10 z" fill="url(#steel)" stroke="#B7A894" stroke-width="1.5"/>
-            <path d="M190 244 h8 a7 7 0 010 14 h-4" fill="none" stroke="#B7A894" stroke-width="3"/>
-          </svg>
-        </div>
-        <ul class="coffeelist">
-          <li><span><span class="nm">Espresso</span><span class="ds">A clean double shot, crema and all</span></span><span class="dots"></span><span class="pr">3.5</span></li>
-          <li><span><span class="nm">Cortado</span><span class="ds">Equal parts shot &amp; silky steamed milk</span></span><span class="dots"></span><span class="pr">4.5</span></li>
-          <li><span><span class="nm">Cappuccino</span><span class="ds">Dry, dusted with a little cocoa</span></span><span class="dots"></span><span class="pr">4.75</span></li>
-          <li><span><span class="nm">Honey Lavender Latte</span><span class="ds">Local honey, a whisper of the garden</span></span><span class="dots"></span><span class="pr">5.5</span></li>
-          <li><span><span class="nm">Pour Over</span><span class="ds">Rotating single origin, ask what's on</span></span><span class="dots"></span><span class="pr">4.5</span></li>
-          <li><span><span class="nm">Wildflower Chamomile</span><span class="ds">Caffeine-free, steeped by the pot</span></span><span class="dots"></span><span class="pr">4</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ICE CREAM -->
-  <section class="block" id="icecream">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="kicker">Six perfect</div>
-        <h2>Scoops in the Freezer</h2>
-        <p>Right beside the case, six flavors and never more — churned small, rotated with the season, always gluten-free to the last sprinkle.</p>
-      </div>
-      <div class="scoops" id="scoops"></div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
 
   <!-- PROMISE / ABOUT -->
   <section class="block" id="about">
@@ -455,6 +301,29 @@ footer .fl{position:absolute;bottom:-10px;right:2%;width:150px;opacity:.5;pointe
       </div>
     </div>
   </section>
+
+  <div class="divider"></div>
+
+  <!-- THE CASE -->
+  <section class="block" id="case">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="kicker">Fresh from</div>
+        <h2>The Display Case</h2>
+        <p>Everything is baked in-house and naturally gluten-free — no gritty substitutions, no gum you can taste. A little look at the recipes we keep coming back to.</p>
+      </div>
+      <div class="filters" id="filters">
+        <button aria-pressed="true" data-f="all">Everything</button>
+        <button aria-pressed="false" data-f="pastry">Pastry</button>
+        <button aria-pressed="false" data-f="bread">Bread</button>
+        <button aria-pressed="false" data-f="cookie">Cookies</button>
+        <button aria-pressed="false" data-f="cake">Cakes</button>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
 
   <!-- BAKERY MAP TEASER -->
   <section class="block" id="finds" style="padding-top:24px">
@@ -531,7 +400,7 @@ var BAKES=[
     BAKES.filter(function(b){return filter==='all'||b.cat.indexOf(filter)>=0;}).forEach(function(b){
       var el=document.createElement('article');el.className='bake';
       el.innerHTML='<div class="top" style="background:'+(TINT[b.tint]||'#F6ECDD')+'">'
-        +'<span class="badge">'+b.badge+'</span><span class="price">$'+b.price+'</span>'+BICON[b.ic]+'</div>'
+        +'<span class="badge">'+b.badge+'</span>'+BICON[b.ic]+'</div>'
         +'<div class="b"><h3>'+b.n+'</h3><p>'+b.d+'</p>'
         +'<div class="tags">'+b.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('')+'</div></div>';
       host.appendChild(el);
@@ -542,25 +411,6 @@ var BAKES=[
     var b=e.target.closest('button');if(!b)return;
     this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});
     b.setAttribute('aria-pressed','true');render(b.getAttribute('data-f'));
-  });
-})();
-
-/* ice cream — exactly six */
-var SCOOPS=[
-  {n:"Tahitian Vanilla Bean",note:"the one you start with",c1:"#F6ECD2",c2:"#E7D4A6"},
-  {n:"Strawberry Fields",note:"real market berries",c1:"#F2A6AE",c2:"#DB6C7C"},
-  {n:"Wildflower Honey",note:"local honey swirl",c1:"#F1C86A",c2:"#DDA43C"},
-  {n:"Dark Chocolate Sea Salt",note:"deep &amp; not too sweet",c1:"#8A5A3C",c2:"#5E3A22"},
-  {n:"Pistachio Cardamom",note:"toasted &amp; nutty",c1:"#B6C48A",c2:"#8DA35C"},
-  {n:"Lavender Blueberry",note:"straight from the garden",c1:"#A99BCB",c2:"#7C6BA6"}
-];
-(function(){
-  var host=document.getElementById('scoops');
-  SCOOPS.slice(0,6).forEach(function(s){
-    var el=document.createElement('article');el.className='scoop';
-    el.innerHTML='<div class="ball" style="background:radial-gradient(circle at 34% 30%,'+s.c1+','+s.c2+')"></div>'
-      +'<h3>'+s.n+'</h3><div class="note">'+s.note+'</div>';
-    host.appendChild(el);
   });
 })();
 </script>
