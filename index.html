@@ -285,7 +285,17 @@
     var cv=document.getElementById('constellation');
     var ctx=cv.getContext('2d');
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var nodes=SITES.filter(function(s){return s.star;});
+    // spread the shapes around the orbit so groups interleave instead of clustering:
+    // give each node a fractional slot within its group, then order everyone by that fraction
+    var groups={};
+    SITES.filter(function(s){return s.star;}).forEach(function(s){(groups[s.g]=groups[s.g]||[]).push(s);});
+    var mixed=[];
+    Object.keys(groups).forEach(function(g){
+      var arr=groups[g];
+      arr.forEach(function(s,idx){mixed.push({f:(idx+0.5)/arr.length,s:s});});
+    });
+    mixed.sort(function(a,b){return a.f-b.f;});
+    var nodes=mixed.map(function(x){return x.s;});
     var pts=[],W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2),t=0,hover=-1,mx=-9999,my=-9999;
     var rot=0,cx=0,cy=0,rx=0,ry=0;
 
@@ -345,12 +355,8 @@
       ctx.clearRect(0,0,W,H);
       ctx.lineJoin='round';
       pts.forEach(place);
-      // faint orbit rings
-      ctx.strokeStyle=line;ctx.lineWidth=1;
-      [0.84,1.0].forEach(function(k){
-        ctx.globalAlpha=.30;ctx.beginPath();ctx.ellipse(cx,cy,rx*k,ry*k,0,0,Math.PI*2);ctx.stroke();
-      });
-      // spokes to the hub + a light ring between neighbours
+      // connective lines only: spokes to the centre + a light ring between neighbours
+      ctx.lineWidth=1;
       pts.forEach(function(p,i){
         ctx.strokeStyle=line;ctx.globalAlpha=.5;
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.stroke();
@@ -358,8 +364,6 @@
         ctx.globalAlpha=.26;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
       });
       ctx.globalAlpha=1;
-      // hub
-      ctx.beginPath();ctx.arc(cx,cy,3.5,0,7);ctx.fillStyle=star;ctx.globalAlpha=.45;ctx.fill();ctx.globalAlpha=1;
       // nodes
       pts.forEach(function(p,i){
         var isH=(i===hover);
