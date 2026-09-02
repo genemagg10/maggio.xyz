@@ -154,8 +154,11 @@
     .card.is-soon{cursor:default}
     .card.is-soon:hover{transform:none;box-shadow:var(--shadow);border-color:var(--line)}
     .card.is-soon:hover .thumb{transform:none}
-    .card .soon-badge{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap;flex:none}
+    /* status pills sit where the arrow would, right-aligned */
+    .card .status-badge{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
+      text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap;flex:none}
+    .card .status-badge.soon{color:var(--muted)}
+    .card .status-badge.dev{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 42%,var(--line))}
 
     footer{border-top:1px solid var(--line);padding:34px 0 54px;margin-top:20px}
     footer .fr{display:flex;flex-wrap:wrap;gap:14px;align-items:center;color:var(--muted);font-size:13px}
@@ -229,12 +232,12 @@
     // group, name, role, blurb, url, accent, icon, star? (in constellation)
     {g:"featured",name:"Ingoizer's World",role:"Play",blurb:"A story-driven browser adventure — a tale of gems and glory.",url:"https://luca.maggio.xyz",accent:"#7C5CD6",icon:"gem",star:true,short:"Ingoizer"},
     {g:"personal",name:"Alberto",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
-    {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"gene/",accent:"#37b06a",icon:"gnome",star:true,short:"Gene"},
+    {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"gene/",accent:"#37b06a",icon:"gnome",star:true,short:"Gene",dev:true},
     {g:"personal",name:"Wildflour Bake Shop",role:"Gluten-free recipes",blurb:"Delicious recipes that just happen to be gluten-free — plus tips for eating well on the road.",url:"wildflour/",accent:"#4E8144",icon:"sprig",star:true,short:"Wildflour",soon:true},
     {g:"personal",name:"Luca",role:"Personal site",blurb:"Luca's corner of the web.",url:"https://genemagg10.github.io/luca-website",accent:"#EE7A3C",icon:"rocket",star:true,short:"Luca"},
     {g:"projects",name:"Maggio Arcade",role:"Homemade games",blurb:"A little arcade of browser games we built ourselves — free to play, no refunds.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
     {g:"projects",name:"Soccer Coaching",role:"Football training",blurb:"Sessions, stages, and a coaching philosophy.",url:"https://genemagg10.github.io/football-trainer",accent:"#3f8a5c",icon:"soccer",star:true,short:"Soccer"},
-    {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",img:"https://www.lovelafayette.org/home/showpublishedimage/5001/636640669087800000",star:true,short:"Pulse"},
+    {g:"projects",name:"Lafayette Pulse",role:"Local · Live",blurb:"A pulse on what's happening around Lafayette.",url:"https://lafayette-pulse.vercel.app",accent:"#d64545",icon:"pulse",img:"https://www.lovelafayette.org/home/showpublishedimage/5001/636640669087800000",star:true,short:"Pulse",dev:true},
     {g:"projects",name:"Privacy Dashboard",role:"Security · Web",blurb:"See what your browser reveals about you — and how to lock it down.",url:"https://genemagg10.github.io/privacy-score",accent:"#3f6fd6",icon:"shield",star:true,short:"Privacy"},
     {g:"projects",name:"Experiments",role:"GitHub · @genemagg10",blurb:"Half-built ideas and code experiments.",url:"https://github.com/genemagg10",accent:"#6b7684",icon:"flask",img:"logos/github-mark.svg",star:false,short:"Experiments"},
     {g:"business",name:"Ctrl+Click",role:"AI+IT Solutions",blurb:"Bay Area IT and AI help for businesses and families — formerly Maggio Consulting.",url:"https://it.maggio.xyz",accent:"#1E9C8C",icon:"ctrlclick",img:"logos/controlclick-mark.svg",star:true,short:"Ctrl+Click"},
@@ -263,21 +266,23 @@
   ['personal','projects','business'].forEach(function(group){
     var host=document.querySelector('.grid[data-group="'+group+'"]');
     SITES.filter(function(s){return s.g===group;}).forEach(function(s){
-      var soon=!!s.soon;
-      // coming-soon entries render as a plain card (no link) until the site is ready to launch
+      var soon=!!s.soon, dev=!!s.dev;
+      // coming-soon entries render as a plain card (no link) until the site is ready to launch;
+      // in-development entries stay clickable for previewing but wear a status badge
       var a=document.createElement(soon?'div':'a');
       a.className='card'+(soon?' is-soon':'');
       if(!soon){a.href=s.url;a.target='_blank';a.rel='noopener';}
       a.style.setProperty('--accent',s.accent);
-      a.setAttribute('aria-label',s.name+(soon?' — coming soon':''));
+      a.setAttribute('aria-label',s.name+(soon?' — coming soon':dev?' — in development':''));
       var thumb=document.createElement('div');thumb.className='thumb';
       if(s.img){thumb.classList.add('thumb--logo');thumb.innerHTML='<img src="'+s.img+'" alt="'+s.name+' logo" loading="lazy" decoding="async">';}
       else{setIcon(thumb,s.icon);}
       var copy=document.createElement('div');copy.className='c-copy';
       copy.innerHTML='<div class="role">'+s.role+'</div><h3>'+s.name+'</h3><p>'+s.blurb+'</p>';
-      var end;
-      if(soon){end=document.createElement('span');end.className='soon-badge';end.textContent='Coming soon';}
-      else{end=document.createElement('span');end.className='arrow';end.textContent='→';}
+      var end=document.createElement('span');
+      if(soon){end.className='status-badge soon';end.textContent='Coming soon';}
+      else if(dev){end.className='status-badge dev';end.textContent='In development';}
+      else{end.className='arrow';end.textContent='→';}
       a.appendChild(thumb);a.appendChild(copy);a.appendChild(end);
       host.appendChild(a);
     });
@@ -388,11 +393,11 @@
           ctx.font='500 13px "JetBrains Mono", monospace';
           ctx.textAlign=p.x<cx?'right':'left';
           var lx=p.x<cx?p.x-14:p.x+14;
-          var tw=ctx.measureText(p.n.short).width;
+          var tw=ctx.measureText(p.n.name).width;
           ctx.fillStyle=css('--panel');ctx.globalAlpha=.92;
           ctx.fillRect(p.x<cx?lx-tw-8:lx-4, p.y-13, tw+12, 20);ctx.globalAlpha=1;
           ctx.fillStyle=p.n.accent;
-          ctx.fillText(p.n.short,lx,p.y+3);
+          ctx.fillText(p.n.name,lx,p.y+3);
         }
       });
     }
