@@ -355,13 +355,10 @@
       ctx.clearRect(0,0,W,H);
       ctx.lineJoin='round';
       pts.forEach(place);
-      // connective lines only: spokes to the centre + a light ring between neighbours
-      ctx.lineWidth=1;
-      pts.forEach(function(p,i){
-        ctx.strokeStyle=line;ctx.globalAlpha=.5;
+      // spokes only: a single line from the centre out to each shape
+      ctx.lineWidth=1;ctx.strokeStyle=line;ctx.globalAlpha=.5;
+      pts.forEach(function(p){
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(p.x,p.y);ctx.stroke();
-        var q=pts[(i+1)%pts.length];
-        ctx.globalAlpha=.26;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
       });
       ctx.globalAlpha=1;
       // nodes
