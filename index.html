@@ -150,6 +150,12 @@
       display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:calc(2 * 1.5em)}
     .card .arrow{margin-left:auto;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:15px;transition:transform .16s ease,color .16s ease;flex:none}
     .card:hover .arrow{transform:translateX(3px);color:var(--accent)}
+    /* coming-soon cards: not clickable yet, so they sit still and wear a quiet badge */
+    .card.is-soon{cursor:default}
+    .card.is-soon:hover{transform:none;box-shadow:var(--shadow);border-color:var(--line)}
+    .card.is-soon:hover .thumb{transform:none}
+    .card .soon-badge{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 9px;white-space:nowrap;flex:none}
 
     footer{border-top:1px solid var(--line);padding:34px 0 54px;margin-top:20px}
     footer .fr{display:flex;flex-wrap:wrap;gap:14px;align-items:center;color:var(--muted);font-size:13px}
@@ -224,7 +230,7 @@
     {g:"featured",name:"Ingoizer's World",role:"Play",blurb:"A story-driven browser adventure — a tale of gems and glory.",url:"https://luca.maggio.xyz",accent:"#7C5CD6",icon:"gem",star:true,short:"Ingoizer"},
     {g:"personal",name:"Alberto",role:"Musician · Songwriter",blurb:"Dad's music. New album, Love Moods II — out now.",url:"https://genemagg10.github.io/musician-website",accent:"#E8674C",icon:"music",star:true,short:"Alberto"},
     {g:"personal",name:"Gene",role:"Personal site",blurb:"Experiments, GitHub activity, and a workshop run by gnomes.",url:"gene/",accent:"#37b06a",icon:"gnome",star:true,short:"Gene"},
-    {g:"personal",name:"Wildflour Bake Shop",role:"Gluten-free recipes",blurb:"Delicious recipes that just happen to be gluten-free — plus tips for eating well on the road.",url:"wildflour/",accent:"#4E8144",icon:"sprig",star:true,short:"Wildflour"},
+    {g:"personal",name:"Wildflour Bake Shop",role:"Gluten-free recipes",blurb:"Delicious recipes that just happen to be gluten-free — plus tips for eating well on the road.",url:"wildflour/",accent:"#4E8144",icon:"sprig",star:true,short:"Wildflour",soon:true},
     {g:"personal",name:"Luca",role:"Personal site",blurb:"Luca's corner of the web.",url:"https://genemagg10.github.io/luca-website",accent:"#EE7A3C",icon:"rocket",star:true,short:"Luca"},
     {g:"projects",name:"Maggio Arcade",role:"Homemade games",blurb:"A little arcade of browser games we built ourselves — free to play, no refunds.",url:"https://arcade.maggio.xyz",accent:"#8a5cc0",icon:"arcade",star:true,short:"Arcade"},
     {g:"projects",name:"Soccer Coaching",role:"Football training",blurb:"Sessions, stages, and a coaching philosophy.",url:"https://genemagg10.github.io/football-trainer",accent:"#3f8a5c",icon:"soccer",star:true,short:"Soccer"},
@@ -257,17 +263,22 @@
   ['personal','projects','business'].forEach(function(group){
     var host=document.querySelector('.grid[data-group="'+group+'"]');
     SITES.filter(function(s){return s.g===group;}).forEach(function(s){
-      var a=document.createElement('a');
-      a.className='card';a.href=s.url;a.target='_blank';a.rel='noopener';
+      var soon=!!s.soon;
+      // coming-soon entries render as a plain card (no link) until the site is ready to launch
+      var a=document.createElement(soon?'div':'a');
+      a.className='card'+(soon?' is-soon':'');
+      if(!soon){a.href=s.url;a.target='_blank';a.rel='noopener';}
       a.style.setProperty('--accent',s.accent);
-      a.setAttribute('aria-label',s.name);
+      a.setAttribute('aria-label',s.name+(soon?' — coming soon':''));
       var thumb=document.createElement('div');thumb.className='thumb';
       if(s.img){thumb.classList.add('thumb--logo');thumb.innerHTML='<img src="'+s.img+'" alt="'+s.name+' logo" loading="lazy" decoding="async">';}
       else{setIcon(thumb,s.icon);}
       var copy=document.createElement('div');copy.className='c-copy';
       copy.innerHTML='<div class="role">'+s.role+'</div><h3>'+s.name+'</h3><p>'+s.blurb+'</p>';
-      var arr=document.createElement('span');arr.className='arrow';arr.textContent='→';
-      a.appendChild(thumb);a.appendChild(copy);a.appendChild(arr);
+      var end;
+      if(soon){end=document.createElement('span');end.className='soon-badge';end.textContent='Coming soon';}
+      else{end=document.createElement('span');end.className='arrow';end.textContent='→';}
+      a.appendChild(thumb);a.appendChild(copy);a.appendChild(end);
       host.appendChild(a);
     });
   });
@@ -399,7 +410,7 @@
     }
     cv.addEventListener('mousemove',function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hit();if(reduce)draw();});
     cv.addEventListener('mouseleave',function(){mx=my=-9999;hover=-1;if(reduce)draw();});
-    cv.addEventListener('click',function(){if(hover>=0)window.open(pts[hover].n.url,'_blank','noopener');});
+    cv.addEventListener('click',function(){if(hover>=0&&!pts[hover].n.soon)window.open(pts[hover].n.url,'_blank','noopener');});
     /* touch: no hover on mobile, so first tap reveals a shape's name, second tap opens it */
     var tapped=-1;
     cv.addEventListener('touchstart',function(e){
@@ -408,7 +419,7 @@
       hit(34);                                  // fatter target for fingertips
       if(hover>=0){
         e.preventDefault();                     // suppress the synthetic click + scroll
-        if(hover===tapped){window.open(pts[hover].n.url,'_blank','noopener');}
+        if(hover===tapped){if(!pts[hover].n.soon)window.open(pts[hover].n.url,'_blank','noopener');}
         else{tapped=hover;draw();}              // reveal the label, wait for a second tap
       }else{tapped=-1;draw();}                   // tap on empty space dismisses the label
     },{passive:false});
