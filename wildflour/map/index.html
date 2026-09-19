@@ -303,9 +303,21 @@ function clusterItems(items){
 function hidePicker(){picker.hidden=true;picker.innerHTML='';}
 function placePicker(pin){
   var panel=picker.parentElement.getBoundingClientRect();
+  var wrap=document.querySelector('.mapwrap').getBoundingClientRect();
   var pr=pin.getBoundingClientRect();
   picker.style.left=(pr.left-panel.left+pr.width/2)+'px';
   picker.style.top=(pr.top-panel.top)+'px';
+  picker.style.transform='translate(-50%,calc(-100% - 10px))';
+  var box=picker.getBoundingClientRect();
+  if(box.top<wrap.top+8){
+    picker.style.transform='translate(-50%,14px)';
+    box=picker.getBoundingClientRect();
+  }
+  if(box.left<panel.left+10){
+    picker.style.left=(box.width/2+10)+'px';
+  }else if(box.right>panel.right-10){
+    picker.style.left=(panel.width-box.width/2-10)+'px';
+  }
 }
 function focusCard(i){
   var card=cardEls[i];if(!card)return;
