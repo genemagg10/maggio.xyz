@@ -89,8 +89,7 @@ section.block{padding:44px 0}
   opacity:0;pointer-events:none;transition:opacity .14s;line-height:1.3}
 .pin:hover .tip,.pin.active .tip{opacity:1}
 .picker{position:absolute;z-index:9;min-width:220px;max-width:280px;padding:8px;
-  background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);
-  transform:translate(-50%,calc(-100% - 10px))}
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg)}
 .picker[hidden]{display:none}
 .picker .ph{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;
   padding:4px 8px 6px}
@@ -300,23 +299,27 @@ function clusterItems(items){
   return Object.keys(groups).map(function(k){return groups[k];});
 }
 
-function hidePicker(){picker.hidden=true;picker.innerHTML='';}
+function hidePicker(){picker.hidden=true;picker.innerHTML='';picker.style.left='';picker.style.top='';}
 function placePicker(pin){
   var panel=picker.parentElement.getBoundingClientRect();
   var wrap=document.querySelector('.mapwrap').getBoundingClientRect();
   var pr=pin.getBoundingClientRect();
-  picker.style.left=(pr.left-panel.left+pr.width/2)+'px';
-  picker.style.top=(pr.top-panel.top)+'px';
-  picker.style.transform='translate(-50%,calc(-100% - 10px))';
+  picker.offsetHeight; /* force layout after innerHTML */
+  var left=pr.right-panel.left+8;
+  var top=pr.top-panel.top-4;
+  picker.style.left=left+'px';
+  picker.style.top=top+'px';
   var box=picker.getBoundingClientRect();
-  if(box.top<wrap.top+8){
-    picker.style.transform='translate(-50%,14px)';
+  if(box.right>panel.right-10){
+    picker.style.left=(pr.left-panel.left-box.width-8)+'px';
     box=picker.getBoundingClientRect();
   }
-  if(box.left<panel.left+10){
-    picker.style.left=(box.width/2+10)+'px';
-  }else if(box.right>panel.right-10){
-    picker.style.left=(panel.width-box.width/2-10)+'px';
+  if(box.top<wrap.top+6){
+    picker.style.top=(wrap.top-panel.top+8)+'px';
+    box=picker.getBoundingClientRect();
+  }
+  if(box.bottom>wrap.bottom-8){
+    picker.style.top=(wrap.bottom-panel.top-box.height-8)+'px';
   }
 }
 function focusCard(i){
