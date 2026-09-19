@@ -108,14 +108,22 @@ section.block{padding:44px 0}
 .sec-head h2{font-size:clamp(24px,3.6vw,36px);font-weight:600;letter-spacing:-.01em;margin-top:2px}
 .finds{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px}
 @media(max-width:720px){.finds{grid-template-columns:1fr}}
+.finds:has(.find:only-child){grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto}
 .find{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-  padding:20px 22px;display:flex;gap:16px;scroll-margin-top:80px;transition:transform .16s,box-shadow .16s,border-color .16s}
+  padding:0;overflow:hidden;display:flex;flex-direction:column;scroll-margin-top:80px;transition:transform .16s,box-shadow .16s,border-color .16s}
 .find:hover,.find.active{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
 .find.active{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.find .photo{width:100%;aspect-ratio:21/9;object-fit:cover;display:block;background:var(--line-soft)}
+.find .inner{display:flex;gap:16px;padding:20px 22px}
 .find .no{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;
   font-size:14px;background:var(--accent);box-shadow:inset 0 -3px 6px rgba(0,0,0,.14)}
 .find .body{min-width:0;flex:1}
 .find .rowtop{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.find .logo{height:40px;width:auto;display:block;margin:0 0 10px}
+:root:not([data-theme="light"]) .find .logo{
+  @media (prefers-color-scheme: dark){filter:invert(1) hue-rotate(180deg);opacity:.92}
+}
+:root[data-theme="dark"] .find .logo{filter:invert(1) hue-rotate(180deg);opacity:.92}
 .find h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
 .find .place{font-size:12.5px;color:var(--muted);font-weight:500}
 .find .rating{display:flex;gap:3px;margin:8px 0 0}
@@ -124,6 +132,12 @@ section.block{padding:44px 0}
 .find .bake{margin:10px 0 0;font-size:13.5px}
 .find .bake b{color:var(--ink)}
 .find .note{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.find .callout{margin:12px 0 0;padding:10px 0 10px 12px;border-left:3px solid var(--bronze);
+  font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:17px;color:var(--ink);line-height:1.4}
+.find .meta{margin:8px 0 0;font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px}
+.find .meta a{color:var(--bronze-deep);border-bottom:1px solid var(--line)}
+.find .meta a:hover{border-color:var(--bronze)}
+.find .credit{margin:10px 0 0;font-size:11px;color:var(--muted);font-style:italic}
 .find .flag{margin-top:10px;display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.06em;
   color:var(--sage-deep);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
 
@@ -246,26 +260,15 @@ try{var st=localStorage.getItem('wildflour:theme');if(st)document.documentElemen
 
 /* bakeries tried — real cities, honest personal notes */
 var B=[
-  {name:"Rye & Rise",city:"Portland, OR",country:"USA",region:["usa","americas"],lat:45.52,lon:-122.68,accent:"#E0713C",rating:5,
-   bake:"Almond croissant",note:"A dedicated GF laminating kitchen. First croissant in years that actually shattered down my shirt.",gf:"100% GF kitchen"},
-  {name:"Marigold Crumb",city:"San Francisco, CA",country:"USA",region:["usa","americas"],lat:37.77,lon:-122.42,accent:"#E6B24C",rating:5,
-   bake:"Sourdough boule",note:"Two-day levain, blistered crust, open crumb. I buy two and freeze one so I always have toast.",gf:"100% GF kitchen"},
-  {name:"Bluebonnet Baking Co.",city:"Austin, TX",country:"USA",region:["usa","americas"],lat:30.27,lon:-97.74,accent:"#9C6E8E",rating:4,
-   bake:"Kolaches",note:"Shared oven but scrupulous about it. The sausage-and-jalapeño kolache is worth planning a morning around.",gf:"GF menu · ask"},
-  {name:"Poppyseed & Co.",city:"New York, NY",country:"USA",region:["usa","americas"],lat:40.71,lon:-74.00,accent:"#6C8CC7",rating:4,
-   bake:"Black-and-white cookie",note:"A proper NY black-and-white, cakey and huge, that no one at the table believed was gluten-free.",gf:"100% GF kitchen"},
-  {name:"Cardamom House",city:"Vancouver, BC",country:"Canada",region:["americas"],lat:49.28,lon:-123.12,accent:"#7F9A6B",rating:5,
-   bake:"Cardamom bun",note:"Knotted, glossy, heavy with cardamom sugar. We drove back the next morning for more before the ferry.",gf:"100% GF kitchen"},
-  {name:"Maíz Dulce",city:"Oaxaca",country:"Mexico",region:["americas"],lat:17.07,lon:-96.72,accent:"#B0703A",rating:5,
-   bake:"Corn-masa concha",note:"Naturally GF by tradition, not by substitution. The masa conchas taste like they were always meant to be this way.",gf:"Naturally GF"},
-  {name:"Senza",city:"Rome",country:"Italy",region:["europe"],lat:41.90,lon:12.50,accent:"#E0713C",rating:5,
-   bake:"Pistachio cornetto",note:"Italy screens for celiac, so 'senza glutine' is everywhere — but this cornetto, filled with Bronte pistachio, is the one I still dream about.",gf:"Certified AIC"},
-  {name:"Le Bluet",city:"Paris",country:"France",region:["europe"],lat:48.86,lon:2.35,accent:"#6C8CC7",rating:4,
-   bake:"Financier",note:"A tiny sans-gluten patisserie near the canal. Brown-butter financiers, still warm, in a paper twist. Very hard to stop at one.",gf:"100% GF kitchen"},
-  {name:"Komeko",city:"Kyoto",country:"Japan",region:["asiapac"],lat:35.01,lon:135.77,accent:"#9C6E8E",rating:5,
-   bake:"Rice-flour milk bread",note:"Rice-flour shokupan so soft and springy it pulls apart in clouds. Pack tamari for the rest of the trip and you're set.",gf:"Rice-flour · GF"},
-  {name:"Wattle & Whisk",city:"Sydney",country:"Australia",region:["asiapac"],lat:-33.87,lon:151.21,accent:"#7F9A6B",rating:4,
-   bake:"Lamington",note:"Sponge dipped in chocolate and rolled in coconut — the platonic GF lamington. Best eaten on the ferry with a flat white.",gf:"100% GF kitchen"}
+  {name:"The Gluten Free Epicurean",city:"Vancouver, BC",country:"Canada",region:["americas"],
+   lat:49.257,lon:-123.089,accent:"#B0703A",
+   address:"633 E 15th Avenue, Vancouver, BC V5T 2R6",
+   neighborhood:"Fraser & Kingsway / Mount Pleasant",
+   phone:"(604) 876-4114",website:"https://www.glutenfreeepicurean.ca/",
+   hours:"Tue–Sat 9am–5pm · closed Sun–Mon",
+   bake:"Donuts",note:"The donuts are amazing!",gf:"Dedicated gluten-free bakery",
+   photo:"../images/gfe/gfe-storefront.jpg",logo:"../images/gfe/gfe-logo.png",
+   photoCredit:"glutenfreeepicurean.ca / their public site"}
 ];
 
 /* teardrop pin marker */
@@ -274,6 +277,8 @@ function marker(accent){
     +'<path d="M13 1C6.4 1 1 6.2 1 12.6 1 21 13 33 13 33s12-12 12-20.4C25 6.2 19.6 1 13 1z" fill="'+accent+'" stroke="rgba(255,255,255,.85)" stroke-width="1.5"/></svg>';
 }
 function proj(lat,lon){ return { x:(lon+180)/360*100, y:(90-lat)/180*100 }; }
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
 var pinsHost=document.getElementById('pins');
 var findsHost=document.getElementById('finds');
@@ -284,21 +289,45 @@ B.forEach(function(b,i){
   btn.className='pin';btn.dataset.i=i;
   btn.style.left=p.x+'%';btn.style.top=p.y+'%';
   btn.setAttribute('aria-label',b.name+' — '+b.city);
-  btn.innerHTML=marker(b.accent)+'<span class="num">'+(i+1)+'</span><span class="tip">'+b.name+' · '+b.city+'</span>';
+  btn.innerHTML=marker(b.accent)+'<span class="num">'+(i+1)+'</span><span class="tip">'+esc(b.name)+' · '+esc(b.city)+'</span>';
   pinsHost.appendChild(btn);
 
   var card=document.createElement('article');
   card.className='find';card.id='find-'+i;card.style.setProperty('--accent',b.accent);
   card.dataset.i=i;
-  var dots='';for(var k=0;k<5;k++){dots+='<i class="'+(k<b.rating?'on':'')+'"></i>';}
-  card.innerHTML='<div class="no">'+(i+1)+'</div>'
+  var photo=b.photo?'<img class="photo" src="'+esc(b.photo)+'" alt="'+esc(b.name)+', '+esc(b.city)+'">':'';
+  var logo=b.logo?'<img class="logo" src="'+esc(b.logo)+'" alt="">':'';
+  var rating='';
+  if(typeof b.rating==='number'){
+    var dots='';for(var k=0;k<5;k++){dots+='<i class="'+(k<b.rating?'on':'')+'"></i>';}
+    rating='<div class="rating" title="'+b.rating+' out of 5">'+dots+'</div>';
+  }
+  var meta=[];
+  if(b.address){
+    var maps='https://maps.google.com/?q='+encodeURIComponent(b.address);
+    meta.push('<span><a href="'+esc(maps)+'" target="_blank" rel="noopener">'+esc(b.address)+'</a>'+(b.neighborhood?' · '+esc(b.neighborhood):'')+'</span>');
+  }
+  if(b.phone){
+    var tel=String(b.phone).replace(/[^\d+]/g,'');
+    meta.push('<span><a href="tel:'+esc(tel)+'">'+esc(b.phone)+'</a></span>');
+  }
+  if(b.website){
+    var host=String(b.website).replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'');
+    meta.push('<span><a href="'+esc(b.website)+'" target="_blank" rel="noopener">'+esc(host)+'</a></span>');
+  }
+  if(b.hours) meta.push('<span>'+esc(b.hours)+'</span>');
+  card.innerHTML=photo
+    +'<div class="inner"><div class="no">'+(i+1)+'</div>'
     +'<div class="body">'
-    +'<div class="rowtop"><h3>'+b.name+'</h3><span class="place">'+b.city+' · '+b.country+'</span></div>'
-    +'<div class="rating" title="'+b.rating+' out of 5">'+dots+'</div>'
-    +'<p class="bake"><b>Order:</b> '+b.bake+'</p>'
-    +'<p class="note">'+b.note+'</p>'
-    +'<span class="flag">'+b.gf+'</span>'
-    +'</div>';
+    +logo
+    +'<div class="rowtop"><h3>'+esc(b.name)+'</h3><span class="place">'+esc(b.city)+' · '+esc(b.country)+'</span></div>'
+    +rating
+    +(meta.length?'<div class="meta">'+meta.join('')+'</div>':'')
+    +(b.bake?'<p class="bake"><b>Order:</b> '+esc(b.bake)+'</p>':'')
+    +'<p class="note callout">“'+esc(b.note)+'”</p>'
+    +'<span class="flag">'+esc(b.gf)+'</span>'
+    +(b.photoCredit?'<p class="credit">Photo: '+esc(b.photoCredit)+'</p>':'')
+    +'</div></div>';
   findsHost.appendChild(card);
 });
 
@@ -339,11 +368,14 @@ document.getElementById('maptools').addEventListener('click',function(e){
 /* stats */
 (function(){
   var countries={};B.forEach(function(b){countries[b.country]=1;});
-  var avg=(B.reduce(function(a,b){return a+b.rating;},0)/B.length).toFixed(1);
-  document.getElementById('stats').innerHTML=
-    '<div class="stat"><b>'+B.length+'</b><span>bakeries</span></div>'
-   +'<div class="stat"><b>'+Object.keys(countries).length+'</b><span>countries</span></div>'
-   +'<div class="stat"><b>'+avg+'</b><span>avg · out of 5</span></div>';
+  var rated=B.filter(function(b){return typeof b.rating==='number';});
+  var html='<div class="stat"><b>'+B.length+'</b><span>baker'+(B.length===1?'y':'ies')+'</span></div>'
+   +'<div class="stat"><b>'+Object.keys(countries).length+'</b><span>countr'+(Object.keys(countries).length===1?'y':'ies')+'</span></div>';
+  if(rated.length){
+    var avg=(rated.reduce(function(a,b){return a+b.rating;},0)/rated.length).toFixed(1);
+    html+='<div class="stat"><b>'+avg+'</b><span>avg · out of 5</span></div>';
+  }
+  document.getElementById('stats').innerHTML=html;
 })();
 </script>
 </body>
