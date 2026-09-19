@@ -205,6 +205,12 @@ body.rm-open{overflow:hidden}
 .promise .card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .promise .card li{display:flex;gap:9px;font-size:14px;color:var(--ink-soft);align-items:flex-start}
 .promise .card li svg{width:16px;height:16px;color:var(--sage);flex:none;margin-top:3px}
+.find-teaser{display:block;margin-top:4px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper)}
+.find-teaser img{width:100%;height:120px;object-fit:cover;display:block}
+.find-teaser .t{padding:12px 14px 14px}
+.find-teaser b{font-family:"Fraunces",serif;font-size:16px;font-weight:600;display:block}
+.find-teaser .place{font-size:12.5px;color:var(--muted);margin:3px 0 0}
+.find-teaser .quote{margin:8px 0 0;font-family:"Fraunces",serif;font-style:italic;font-size:15px;color:var(--ink);line-height:1.35}
 
 /* visit strip */
 .visit{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
@@ -390,12 +396,15 @@ footer .fl{position:absolute;bottom:-10px;right:2%;width:150px;opacity:.5;pointe
             <a class="pbtn bronze" href="map/" style="margin-top:18px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Open the map</a>
           </div>
           <div class="card">
-            <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--poppy);width:18px;height:18px"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> A few recent finds</h4>
-            <ul>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> <b>Rye &amp; Rise</b> — Portland · a croissant that actually shatters</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> <b>Senza</b> — Rome · a pistachio cornetto worth the flight</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> <b>Komeko</b> — Kyoto · rice-flour milk bread, impossibly soft</li>
-            </ul>
+            <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--poppy);width:18px;height:18px"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> A recent find</h4>
+            <a class="find-teaser" href="map/">
+              <img src="images/gfe/gfe-storefront.jpg" alt="The Gluten Free Epicurean, Vancouver — photo from glutenfreeepicurean.ca">
+              <div class="t">
+                <b>The Gluten Free Epicurean</b>
+                <p class="place">Vancouver, BC, Canada</p>
+                <p class="quote">“The donuts are amazing!”</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>
