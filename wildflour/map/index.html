@@ -251,10 +251,64 @@ var B=[
    neighborhood:"Gion / Yamato-oji",
    phone:"075-551-3954",website:"https://www.soymilkramen.com/en/",
    hours:"11:30am–9pm · last order 8:30pm · irregular holidays",
-   dish:"Soy milk ramen",note:"this ramen is sooooo yummy.",
-   gf:"100% plant-based · dedicated gluten-free rice noodles",
+   dish:"Soy milk ramen · house-made rice noodles",note:"this ramen is sooooo yummy.",
+   gf:"100% plant-based · dedicated GF kitchen · in-house rice noodles",
    photo:"../images/uno-yukiko/ramen.jpg",logo:"../images/uno-yukiko/logo.png",
-   photoCredit:"soymilkramen.com / their public site"}
+   photoCredit:"soymilkramen.com / their public site"},
+  {name:"TOSHOaN Main Shop",city:"Kyoto",country:"Japan",region:["asiapac"],
+   lat:35.0076,lon:135.7514,accent:"#9C6E8E",
+   address:"709 Shimohachimonjicho, Nakagyo-ku, Kyoto 604-8333 (Miyako Ichibankan Sanjo Horikawa 1F)",
+   neighborhood:"Horikawa Sanjo / Nijo Castle",
+   phone:"075-811-9288",website:"https://www.toshoan.com/",
+   hours:"10am–6:30pm · pancake last order 4:30pm · closed 1st Wed (sometimes 2nd)",
+   dish:"Rice-flour soufflé pancakes",
+   note:"Jiggly rice-flour soufflé pancakes, steamed to order, with their house anko on the side. Give them the half hour — kids will hover.",
+   quoted:false,
+   gf:"Wheat-flour-free shop sweets · rice-flour soufflé pancakes",
+   photo:"../images/toshoan/pancakes.jpg",logo:"../images/toshoan/logo.png",
+   photoCredit:"toshoan.com / their public site"},
+  {name:"Pizzeria Ae Oche San Giacomo",city:"Venice",country:"Italy",region:["europe"],
+   lat:45.4408,lon:12.3254,accent:"#E0713C",
+   address:"Ramo Quinto Gallion o del Pozzetto 1552/A, Santa Croce, 30135 Venice",
+   neighborhood:"Santa Croce / San Giacomo dell’Orio",
+   phone:"+39 041 524 1161",website:"https://www.facebook.com/ochesangiacomo/",
+   hours:"Daily 10:30am–11pm",
+   dish:"Gluten-free pizza",note:"Best pizza EVER!",
+   gf:"Gluten-free pizza · celiac-friendly pizzeria",
+   photo:"../images/ae-oche/pizza.jpg",logo:"../images/ae-oche/logo.png",
+   photoCredit:"pizzeriaaeoche.com / their public site"},
+  {name:"Lucca in Tavola",city:"Lucca",country:"Italy",region:["europe"],
+   lat:43.84316,lon:10.49822,accent:"#E6B24C",
+   address:"Via S. Paolino 130/132, 55100 Lucca",
+   neighborhood:"Centro storico",
+   phone:"+39 0583 057450",website:"https://luccaintavolaristorantino.eatbu.com/",
+   hours:"Tue–Sun 11:30am–10:30pm · closed Mon",
+   dish:"Homemade gluten-free pasta",note:"best pasta in the world!",
+   gf:"Homemade GF pasta · gluten-free options (shared kitchen)",
+   photo:"../images/lucca-in-tavola/pasta.jpg",
+   photoCredit:"luccaintavolaristorantino.eatbu.com / their public site"},
+  {name:"Duck Island Ice Cream",city:"Auckland",country:"New Zealand",region:["asiapac"],
+   lat:-36.85458,lon:174.74564,accent:"#C45C6A",
+   address:"1/182 Ponsonby Road, Ponsonby, Auckland 1011",
+   neighborhood:"Ponsonby",
+   website:"https://www.duckislandicecream.co.nz/",
+   hours:"Sun–Wed 11am–10pm · Thu–Sat 11am–11pm",
+   dish:"House-made gluten-free maple waffle cones",note:"Home made Gf cones!",
+   gf:"House-made GF maple waffle cones · allergen-aware scooping",
+   photo:"../images/duck-island/flavours.jpg",
+   photoCredit:"duckislandicecream.co.nz / their public site"},
+  {name:"Manasiri’s Crepes",city:"Monterey, CA",country:"United States",region:["usa","americas"],
+   lat:36.60055,lon:-121.89409,accent:"#D45A4A",
+   address:"321 Alvarado Street, Suite B, Monterey, CA 93940",
+   neighborhood:"Old Monterey / Alvarado",
+   phone:"(831) 373-4646",website:"https://manasiriscrepe.com/",
+   hours:"Sun–Thu 8am–8pm · Fri–Sat 8am–10:30pm",
+   dish:"Nutella strawberry gluten-free crepe",
+   note:"Nutella and strawberry on a homemade gluten-free crepe — the kid order that actually works on Alvarado.",
+   quoted:false,
+   gf:"Gluten-free crepes available · separate GF cooking",
+   photo:"../images/manasiri/crepe.jpg",logo:"../images/manasiri/logo.png",
+   photoCredit:"manasiriscrepe.com / their public site"}
 ];
 
 /* Natural Earth 110m countries + lakes, same equirectangular space as pins */
@@ -285,7 +339,7 @@ var picker=document.getElementById('picker');
 var cardEls=[];
 var pinForIndex=[];
 var activeRegion='all';
-var CLUSTER_PCT=2.6; /* % of map width; y is halved so distance is isotropic on a 2:1 map */
+var CLUSTER_PCT=0.45; /* % of map width; city-scale so Kyoto’s two pins group, Venice/Lucca stay apart */
 
 function distPct(a,b){
   var dx=a.x-b.x, dy=(a.y-b.y)*0.5;
@@ -443,7 +497,7 @@ B.forEach(function(b,i){
     +rating
     +(meta.length?'<div class="meta">'+meta.join('')+'</div>':'')
     +(b.dish||b.bake?'<p class="bake"><b>Order:</b> '+esc(b.dish||b.bake)+'</p>':'')
-    +'<p class="note callout">“'+esc(b.note)+'”</p>'
+    +(b.note?'<p class="note callout">'+(b.quoted===false?esc(b.note):'“'+esc(b.note)+'”')+'</p>':'')
     +'<span class="flag">'+esc(b.gf)+'</span>'
     +(b.photoCredit?'<p class="credit">Photo: '+esc(b.photoCredit)+'</p>':'')
     +'</div></div>';
