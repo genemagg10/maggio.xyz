@@ -122,7 +122,9 @@ section.block{padding:44px 0}
 .sheet .gf{margin:8px 0 0;font-size:12.5px;color:var(--ink-soft)}
 .sheet .flag{margin-top:10px;display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.06em;
   color:var(--sage-deep);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
-.sheet .full{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;width:100%;
+.sheet .sh-foot{flex:none;padding:10px 16px 14px;border-top:1px solid var(--line-soft);background:var(--panel)}
+.sheet .sh-foot[hidden]{display:none}
+.sheet .full{display:inline-flex;align-items:center;justify-content:center;width:100%;
   font-size:13.5px;font-weight:600;padding:11px 16px;border-radius:999px;border:1px solid var(--bronze-deep);
   background:var(--bronze);color:#fff;cursor:pointer;font-family:inherit}
 .sheet .full:hover,.sheet .full:focus-visible{background:var(--bronze-deep)}
@@ -137,6 +139,10 @@ section.block{padding:44px 0}
 .sheet .plist b{display:block;font-size:13.5px;font-weight:600}
 .sheet .plist span{display:block;font-size:11.5px;color:var(--muted)}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:720px){
+  .mapwrap{aspect-ratio:1/1;min-height:min(520px,68vh)}
+  .sheet{max-height:50%}
+}
 @media(min-width:800px){
   .sheet{left:14px;right:auto;width:min(360px,46%);max-height:58%;border-radius:16px}
 }
@@ -247,6 +253,7 @@ footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px
               <button type="button" class="x" id="sheet-x" aria-label="Close">×</button>
             </div>
             <div class="sh-body" id="sheet-body"></div>
+            <div class="sh-foot" id="sheet-foot" hidden></div>
           </aside>
         </div>
         <p class="mapnote">A real world map — pins sit on true coordinates. Nearby finds share one numbered pin. Frame a region to spread overlapping pins.</p>
@@ -392,6 +399,7 @@ var mapwrap=document.getElementById('mapwrap');
 var mapstage=document.getElementById('mapstage');
 var sheet=document.getElementById('sheet');
 var sheetBody=document.getElementById('sheet-body');
+var sheetFoot=document.getElementById('sheet-foot');
 var sheetKicker=document.getElementById('sheet-kicker');
 var cardEls=[];
 var pinForIndex=[];
@@ -408,7 +416,7 @@ var VIEWS={
   all:{zoom:1,ox:50,oy:50},
   americas:{zoom:1.82,ox:23.6,oy:41.7},   /* lon ~-95, lat ~15 */
   europe:{zoom:6.4,ox:52.8,oy:23.9},      /* lon ~10, lat ~47 — Venice/Lucca separate */
-  asiapac:{zoom:2.15,ox:91.8,oy:50.6}     /* lon ~150.5, lat ~-1 — Japan + Auckland */
+  asiapac:{zoom:2.08,ox:100.6,oy:50.5}    /* keep Japan + Auckland in frame; Japan not clipped east */
 };
 
 function distPct(a,b){
@@ -467,6 +475,15 @@ function placeThumb(b,cls){
   if(b.photo) return '<img class="'+cls+'" src="'+esc(b.photo)+'" alt="">';
   return '<div class="'+cls+' ph" aria-hidden="true">·</div>';
 }
+function showFullNote(i){
+  sheetFoot.hidden=false;
+  sheetFoot.innerHTML='<button type="button" class="full" data-i="'+i+'">Full note</button>';
+  sheetFoot.querySelector('.full').addEventListener('click',function(){focusCard(+this.dataset.i);});
+}
+function hideFullNote(){
+  sheetFoot.hidden=true;
+  sheetFoot.innerHTML='';
+}
 function renderPlaceSheet(i,fromList){
   var b=B[i];if(!b)return;
   sheetPlace=i;
@@ -481,15 +498,14 @@ function renderPlaceSheet(i,fromList){
     +geneCallout(b)
     +(b.dish||b.bake?'<p class="dish"><b>Order:</b> '+esc(b.dish||b.bake)+'</p>':'')
     +extra
-    +(b.gf?'<span class="flag">'+esc(b.gf)+'</span>':'')
-    +'<button type="button" class="full" data-i="'+i+'">Full note</button>';
+    +(b.gf?'<span class="flag">'+esc(b.gf)+'</span>':'');
   var back=document.getElementById('sheet-back');
   if(back) back.addEventListener('click',function(){renderListSheet(sheetIdxs);});
-  var full=sheetBody.querySelector('.full');
-  if(full) full.addEventListener('click',function(){focusCard(+full.dataset.i);});
+  showFullNote(i);
 }
 function renderListSheet(idxs){
   sheetPlace=-1;
+  hideFullNote();
   sheetKicker.textContent=idxs.length+' places here';
   sheetBody.innerHTML='<h3 id="sheet-title" class="visually-hidden">'+idxs.length+' places</h3>'
     +'<div class="plist">'+idxs.map(function(i){
@@ -531,7 +547,7 @@ function closeSheet(){
   sheetPlace=-1;
   var done=function(){
     sheet.removeEventListener('transitionend',done);
-    if(!sheetOpen){sheet.hidden=true;sheetBody.innerHTML='';}
+    if(!sheetOpen){sheet.hidden=true;sheetBody.innerHTML='';hideFullNote();}
   };
   sheet.addEventListener('transitionend',done);
   setTimeout(done,320);
