@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bakery Map · Wildflour</title>
-<meta name="description" content="The Wildflour bakery map — a running list of gluten-free bakeries worth the detour, pinned everywhere Michelle has tasted them." />
-<meta property="og:title" content="Bakery Map · Wildflour" />
-<meta property="og:description" content="Gluten-free bakeries worth the detour, pinned everywhere we've tasted them." />
+<title>GF Kid Eats · Wildflour</title>
+<meta name="description" content="Wildflour’s gluten-free kid eats map — restaurants, ramen shops, bakeries, and cafés that actually worked while traveling with celiac kids." />
+<meta property="og:title" content="GF Kid Eats · Wildflour" />
+<meta property="og:description" content="Places that actually worked for gluten-free kids — pancakes, ramen, bakeries, whatever filled the table." />
 <meta name="theme-color" content="#FBF6EC" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;color-scheme:light}
 body{margin:0;background:var(--ground);color:var(--ink);
   font-family:"Archivo",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
@@ -61,22 +61,44 @@ section.block{padding:44px 0}
 .maptools button:hover{border-color:var(--bronze)}
 .maptools button[aria-pressed="true"]{background:var(--bronze);color:#fff;border-color:var(--bronze-deep)}
 .mapwrap{position:relative;width:100%;aspect-ratio:2/1;border-radius:14px;overflow:hidden;
-  background:color-mix(in srgb,var(--blue) 12%,var(--paper));border:1px solid var(--line)}
+  background:
+    radial-gradient(120% 90% at 50% 42%,
+      color-mix(in srgb,var(--blue) 18%,var(--paper)) 0%,
+      color-mix(in srgb,var(--blue) 28%,var(--ground)) 78%,
+      color-mix(in srgb,var(--sage) 10%,var(--ground)) 100%);
+  border:1px solid var(--line)}
 .world{position:absolute;inset:0;width:100%;height:100%;display:block}
-.world .land{fill:color-mix(in srgb,var(--sage) 32%,var(--paper));stroke:color-mix(in srgb,var(--sage) 46%,var(--line));stroke-width:.5;stroke-linejoin:round}
-.world .grat{stroke:color-mix(in srgb,var(--ink) 8%,transparent);stroke-width:.3;fill:none}
+.world .land{stroke:color-mix(in srgb,var(--ink) 22%,var(--line));stroke-width:.2;stroke-linejoin:round;stroke-linecap:round;fill-rule:evenodd}
+.world .c0{fill:color-mix(in srgb,var(--sage) 42%,var(--paper))}
+.world .c1{fill:color-mix(in srgb,var(--bronze) 24%,var(--paper))}
+.world .c2{fill:color-mix(in srgb,var(--gold) 26%,var(--paper))}
+.world .ant{fill:color-mix(in srgb,var(--blue) 16%,var(--paper))}
+.world .lake{fill:color-mix(in srgb,var(--blue) 24%,var(--paper));stroke:none}
+.world .grat{stroke:color-mix(in srgb,var(--ink) 7%,transparent);stroke-width:.22;fill:none}
 .pins{position:absolute;inset:0}
 .pin{position:absolute;transform:translate(-50%,-100%);cursor:pointer;background:none;border:0;padding:0;line-height:0;
   filter:drop-shadow(0 3px 4px rgba(51,41,31,.28));transition:transform .16s ease}
 .pin .mk{width:26px;height:34px;display:block}
 .pin .num{position:absolute;top:5px;left:0;right:0;text-align:center;font-size:11px;font-weight:700;color:#fff;line-height:16px}
+.pin.cluster .mk{width:32px;height:42px}
+.pin.cluster .num{top:7px;font-size:13px;line-height:20px}
 .pin:hover,.pin.active{transform:translate(-50%,-100%) scale(1.22)}
 .pin.active{z-index:5}
 .pin .tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);white-space:nowrap;
   background:var(--ink);color:var(--paper);font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:7px;
   opacity:0;pointer-events:none;transition:opacity .14s;line-height:1.3}
 .pin:hover .tip,.pin.active .tip{opacity:1}
-.mapnote{text-align:center;font-size:12px;color:var(--muted);margin-top:12px;font-style:italic}
+.picker{position:absolute;z-index:9;min-width:220px;max-width:280px;padding:8px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg)}
+.picker[hidden]{display:none}
+.picker .ph{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;
+  padding:4px 8px 6px}
+.picker button{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:9px;
+  padding:8px 10px;cursor:pointer;color:var(--ink);font:inherit;line-height:1.3}
+.picker button:hover,.picker button:focus-visible{background:color-mix(in srgb,var(--bronze) 12%,var(--paper))}
+.picker button b{display:block;font-size:13.5px;font-weight:600}
+.picker button span{display:block;font-size:11.5px;color:var(--muted)}
+.mapnote{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
 
 /* stats */
 .stats{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-top:6px}
@@ -144,10 +166,10 @@ footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px
 <main>
   <section class="head tiles">
     <div class="wrap inner">
-      <span class="eyebrow">Gluten-free finds, mapped</span>
+      <span class="eyebrow">Gluten-free kid eats, mapped</span>
       <div class="kicker">the running</div>
-      <h1>Bakery Map</h1>
-      <p class="lead">A living list of the gluten-free bakeries we've actually tasted — the ones worth a detour, a train ride, or a whole trip. Tap a pin to jump to the note.</p>
+      <h1>Eats Map</h1>
+      <p class="lead">Finding food with celiac kids is hard in every country. We pin the places that actually worked — pancakes, ramen, bakeries, a corner café — so the next table can eat without the scavenger hunt. Tap a pin to jump to the note.</p>
     </div>
   </section>
 
@@ -162,43 +184,19 @@ footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px
           <button aria-pressed="false" data-r="asiapac">Asia · Pacific</button>
         </div>
         <div class="mapwrap">
-          <svg class="world" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <!-- world.svg: Natural Earth 110m countries + lakes, same lon/lat % projection as pins -->
+          <svg class="world" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
             <g class="grat">
               <path d="M0,30 H360 M0,60 H360 M0,90 H360 M0,120 H360 M0,150 H360"/>
               <path d="M60,0 V180 M120,0 V180 M180,0 V180 M240,0 V180 M300,0 V180"/>
             </g>
-            <g class="land">
-              <!-- North America -->
-              <path d="M18,30 L34,21 L62,19 L92,25 L112,32 L126,41 L121,52 L107,54 L116,61 L110,71 L95,73 L87,61 L77,63 L69,55 L53,55 L39,49 L27,43 L19,36 Z"/>
-              <!-- Central America -->
-              <path d="M95,73 L104,72 L112,80 L108,88 L100,84 L96,78 Z"/>
-              <!-- Greenland -->
-              <path d="M128,19 L143,15 L152,22 L147,33 L134,35 L127,28 Z"/>
-              <!-- South America -->
-              <path d="M105,84 L121,80 L136,84 L147,95 L143,107 L133,119 L125,135 L117,143 L111,135 L113,117 L107,105 L101,94 Z"/>
-              <!-- British Isles -->
-              <path d="M170,36 L176,33 L179,39 L175,44 L170,42 Z"/>
-              <!-- Europe -->
-              <path d="M180,38 L192,32 L208,31 L216,37 L213,46 L201,50 L207,55 L194,57 L185,52 L181,45 Z"/>
-              <!-- Africa -->
-              <path d="M181,57 L200,53 L217,54 L231,59 L233,73 L226,88 L221,104 L211,119 L203,125 L197,114 L194,98 L186,82 L181,69 Z"/>
-              <!-- Asia -->
-              <path d="M216,33 L240,24 L266,20 L296,22 L320,29 L332,38 L327,49 L312,53 L323,61 L307,64 L299,58 L286,61 L279,68 L264,66 L262,80 L253,73 L248,59 L236,55 L224,50 L217,42 Z"/>
-              <!-- India tail -->
-              <path d="M255,66 L266,66 L268,78 L261,86 L256,78 Z"/>
-              <!-- Japan -->
-              <path d="M318,50 L323,52 L322,60 L316,58 Z"/>
-              <!-- SE Asia / Indonesia -->
-              <path d="M296,86 L312,84 L320,90 L310,95 L298,93 Z"/>
-              <!-- Australia -->
-              <path d="M294,105 L314,101 L333,107 L335,119 L327,129 L309,131 L297,123 L291,113 Z"/>
-              <!-- New Zealand -->
-              <path d="M340,128 L345,131 L343,138 L338,135 Z"/>
-            </g>
+            <g id="countries"></g>
+            <g id="lakes"></g>
           </svg>
           <div class="pins" id="pins"></div>
         </div>
-        <p class="mapnote">An illustrated map — pins are placed by real coordinates, the coastlines are drawn by hand.</p>
+        <div class="picker" id="picker" hidden></div>
+        <p class="mapnote">A real world map — pins sit on true coordinates. Nearby finds share one numbered pin.</p>
       </div>
 
       <div class="stats" id="stats" style="margin-top:22px"></div>
@@ -209,7 +207,7 @@ footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px
     <div class="wrap">
       <div class="sec-head">
         <div class="kicker">every one</div>
-        <h2>The Notes</h2>
+        <h2>Places we’ve loved</h2>
       </div>
       <div class="finds" id="finds"></div>
     </div>
@@ -226,7 +224,7 @@ footer{border-top:1px solid var(--line-soft);padding:38px 0 56px;margin-top:20px
 </footer>
 
 <script>
-/* bakeries tried — real cities, honest personal notes */
+/* places we've actually eaten — restaurants, ramen shops, bakeries, cafés */
 var B=[
   {name:"The Gluten Free Epicurean",city:"Vancouver, BC",country:"Canada",region:["americas"],
    lat:49.257,lon:-123.089,accent:"#B0703A",
@@ -234,10 +232,97 @@ var B=[
    neighborhood:"Fraser & Kingsway / Mount Pleasant",
    phone:"(604) 876-4114",website:"https://www.glutenfreeepicurean.ca/",
    hours:"Tue–Sat 9am–5pm · closed Sun–Mon",
-   bake:"Donuts",note:"The donuts are amazing!",gf:"Dedicated gluten-free bakery",
+   dish:"Donuts",note:"The donuts are amazing!",gf:"Dedicated gluten-free bakery",
    photo:"../images/gfe/gfe-storefront.jpg",logo:"../images/gfe/gfe-logo.png",
-   photoCredit:"glutenfreeepicurean.ca / their public site"}
+   photoCredit:"glutenfreeepicurean.ca / their public site"},
+  {name:"Gluten Free T’s Kitchen",city:"Ueno, Tokyo",country:"Japan",region:["asiapac"],
+   lat:35.7047,lon:139.7723,accent:"#6C8CC7",
+   address:"APA Hotel Ueno Hirokoji, 5-3-3 Sotokanda, Chiyoda-ku, Tokyo 101-0021",
+   neighborhood:"Ueno-hirokoji",
+   phone:"03-5826-4548",website:"https://glutenfree.co.jp/home-en/",
+   hours:"Breakfast 7–9:30am · lunch 12–4pm · dinner 5–10pm · Wed breakfast only",
+   dish:"Pancakes and ramen",note:"we are still talking about the pancakes and the ramen.",
+   gf:"Dedicated gluten-free kitchen · GIG Validated Safe Spot",
+   photo:"../images/ts-kitchen/ueno-dining.jpg",logo:"../images/ts-kitchen/logo.jpg",
+   photoCredit:"glutenfree.co.jp / their public site"},
+  {name:"Gion Soy Milk Ramen UNO YUKIKO",city:"Kyoto",country:"Japan",region:["asiapac"],
+   lat:35.0024,lon:135.7727,accent:"#7F9A6B",
+   address:"40 Kameicho, Higashiyama-ku, Kyoto 605-0803 (Atrecia Gion 1F)",
+   neighborhood:"Gion / Yamato-oji",
+   phone:"075-551-3954",website:"https://www.soymilkramen.com/en/",
+   hours:"11:30am–9pm · last order 8:30pm · irregular holidays",
+   dish:"Soy milk ramen · house-made rice noodles",note:"this ramen is sooooo yummy.",
+   gf:"100% plant-based · dedicated GF kitchen · in-house rice noodles",
+   photo:"../images/uno-yukiko/ramen.jpg",logo:"../images/uno-yukiko/logo.png",
+   photoCredit:"soymilkramen.com / their public site"},
+  {name:"TOSHOaN Main Shop",city:"Kyoto",country:"Japan",region:["asiapac"],
+   lat:35.0076,lon:135.7514,accent:"#9C6E8E",
+   address:"709 Shimohachimonjicho, Nakagyo-ku, Kyoto 604-8333 (Miyako Ichibankan Sanjo Horikawa 1F)",
+   neighborhood:"Horikawa Sanjo / Nijo Castle",
+   phone:"075-811-9288",website:"https://www.toshoan.com/",
+   hours:"10am–6:30pm · pancake last order 4:30pm · closed 1st Wed (sometimes 2nd)",
+   dish:"Rice-flour soufflé pancakes",
+   note:"Jiggly rice-flour soufflé pancakes, steamed to order, with their house anko on the side. Give them the half hour — kids will hover.",
+   quoted:false,
+   gf:"Wheat-flour-free shop sweets · rice-flour soufflé pancakes",
+   photo:"../images/toshoan/pancakes.jpg",logo:"../images/toshoan/logo.png",
+   photoCredit:"toshoan.com / their public site"},
+  {name:"Pizzeria Ae Oche San Giacomo",city:"Venice",country:"Italy",region:["europe"],
+   lat:45.4408,lon:12.3254,accent:"#E0713C",
+   address:"Ramo Quinto Gallion o del Pozzetto 1552/A, Santa Croce, 30135 Venice",
+   neighborhood:"Santa Croce / San Giacomo dell’Orio",
+   phone:"+39 041 524 1161",website:"https://www.facebook.com/ochesangiacomo/",
+   hours:"Daily 10:30am–11pm",
+   dish:"Gluten-free pizza",note:"Best pizza EVER!",
+   gf:"Gluten-free pizza · celiac-friendly pizzeria",
+   photo:"../images/ae-oche/pizza.jpg",logo:"../images/ae-oche/logo.png",
+   photoCredit:"pizzeriaaeoche.com / their public site"},
+  {name:"Lucca in Tavola",city:"Lucca",country:"Italy",region:["europe"],
+   lat:43.84316,lon:10.49822,accent:"#E6B24C",
+   address:"Via S. Paolino 130/132, 55100 Lucca",
+   neighborhood:"Centro storico",
+   phone:"+39 0583 057450",website:"https://luccaintavolaristorantino.eatbu.com/",
+   hours:"Tue–Sun 11:30am–10:30pm · closed Mon",
+   dish:"Homemade gluten-free pasta",note:"best pasta in the world!",
+   gf:"Homemade GF pasta · gluten-free options (shared kitchen)",
+   photo:"../images/lucca-in-tavola/pasta.jpg",
+   photoCredit:"luccaintavolaristorantino.eatbu.com / their public site"},
+  {name:"Duck Island Ice Cream",city:"Auckland",country:"New Zealand",region:["asiapac"],
+   lat:-36.85458,lon:174.74564,accent:"#C45C6A",
+   address:"1/182 Ponsonby Road, Ponsonby, Auckland 1011",
+   neighborhood:"Ponsonby",
+   website:"https://www.duckislandicecream.co.nz/",
+   hours:"Sun–Wed 11am–10pm · Thu–Sat 11am–11pm",
+   dish:"House-made gluten-free maple waffle cones",note:"Home made Gf cones!",
+   gf:"House-made GF maple waffle cones · allergen-aware scooping",
+   photo:"../images/duck-island/flavours.jpg",
+   photoCredit:"duckislandicecream.co.nz / their public site"},
+  {name:"Manasiri’s Crepes",city:"Monterey, CA",country:"United States",region:["usa","americas"],
+   lat:36.60055,lon:-121.89409,accent:"#D45A4A",
+   address:"321 Alvarado Street, Suite B, Monterey, CA 93940",
+   neighborhood:"Old Monterey / Alvarado",
+   phone:"(831) 373-4646",website:"https://manasiriscrepe.com/",
+   hours:"Sun–Thu 8am–8pm · Fri–Sat 8am–10:30pm",
+   dish:"Nutella strawberry gluten-free crepe",
+   note:"Nutella and strawberry on a homemade gluten-free crepe — the kid order that actually works on Alvarado.",
+   quoted:false,
+   gf:"Gluten-free crepes available · separate GF cooking",
+   photo:"../images/manasiri/crepe.jpg",logo:"../images/manasiri/logo.png",
+   photoCredit:"manasiriscrepe.com / their public site"}
 ];
+
+/* Natural Earth 110m countries + lakes, same equirectangular space as pins */
+(function loadWorld(){
+  fetch('world.svg').then(function(r){return r.text();}).then(function(t){
+    var doc=new DOMParser().parseFromString(t,'image/svg+xml');
+    var countries=doc.querySelector('.countries');
+    var lakes=doc.querySelector('.lakes');
+    var hostC=document.getElementById('countries');
+    var hostL=document.getElementById('lakes');
+    if(countries&&hostC)hostC.replaceWith(document.importNode(countries,true));
+    if(lakes&&hostL)hostL.replaceWith(document.importNode(lakes,true));
+  }).catch(function(){});
+})();
 
 /* teardrop pin marker */
 function marker(accent){
@@ -250,16 +335,136 @@ function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&am
 
 var pinsHost=document.getElementById('pins');
 var findsHost=document.getElementById('finds');
+var picker=document.getElementById('picker');
+var cardEls=[];
+var pinForIndex=[];
+var activeRegion='all';
+var CLUSTER_PCT=0.45; /* % of map width; city-scale so Kyoto’s two pins group, Venice/Lucca stay apart */
+
+function distPct(a,b){
+  var dx=a.x-b.x, dy=(a.y-b.y)*0.5;
+  return Math.hypot(dx,dy);
+}
+function clusterItems(items){
+  var n=items.length,parent=items.map(function(_,i){return i;});
+  function find(i){return parent[i]===i?i:(parent[i]=find(parent[i]));}
+  function uni(a,b){a=find(a);b=find(b);if(a!==b)parent[b]=a;}
+  for(var i=0;i<n;i++){
+    for(var j=i+1;j<n;j++){
+      if(distPct(items[i],items[j])<=CLUSTER_PCT)uni(i,j);
+    }
+  }
+  var groups={};
+  items.forEach(function(item,i){
+    var r=find(i);
+    (groups[r]=groups[r]||[]).push(item);
+  });
+  return Object.keys(groups).map(function(k){return groups[k];});
+}
+
+function hidePicker(){picker.hidden=true;picker.innerHTML='';picker.style.left='';picker.style.top='';}
+function placePicker(pin){
+  var panel=picker.parentElement.getBoundingClientRect();
+  var wrap=document.querySelector('.mapwrap').getBoundingClientRect();
+  var pr=pin.getBoundingClientRect();
+  picker.offsetHeight; /* force layout after innerHTML */
+  var left=pr.right-panel.left+8;
+  var top=pr.top-panel.top-4;
+  picker.style.left=left+'px';
+  picker.style.top=top+'px';
+  var box=picker.getBoundingClientRect();
+  if(box.right>panel.right-10){
+    picker.style.left=(pr.left-panel.left-box.width-8)+'px';
+    box=picker.getBoundingClientRect();
+  }
+  if(box.top<wrap.top+6){
+    picker.style.top=(wrap.top-panel.top+8)+'px';
+    box=picker.getBoundingClientRect();
+  }
+  if(box.bottom>wrap.bottom-8){
+    picker.style.top=(wrap.bottom-panel.top-box.height-8)+'px';
+  }
+}
+function focusCard(i){
+  var card=cardEls[i];if(!card)return;
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.classList.add('active');
+  setTimeout(function(){card.classList.remove('active');},1400);
+}
+function setGroupActive(idxs,on){
+  idxs.forEach(function(i){
+    if(cardEls[i])cardEls[i].classList.toggle('active',on);
+    if(pinForIndex[i])pinForIndex[i].classList.toggle('active',on);
+  });
+}
+function openPicker(idxs,pin){
+  hidePicker();
+  picker.innerHTML='<div class="ph">'+idxs.length+' places here</div>'+idxs.map(function(i){
+    var b=B[i];
+    return '<button type="button" data-i="'+i+'"><b>'+esc(b.name)+'</b><span>'+esc(b.city)+' · '+esc(b.country)+'</span></button>';
+  }).join('');
+  picker.hidden=false;
+  placePicker(pin);
+  picker.querySelectorAll('button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      hidePicker();
+      focusCard(+btn.dataset.i);
+    });
+  });
+}
+
+function renderPins(){
+  hidePicker();
+  pinsHost.innerHTML='';
+  pinForIndex=[];
+  var visible=[];
+  B.forEach(function(b,i){
+    var show=(activeRegion==='all')||b.region.indexOf(activeRegion)>=0;
+    if(cardEls[i])cardEls[i].style.display=show?'':'none';
+    if(!show)return;
+    var p=proj(b.lat,b.lon);
+    visible.push({i:i,x:p.x,y:p.y,b:b});
+  });
+  clusterItems(visible).forEach(function(group){
+    var x=0,y=0;
+    group.forEach(function(g){x+=g.x;y+=g.y;});
+    x/=group.length;y/=group.length;
+    var idxs=group.map(function(g){return g.i;});
+    var first=group[0].b;
+    var many=group.length>1;
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='pin'+(many?' cluster':'');
+    btn.style.left=x+'%';btn.style.top=y+'%';
+    btn.dataset.members=idxs.join(',');
+    var label=many
+      ? (group.length+' places')
+      : (first.name+' — '+first.city);
+    btn.setAttribute('aria-label',label);
+    var tip=many
+      ? (group.length+' places — tap to choose')
+      : (first.name+' · '+first.city);
+    var accent=many?'var(--bronze)':first.accent;
+    var num=many?String(group.length):String(idxs[0]+1);
+    btn.innerHTML=marker(accent)+'<span class="num">'+num+'</span><span class="tip">'+esc(tip)+'</span>';
+    idxs.forEach(function(i){pinForIndex[i]=btn;});
+    btn.addEventListener('mouseenter',function(){setGroupActive(idxs,true);});
+    btn.addEventListener('mouseleave',function(){if(picker.hidden)setGroupActive(idxs,false);});
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(many){
+        setGroupActive(idxs,true);
+        openPicker(idxs,btn);
+      }else{
+        hidePicker();
+        focusCard(idxs[0]);
+      }
+    });
+    pinsHost.appendChild(btn);
+  });
+}
 
 B.forEach(function(b,i){
-  var p=proj(b.lat,b.lon);
-  var btn=document.createElement('button');
-  btn.className='pin';btn.dataset.i=i;
-  btn.style.left=p.x+'%';btn.style.top=p.y+'%';
-  btn.setAttribute('aria-label',b.name+' — '+b.city);
-  btn.innerHTML=marker(b.accent)+'<span class="num">'+(i+1)+'</span><span class="tip">'+esc(b.name)+' · '+esc(b.city)+'</span>';
-  pinsHost.appendChild(btn);
-
   var card=document.createElement('article');
   card.className='find';card.id='find-'+i;card.style.setProperty('--accent',b.accent);
   card.dataset.i=i;
@@ -291,53 +496,45 @@ B.forEach(function(b,i){
     +'<div class="rowtop"><h3>'+esc(b.name)+'</h3><span class="place">'+esc(b.city)+' · '+esc(b.country)+'</span></div>'
     +rating
     +(meta.length?'<div class="meta">'+meta.join('')+'</div>':'')
-    +(b.bake?'<p class="bake"><b>Order:</b> '+esc(b.bake)+'</p>':'')
-    +'<p class="note callout">“'+esc(b.note)+'”</p>'
+    +(b.dish||b.bake?'<p class="bake"><b>Order:</b> '+esc(b.dish||b.bake)+'</p>':'')
+    +(b.note?'<p class="note callout">'+(b.quoted===false?esc(b.note):'“'+esc(b.note)+'”')+'</p>':'')
     +'<span class="flag">'+esc(b.gf)+'</span>'
     +(b.photoCredit?'<p class="credit">Photo: '+esc(b.photoCredit)+'</p>':'')
     +'</div></div>';
   findsHost.appendChild(card);
 });
-
-/* sync hover/click between pins and cards */
-var pinEls=[].slice.call(document.querySelectorAll('.pin'));
-var cardEls=[].slice.call(document.querySelectorAll('.find'));
-function setActive(i,on){
-  if(pinEls[i])pinEls[i].classList.toggle('active',on);
-  if(cardEls[i])cardEls[i].classList.toggle('active',on);
-}
-pinEls.forEach(function(el){
-  var i=+el.dataset.i;
-  el.addEventListener('mouseenter',function(){setActive(i,true);});
-  el.addEventListener('mouseleave',function(){setActive(i,false);});
-  el.addEventListener('click',function(){cardEls[i].scrollIntoView({behavior:'smooth',block:'center'});
-    cardEls[i].classList.add('active');setTimeout(function(){cardEls[i].classList.remove('active');},1400);});
-});
+cardEls=[].slice.call(document.querySelectorAll('.find'));
 cardEls.forEach(function(el){
   var i=+el.dataset.i;
-  el.addEventListener('mouseenter',function(){if(pinEls[i])pinEls[i].classList.add('active');});
-  el.addEventListener('mouseleave',function(){if(pinEls[i])pinEls[i].classList.remove('active');});
+  el.addEventListener('mouseenter',function(){if(pinForIndex[i])pinForIndex[i].classList.add('active');});
+  el.addEventListener('mouseleave',function(){if(pinForIndex[i])pinForIndex[i].classList.remove('active');});
 });
 
-/* region filter */
-function applyFilter(r){
-  B.forEach(function(b,i){
-    var show=(r==='all')||b.region.indexOf(r)>=0;
-    if(pinEls[i])pinEls[i].style.display=show?'':'none';
-    if(cardEls[i])cardEls[i].style.display=show?'':'none';
-  });
-}
+renderPins();
+
+document.addEventListener('click',function(e){
+  if(!picker.hidden && !picker.contains(e.target) && !e.target.closest('.pin')){
+    hidePicker();
+    cardEls.forEach(function(c){c.classList.remove('active');});
+    document.querySelectorAll('.pin.active').forEach(function(p){p.classList.remove('active');});
+  }
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')hidePicker();});
+
+/* region filter — re-clusters visible pins */
 document.getElementById('maptools').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b)return;
   this.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed','false');});
-  b.setAttribute('aria-pressed','true');applyFilter(b.getAttribute('data-r'));
+  b.setAttribute('aria-pressed','true');
+  activeRegion=b.getAttribute('data-r');
+  renderPins();
 });
 
 /* stats */
 (function(){
   var countries={};B.forEach(function(b){countries[b.country]=1;});
   var rated=B.filter(function(b){return typeof b.rating==='number';});
-  var html='<div class="stat"><b>'+B.length+'</b><span>baker'+(B.length===1?'y':'ies')+'</span></div>'
+  var html='<div class="stat"><b>'+B.length+'</b><span>place'+(B.length===1?'':'s')+'</span></div>'
    +'<div class="stat"><b>'+Object.keys(countries).length+'</b><span>countr'+(Object.keys(countries).length===1?'y':'ies')+'</span></div>';
   if(rated.length){
     var avg=(rated.reduce(function(a,b){return a+b.rating;},0)/rated.length).toFixed(1);
